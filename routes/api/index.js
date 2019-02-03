@@ -1,4 +1,4 @@
 const router = require("express").Router();
-const googleSheetRoutes = require("./sheets");
-router.use("/google", googleSheetRoutes);
+const googleSheetsRoutes = require("./sheets");
+router.use("/google", googleSheetsRoutes);
 module.exports = router;
