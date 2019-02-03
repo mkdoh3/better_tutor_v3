@@ -1,4 +1,4 @@
-const sheets = require("../utils/sheetsHandler");
+const sheets = require("../utils/sheetsUtils");
 
 module.exports = {
   getRows: (req, res) => {

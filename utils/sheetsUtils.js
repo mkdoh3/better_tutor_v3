@@ -4,7 +4,6 @@ const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID);
 
 //tabNumber references the tabs of a google sheet - first tab being 1
 const getRows = tabNumber => {
-  console.log(tabNumber);
   return new Promise((resolve, reject) => {
     return doc.useServiceAccountAuth(creds, error => {
       if (error) reject(error);
