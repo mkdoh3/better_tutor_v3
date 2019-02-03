@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 const sheets = require("../utils/sheetsUtils");
-=======
-const sheets = require("../utils/sheetsHandler");
->>>>>>> 5f64af0... WIP: google sheets integration. so far, reading sheetings, writing new session
 
 module.exports = {
   getRows: (req, res) => {
