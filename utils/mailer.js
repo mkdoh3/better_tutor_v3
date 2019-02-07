@@ -1,6 +1,7 @@
 const cron = require("node-cron");
 const nodemailer = require("nodemailer");
-const email = require("./emailUtils");
+const emailUtils = require("./emailUtils");
+//need to get emailUtils returns here! Running into some crazy async problems. ermmm I could refigure it so that mailer is imported into emailUtils but I think that'll cause all sorts of other problems.. should probably walk awayyyy for a minute.ugh.
 module.exports = () => {
   const transporter = nodemailer.createTransport({
     service: "gmail",

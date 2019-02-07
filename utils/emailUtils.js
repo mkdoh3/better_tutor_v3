@@ -3,11 +3,12 @@ sheets = require("./sheetsUtils");
 
 module.exports = {
   generateBlastList: () => {
+    console.log("called!");
     sheets
       .getRows(2)
       .then(rows => {
         const emailList = rows.map(student => student.studentemail);
-        console.log("blast list ===> ", emailList);
+        console.log("list!!!!!!!!!!!!", emailList);
       })
       .catch(err => console.log(err));
   },
