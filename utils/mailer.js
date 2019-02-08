@@ -1,32 +1,53 @@
 const cron = require("node-cron");
 const nodemailer = require("nodemailer");
+const Email = require("email-templates");
 const emailUtils = require("./emailUtils");
-//need to get emailUtils returns here! Running into some crazy async problems. ermmm I could refigure it so that mailer is imported into emailUtils but I think that'll cause all sorts of other problems.. should probably walk awayyyy for a minute.ugh.
-module.exports = () => {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: `${process.env.EMAIL_ADDRESS}`,
-      pass: `${process.env.EMAIL_PASSWORD}`
-    }
+
+const transport = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: `${process.env.EMAIL_ADDRESS}`,
+    pass: `${process.env.EMAIL_PASSWORD}`
+  }
+});
+
+const generateEmail = emailInfo => {
+  const { address, name, timeDate, link } = emailInfo;
+  const email = new Email({
+    message: {
+      from: process.env.EMAIL_ADDRESS
+    },
+    transport,
+    send: true
   });
-
-  cron.schedule("30 20  17 * * 0", function() {
-    console.log("---------------------");
-    console.log("Running Cron Job");
-    let mailOptions = {
-      from: `${process.env.EMAIL_ADDRESS}`,
-      to: "mkdohertyta@gmail.com",
-      subject: "Testing this cron job!",
-      text: `Hi there, this email was automatically sent by you`
-    };
-
-    transporter.sendMail(mailOptions, function(error, info) {
-      if (error) {
-        throw error;
-      } else {
-        console.log("Email successfully sent!");
+  email
+    .send({
+      template: "session-reminders",
+      message: {
+        to: address
+      },
+      locals: {
+        name,
+        timeDate,
+        link
       }
+    })
+    .then(console.log)
+    .catch(console.error);
+};
+
+const reminders = () => {
+  emailUtils.generateRemindersList().then(emailList => {
+    emailList.forEach(reminder => {
+      generateEmail(reminder);
     });
   });
 };
+
+reminders();
+(function() {
+  cron.schedule("30 46  12 * * 5", function() {
+    console.log("Running Cron Job");
+    reminders();
+  });
+})();

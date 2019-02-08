@@ -6,6 +6,7 @@
 
 4.) Setup cron job for reminder emails
 5.) Setup cron job for blast emails
+6.) try/catch error handling in the utils
 
 **Front End**
 1.)generate adp notes based on session info - this could be done from the front end as the data will already be displayed there
