@@ -10,27 +10,43 @@ const transport = nodemailer.createTransport({
     pass: `${process.env.EMAIL_PASSWORD}`
   }
 });
+const email = new Email({
+  message: {
+    from: process.env.EMAIL_ADDRESS
+  },
+  transport,
+  send: true
+});
 
-const generateEmail = emailInfo => {
-  const { address, name, timeDate, link } = emailInfo;
-  const email = new Email({
-    message: {
-      from: process.env.EMAIL_ADDRESS
-    },
-    transport,
-    send: true
-  });
+function Message(emailInfo) {
+  //this "to" field will eventually be set as centralsupport
+  this.to = "mkdohertyta@gmail.com";
+  if (emailInfo.address) {
+    this.cc = emailInfo.address;
+  }
+  if (typeof emailInfo[0] === "string") {
+    this.bcc = emailInfo;
+  }
+}
+
+function Locals(emailInfo) {
+  const { name, timeDate, link } = emailInfo;
+  this.name = name;
+  this.timeDate = timeDate;
+  this.link = link;
+}
+
+const generateEmail = (emailInfo, template) => {
+  const message = new Message(emailInfo);
+  let locals = null;
+  if (emailInfo.name) {
+    locals = new Locals(emailInfo);
+  }
   email
     .send({
-      template: "session-reminders",
-      message: {
-        to: address
-      },
-      locals: {
-        name,
-        timeDate,
-        link
-      }
+      template,
+      message,
+      locals
     })
     .then(console.log)
     .catch(console.error);
@@ -39,15 +55,24 @@ const generateEmail = emailInfo => {
 const reminders = () => {
   emailUtils.generateRemindersList().then(emailList => {
     emailList.forEach(reminder => {
-      generateEmail(reminder);
+      generateEmail(reminder, "session-reminders");
     });
   });
 };
 
-reminders();
+const emailBlast = () => {
+  emailUtils.generateBlastList().then(emailArray => {
+    generateEmail(emailArray, "weekly-blast");
+  });
+};
+
 (function() {
-  cron.schedule("30 46  12 * * 5", function() {
-    console.log("Running Cron Job");
+  cron.schedule("30 10 * * *", function() {
+    console.log(`${Date.now()}: Running reminders cron job`);
     reminders();
+  });
+  cron.schedule("30 12 * * 7", function() {
+    console.log(`${Date.now()}: Running email blast cron job`);
+    emailBlast();
   });
 })();
