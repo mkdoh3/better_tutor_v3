@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const sheetsController = require("../../controllers/sheetsController");
 
-router.route("/sheets/session").post(sheetsController.createSession);
+router.route("/sheets/hook").post(sheetsController.handleHook);
 
 router
   .route("/sheets/:tab")

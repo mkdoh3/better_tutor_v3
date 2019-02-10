@@ -1,6 +1,10 @@
 const sheets = require("../utils/sheetsUtils");
 
 module.exports = {
+  handleHook: (req, res) => {
+    console.log(req.body);
+    res.status(200).send("OK");
+  },
   getRows: (req, res) => {
     const tabNumber = parseInt(req.params.tab);
     sheets
