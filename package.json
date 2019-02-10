@@ -4,8 +4,13 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "client": "cd client && npm run start",
+    "install": "cd client && npm install",
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -23,10 +28,14 @@
     "email-templates": "^5.0.3",
     "express": "^4.16.4",
     "google-spreadsheet": "^2.0.7",
+    "if-env": "^1.0.4",
     "jsonfile": "^5.0.0",
     "moment": "^2.24.0",
     "node-cron": "^2.0.3",
     "nodemailer": "^5.1.1",
     "pug": "^2.0.3"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0"
   }
 }
