@@ -6,7 +6,7 @@ module.exports = {
     sheets
       .getRows(tabNumber)
       .then(rows => res.status(200).json(rows))
-      .catch(err => res.status(422).json({ err }));
+      .catch(err => res.status(422).json(err));
   },
   addRow: (req, res) => {
     const tabNumber = parseInt(req.params.tab);
@@ -14,7 +14,7 @@ module.exports = {
     sheets
       .addRow(data, tabNumber)
       .then(row => res.status(200).json(row))
-      .catch(err => res.status(422).json({ err }));
+      .catch(err => res.status(422).json(err));
   },
   createSession: (req, res) => {
     const studentName = req.body.name;
@@ -47,7 +47,7 @@ module.exports = {
           1
         )
         .then(row => res.status(200).json(row))
-        .catch(err => res.status(422).json({ err }));
+        .catch(err => res.status(422).json(err));
     });
   }
 };
