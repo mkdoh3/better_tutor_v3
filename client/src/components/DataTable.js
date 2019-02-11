@@ -1,5 +1,6 @@
 import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
+import cellEditFactory from "react-bootstrap-table2-editor";
 // import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
 const DataTable = props => {
@@ -16,7 +17,7 @@ const DataTable = props => {
     columns.push(
       { dataField: "sessiondate", text: "Session Date" },
       { dataField: "adptimein", text: "ADP In" },
-      { dataField: "apdtimeout", text: "ADP Out" },
+      { dataField: "adptimeout", text: "ADP Out" },
       { dataField: "back2back", text: "B2B?" },
       { dataField: "shownoshow", text: "Show/No?" },
       { dataField: "topicscovered", text: "Topics" },
@@ -29,21 +30,31 @@ const DataTable = props => {
       text: "Zoom Link",
       events: {
         onClick: e => {
-          console.log(e.target);
+          const url = e.target.textContent;
+          const newTab = window.open(url, "_blank");
+          newTab.focus();
         }
       }
     });
   }
+  const cellEdit = cellEditFactory({
+    mode: "dbclick",
+    afterSaveCell: (oldValue, newValue, row, column) => {
+      props.handleRowUpdate(row);
+    }
+  });
+
   return (
     <BootstrapTable
       striped
       bordered
       hover
       condensed
-      classes="table-sm"
+      classes="table-sm data-table"
       keyField="index"
       data={props.data}
       columns={columns}
+      cellEdit={cellEdit}
     />
   );
 };

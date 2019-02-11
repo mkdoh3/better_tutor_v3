@@ -18,7 +18,7 @@ export default {
       if (table === "sessions") {
         rowData.sessiondate = row.sessiondate;
         rowData.adptimein = row.adptimein;
-        rowData.apdtimeout = row.apdtimeout;
+        rowData.adptimeout = row.adptimeout;
         rowData.back2back = row.back2back;
         rowData.shownoshow = row.shownoshow;
         rowData.topicscovered = row.topicscovered;

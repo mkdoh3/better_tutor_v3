@@ -1,13 +1,16 @@
 import React, { Component } from "react";
-import { Tab, Tabs } from "react-bootstrap";
+import { Tab, Tabs, Button } from "react-bootstrap";
 import DataTable from "./components/DataTable";
 import DropdownSelect from "./components/DropdownSelect";
 import API from "./utils/API";
 import filter from "./utils/dataFilter";
+import "./App.css";
 
 class App extends Component {
   state = {
-    sessionData: null
+    sessionData: [],
+    rosterData: [],
+    updated: []
   };
   componentDidMount() {
     this.fetchSessionData()
@@ -34,22 +37,52 @@ class App extends Component {
   handleAddSession = () => {
     console.log("hi");
   };
+  //this is probably a little sloppy. The idea is to save the indices of updated object to later do a batch update on the backend on save or componentWillUnmount
+  handleRowUpdate = data => {
+    const index = data.index;
+    const sessionData = [...this.state.sessionData];
+    const updated = [...this.state.updated];
+    console.log(updated);
+    if (updated.indexOf(index) < 0) {
+      updated.push(index);
+    }
+    sessionData[index] = data;
+    this.setState({ sessionData, updated });
+  };
+  handleOnSave = () => {
+    const updates = [];
+    this.state.updated.forEach(index => {
+      updates.push(this.state.sessionData[index]);
+    });
+    console.log(updates);
+    API.update(updates).then(() => this.setState({ updated: [] }));
+  };
 
   render() {
     return (
       <>
-        <Tabs defaultActiveKey="session">
+        <Tabs defaultActiveKey="todaysSessions">
           <Tab eventKey="todaysSessions" title="Today's Sessions">
-            {this.state.sessionData && (
+            {filter.filterTodaysSessions(this.state.sessionData).length > 0 ? (
               <DataTable
+                handleRowUpdate={this.handleRowUpdate}
                 data={filter.filterTodaysSessions(this.state.sessionData)}
                 sessions={true}
               />
+            ) : (
+              <h1>Sorry, no sessions today</h1>
             )}
           </Tab>
           <Tab eventKey="allSessions" title="All Sessions">
             {this.state.sessionData && (
-              <DataTable data={this.state.sessionData} sessions={true} />
+              <DataTable
+                handleRowUpdate={this.handleRowUpdate}
+                data={this.state.sessionData}
+                sessions={true}
+              />
+            )}
+            {this.state.updated.length > 0 && (
+              <Button onClick={this.handleOnSave}>Save</Button>
             )}
             {this.state.sessionData && (
               <DropdownSelect
@@ -60,7 +93,10 @@ class App extends Component {
           </Tab>
           <Tab eventKey="roster" title="Roster">
             {this.state.rosterData && (
-              <DataTable data={this.state.rosterData} />
+              <DataTable
+                handleRowUpdate={this.handleRowUpdate}
+                data={this.state.rosterData}
+              />
             )}
           </Tab>
         </Tabs>

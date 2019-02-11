@@ -16,6 +16,9 @@ module.exports = {
       .then(row => res.status(200).json(row))
       .catch(err => res.status(422).json({ err }));
   },
+  update: (req, res) => {
+    console.log(req.body);
+  },
   createSession: (req, res) => {
     const studentName = req.body.name;
     sheets.getRows(2).then(rows => {
