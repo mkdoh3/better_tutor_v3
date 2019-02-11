@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Tab, Tabs, Button } from "react-bootstrap";
 import DataTable from "./components/DataTable";
 import DropdownSelect from "./components/DropdownSelect";
+import AddStudent from "./components/AddStudent";
 import API from "./utils/API";
 import filter from "./utils/dataFilter";
 import "./App.css";
@@ -98,6 +99,7 @@ class App extends Component {
                 data={this.state.rosterData}
               />
             )}
+            <AddStudent />
           </Tab>
         </Tabs>
       </>
