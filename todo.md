@@ -19,6 +19,8 @@
 2.)embed and autofill for tutor survey
 3.) copy student class code and student eval form to clipboard
 4.) move filtering logic to the backend
+5.) Make session cell editable & update google sheet
+6.) manually add to roster & session tables & update google sheet
 **Future Features?**
 
 **BUGS**
