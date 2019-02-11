@@ -3,11 +3,13 @@ const sheets = require("./sheetsUtils");
 
 const emailUtils = {
   generateBlastList: async () => {
+    // MB: try/catch for error handling
     const rows = await sheets.getRows(2);
     const emailList = await rows.map(student => student.studentemail);
     return emailList;
   },
   generateRemindersList: async () => {
+    // MB: try/catch for error handling
     const rows = await sheets.getRows(1);
     const emailList = await emailUtils.buildRemindersList(rows);
     return emailList;

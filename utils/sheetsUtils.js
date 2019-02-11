@@ -7,6 +7,7 @@ const moment = require("moment");
 const sheetsUtils = {
   //tabNumber references the tabs of a google sheet - first tab being 1
   get: async (tabNumber, options = { offset: 0 }) => {
+    // MB: try/catch for error handling
     const useServiceAccountAuth = promisify(doc.useServiceAccountAuth);
     await useServiceAccountAuth(creds);
     const getRows = promisify(doc.getRows);
@@ -15,6 +16,7 @@ const sheetsUtils = {
   },
 
   add: async (data, tabNumber) => {
+    // MB: try/catch for error handling
     const useServiceAccountAuth = promisify(doc.useServiceAccountAuth);
     await useServiceAccountAuth(creds);
     const addRow = promisify(doc.addRow);
@@ -22,6 +24,7 @@ const sheetsUtils = {
     return row;
   },
   deleteSession: async id => {
+    // MB: use await!
     sheetsUtils
       .get(1, {
         query: `sessionid=${id}`
@@ -31,6 +34,7 @@ const sheetsUtils = {
   },
 
   filterSheet: async (filterBy, filterValue, tabNumber) => {
+    // MB: try/catch for error handling
     const rows = await sheetsUtils.get(tabNumber);
     const filteredRow = await rows.filter(row => {
       return row[filterBy] === filterValue;

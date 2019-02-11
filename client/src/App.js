@@ -13,28 +13,49 @@ class App extends Component {
     rosterData: [],
     updated: []
   };
+
   componentDidMount() {
-    this.fetchSessionData()
-      .then(sessionData => {
-        this.fetchRosterData()
-          .then(rosterData => this.setState({ sessionData, rosterData }))
-          .catch(err => console.log(err));
-      })
-      .catch(err => console.log(err));
-  }
+    // MB: Avoid using then and doing all the work inside the lifecycle hooks.
+    // You can wrap up all your promise returns and catches outside of this
+    // lifescycle hook, and make a simple function call instead of doing it all in here.
+    this.fetchAll();
+  },
+
+  fetchAll = async () => {
+    try {
+      const sessionData = await this.fetchSessionData();
+      const rosterData = await this.fetchRosterDatal();
+
+      return this.setState({ sessionData, rosterData });
+    } catch(error) {
+      throw new Error(error);
+    }
+  },
 
   fetchSessionData = async () => {
-    const sessionRes = await API.getRows(1);
-    const sessionRows = await sessionRes.data;
-    const sessionData = await filter.filterRowData(sessionRows, "sessions");
-    return sessionData;
-  };
+    try {
+      const sessionRes = await API.getRows(1);
+      const sessionRows = await sessionRes.data;
+      const sessionData = await filter.filterRowData(sessionRows, "sessions");
+
+      return sessionData;
+    } catch(error) {
+      throw new Error(error);
+    }
+  },
+
   fetchRosterData = async () => {
-    const rosterRes = await API.getRows(2);
-    const rosterRows = await rosterRes.data;
-    const rosterData = await filter.filterRowData(rosterRows, "roster");
-    return rosterData;
+    try {
+      const rosterRes = await API.getRows(2);
+      const rosterRows = await rosterRes.data;
+      const rosterData = await filter.filterRowData(rosterRows, "roster");
+
+      return rosterData;
+    } catch (error) {
+      throw new Error(error);
+    }
   };
+
   handleAddSession = () => {
     console.log("hi");
   };
@@ -64,6 +85,11 @@ class App extends Component {
       <>
         <Tabs defaultActiveKey="todaysSessions">
           <Tab eventKey="todaysSessions" title="Today's Sessions">
+            {/*
+              MB: Better to move this to a function on this component
+              that returns the dataTable component than doing it inline
+              like this.
+            */}
             {filter.filterTodaysSessions(this.state.sessionData).length > 0 ? (
               <DataTable
                 handleRowUpdate={this.handleRowUpdate}

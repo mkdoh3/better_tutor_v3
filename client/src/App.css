@@ -1,3 +1,8 @@
+/*
+ MB: Avoid using ems. If using rems, make sure your app is set up properly:
+ https://medium.com/code-better/css-units-for-font-size-px-em-rem-79f7e592bb97
+*/
+
 .data-table {
   margin: 1.5em auto;
   max-width: 98vw;

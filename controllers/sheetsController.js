@@ -13,6 +13,7 @@ module.exports = {
     }
   },
 
+  // MB: Use async functions
   getRows: (req, res) => {
     const tabNumber = parseInt(req.params.tab);
     sheets
@@ -21,6 +22,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
+  // MB: Use async functions
   addRow: (req, res) => {
     const tabNumber = parseInt(req.params.tab);
     const data = { ...req.body };
@@ -29,11 +31,14 @@ module.exports = {
       .then(row => res.status(200).json(row))
       .catch(err => res.status(422).json({ err }));
   },
+
   update: (req, res) => {
     console.log(req.body);
   },
+
   createSession: (req, res) => {
     const studentName = req.body.name;
+    // MB: Use async functions
     sheets
       .getRows(2)
       .then(rows => {

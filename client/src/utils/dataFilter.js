@@ -2,39 +2,74 @@ import moment from "moment";
 export default {
   filterRowData: (data, table) => {
     const filteredData = [];
-    data.forEach((row, i) => {
+    // MB: You could clean this up with some ES6 destructuring
+    // Also note, use camel case for better reading:
+    data.forEach((row, index) => {
+      const {
+        classCode,
+        graduationDate,
+        studentName,
+        studentEmail,
+        studentGithubUsername,
+        studentTz,
+        tzDif,
+        zoomLink,
+      } = row;
+
       const rowData = {
-        index: i,
-        classcode: row.classcode,
-        graduationdate: row.graduationdate,
-        studentname: row.studentname,
-        studentemail: row.studentemail,
-        studentgithubusername: row.studentgithubusername,
-        studenttz: row.studenttz,
-        tzdif: row.tzdif,
-        zoomlink: row.zoomlink
+        index,
+        classCode,
+        graduationDate,
+        studentName,
+        studentEmail,
+        studentGithubUsername,
+        studentTz,
+        tzDif,
+        zoomLink,
       };
 
       if (table === "sessions") {
-        rowData.sessiondate = row.sessiondate;
-        rowData.adptimein = row.adptimein;
-        rowData.adptimeout = row.adptimeout;
-        rowData.back2back = row.back2back;
-        rowData.shownoshow = row.shownoshow;
-        rowData.topicscovered = row.topicscovered;
-        rowData.notes = row.notes;
-        rowData.tutorsevalformsubmitted = row.tutorsevalformsubmitted;
-        rowData.paymentdateamnt = row.paymentdateamnt;
+        const {
+          sessionDate,
+          aptTimeIn,
+          aptTimeOut,
+          back2Back,
+          showNoShow,
+          topicsCovered,
+          notes,
+          tutorsEvalFormwsSubmitted,
+          paymentDateAmnt,
+        } = row;
+
+        rowData.sessionDate = sessionDate;
+        rowData.adpTimeIn = adpTimeIn;
+        rowData.adpTimeOut = adpTimeOut;
+        rowData.back2Back = back2Back;
+        rowData.showNoShow = showNoShow;
+        rowData.topicsCovered = topicsCovered;
+        rowData.notes = notes;
+        rowData.tutorsEvalFormSubmitted = tutorsEvalFormSubmitted;
+        rowData.paymentDateAmnt = paymentDateAmnt;
       }
+
       filteredData.push(rowData);
     });
+
     return filteredData;
   },
+
   filterTodaysSessions: data => {
     return data.filter(session => {
+      // MB: Save things like formatting and other strings
+      // in a /types directory.
+      //
+      // const DateFormats = Object.freeze({
+      //   YYYYMMDD: 'YYYY-MM-DD',
+      // });
       return moment().format("YYYY-MM-DD") === session.sessiondate;
     });
   },
+
   filterNames: data => {
     return data.map(row => row.studentname);
   }

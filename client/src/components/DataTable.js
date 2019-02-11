@@ -13,6 +13,7 @@ const DataTable = props => {
     { dataField: "studenttz", text: "Student Tz" },
     { dataField: "tzdif", text: "Tz Dif" }
   ];
+
   if (props.sessions) {
     columns.push(
       { dataField: "sessiondate", text: "Session Date" },
@@ -25,6 +26,7 @@ const DataTable = props => {
       { dataField: "tutorsevalformsubmitted", text: "Eval Form" },
       { dataField: "paymentdateamnt", text: "Payment Date Amnt" }
     );
+
     columns.push({
       dataField: "zoomlink",
       text: "Zoom Link",
@@ -32,16 +34,18 @@ const DataTable = props => {
         onClick: e => {
           const url = e.target.textContent;
           const newTab = window.open(url, "_blank");
+
           newTab.focus();
-        }
-      }
+        },
+      },
     });
   }
   const cellEdit = cellEditFactory({
     mode: "dbclick",
+
     afterSaveCell: (oldValue, newValue, row, column) => {
       props.handleRowUpdate(row);
-    }
+    },
   });
 
   return (
@@ -52,9 +56,9 @@ const DataTable = props => {
       condensed
       classes="table-sm data-table"
       keyField="index"
-      data={props.data}
-      columns={columns}
-      cellEdit={cellEdit}
+      data={ props.data }
+      columns={ columns }
+      cellEdit={ cellEdit }
     />
   );
 };
