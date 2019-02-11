@@ -11,7 +11,8 @@
 8.) error handling for failed session creation/deletion after calendly hook
 9.) setup bcc or cc to myself for copy of email confirmations
 10.) Update sheetsUtils to utilize queries where possible
-11.) add routes to handle more specific calls from the front end
+11.) add more robust routes to handle more specific calls from the front end
+11.a) move filtering logic to the backend
 
 **Front End**
 1.)generate adp notes based on session info - this could be done from the front end as the data will already be displayed there
@@ -22,3 +23,4 @@
 
 **BUGS**
 1.) tried everything I could possibly think of to get rid of the sheetUtils filter function and instead use a structured query. google doesnt like querying by email address.. I tried to url encode it and everything!!
+2.) google sheets may still be having trouble with the tz_dif field.. converting it to a date for some reason?!
