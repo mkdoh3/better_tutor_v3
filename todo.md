@@ -24,6 +24,7 @@
 <!-- 5.) Make session cell editable & update google sheet -->
 
 6.) manually add to roster & session tables & update google sheet
+7.) Seperate roster and sessions editing
 
 **Future Features?**
 
