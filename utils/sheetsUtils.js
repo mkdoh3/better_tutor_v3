@@ -7,7 +7,6 @@ const moment = require("moment");
 const sheetsUtils = {
   //tabNumber references the tabs of a google sheet - first tab being 1
   get: async (tabNumber, options = { offset: 0 }) => {
-    console.log("get called!");
     const useServiceAccountAuth = promisify(doc.useServiceAccountAuth);
     await useServiceAccountAuth(creds);
     const getRows = promisify(doc.getRows);
@@ -30,18 +29,22 @@ const sheetsUtils = {
       .then(rows => rows[0].del())
       .catch(err => console.log(err));
   },
-  updateSessions: updates => {
-    console.log("updates!!   ", updates);
+  updateSheet: (updates, tableName) => {
+    const tab = tableName === "sessionData" ? 1 : 2;
     sheetsUtils
-      .get(1, { offset: 0 })
+      .get(tab, { offset: 0 })
       .then(rows => {
         // nested loops WOOOFFFFF!
         const result = updates.map(update => {
-          const row = rows[update.index];
-          for (let key in update) {
-            row[key] = update[key];
+          if (update.newRow) {
+            sheetsUtils.add(update, tab);
+          } else {
+            const row = rows[update.index];
+            for (let key in update) {
+              row[key] = update[key];
+            }
+            rows[update.index].save();
           }
-          rows[update.index].save();
         });
         return result;
       })

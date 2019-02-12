@@ -31,6 +31,7 @@ const DataTable = props => {
       events: {
         onClick: e => {
           const url = e.target.textContent;
+          console.log(url);
           const newTab = window.open(url, "_blank");
           newTab.focus();
         }
@@ -40,7 +41,7 @@ const DataTable = props => {
   const cellEdit = cellEditFactory({
     mode: "dbclick",
     afterSaveCell: (oldValue, newValue, row, column) => {
-      props.handleRowUpdate(row);
+      props.handleRowUpdate(row, props.tableName);
     }
   });
 

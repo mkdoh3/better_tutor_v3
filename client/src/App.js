@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Tab, Tabs, Button } from "react-bootstrap";
+import { Tab, Tabs } from "react-bootstrap";
 import DataTable from "./components/DataTable";
-import DropdownSelect from "./components/DropdownSelect";
-import AddStudent from "./components/AddStudent";
+import DropSelect from "./components/DropSelect";
+import Btn from "./components/Btn";
 import API from "./utils/API";
 import filter from "./utils/dataFilter";
 import "./App.css";
@@ -29,77 +29,136 @@ class App extends Component {
     const sessionData = await filter.filterRowData(sessionRows, "sessions");
     return sessionData;
   };
+
   fetchRosterData = async () => {
     const rosterRes = await API.getRows(2);
     const rosterRows = await rosterRes.data;
     const rosterData = await filter.filterRowData(rosterRows, "roster");
     return rosterData;
   };
-  handleAddSession = () => {
-    console.log("hi");
-  };
+
   //this is probably a little sloppy. The idea is to save the indices of updated object to later do a batch update on the backend on save or componentWillUnmount
-  handleRowUpdate = data => {
-    const index = data.index;
+  handleRowUpdate = (data, table) => {
+    const indexRef = data.index;
+    const tableData = [...this.state[table]];
+    const updated = [...this.state.updated];
+    if (!updated.includes(indexRef)) {
+      updated.push(indexRef);
+    }
+    tableData[indexRef] = data;
+    this.setState({ [table]: tableData, updated });
+  };
+
+  handleOnSave = tableName => {
+    const updates = [];
+    this.state.updated.forEach(indexRef => {
+      updates.push(this.state[tableName][indexRef]);
+    });
+    API.update(updates, tableName).then(() => this.setState({ updated: [] }));
+  };
+
+  handleAddStudent = () => {
+    const rosterData = [...this.state.rosterData];
+    const rowData = { ...this.state.rosterData[0] };
+    //set placeholder text
+    for (let key in rowData) {
+      rowData[key] = key;
+    }
+    rowData.index = rosterData.length;
+    //set newRow property for properly handling update in the sheetsUtils.updateSheet
+    rowData.newRow = true;
+    rosterData.push(rowData);
+    this.setState({ rosterData });
+  };
+
+  handleAddSession = eventKey => {
     const sessionData = [...this.state.sessionData];
     const updated = [...this.state.updated];
-    console.log(updated);
-    if (updated.indexOf(index) < 0) {
-      updated.push(index);
-    }
-    sessionData[index] = data;
+    const newIndex = sessionData.length;
+    const rowData = this.state.rosterData.find(
+      student => student.studentname === eventKey
+    );
+    rowData.index = newIndex;
+    rowData.newRow = true;
+    sessionData.push(rowData);
+    updated.push(newIndex);
     this.setState({ sessionData, updated });
   };
-  handleOnSave = () => {
-    const updates = [];
-    this.state.updated.forEach(index => {
-      updates.push(this.state.sessionData[index]);
-    });
-    console.log(updates);
-    API.update(updates).then(() => this.setState({ updated: [] }));
+
+  renderSaveBtn = table => {
+    return this.state.updated.length > 0 ? (
+      <Btn
+        variant="success"
+        text="save"
+        onClick={() => this.handleOnSave(table)}
+      />
+    ) : null;
+  };
+
+  renderTodaysSession = () => {
+    const data = filter.filterTodaysSessions(this.state.sessionData);
+    if (data.length === 0) {
+      return <h1>Sorry, no sessions today</h1>;
+    } else {
+      return (
+        <DataTable
+          tableName="sessionData"
+          handleRowUpdate={this.handleRowUpdate}
+          data={data}
+          sessions={true}
+        />
+      );
+    }
+  };
+
+  renderDataTable = table => {
+    return this.state[table].length > 0 ? (
+      <DataTable
+        tableName={table}
+        handleRowUpdate={this.handleRowUpdate}
+        data={this.state[table]}
+        sessions={true}
+      />
+    ) : (
+      <h1>Fetching Table Data</h1>
+    );
+  };
+
+  renderDropSelect = () => {
+    return this.state.rosterData.length > 0 ? (
+      <DropSelect
+        options={filter.filterNames(this.state.rosterData)}
+        title="Add Session"
+        onSelect={this.handleAddSession}
+      />
+    ) : null;
   };
 
   render() {
     return (
       <>
         <Tabs defaultActiveKey="todaysSessions">
-          <Tab eventKey="todaysSessions" title="Today's Sessions">
-            {filter.filterTodaysSessions(this.state.sessionData).length > 0 ? (
-              <DataTable
-                handleRowUpdate={this.handleRowUpdate}
-                data={filter.filterTodaysSessions(this.state.sessionData)}
-                sessions={true}
-              />
-            ) : (
-              <h1>Sorry, no sessions today</h1>
-            )}
+          <Tab
+            className="mb-5"
+            eventKey="todaysSessions"
+            title="Today's Sessions"
+          >
+            {this.renderTodaysSession()}
+            {this.renderSaveBtn("sessionData")}
           </Tab>
-          <Tab eventKey="allSessions" title="All Sessions">
-            {this.state.sessionData && (
-              <DataTable
-                handleRowUpdate={this.handleRowUpdate}
-                data={this.state.sessionData}
-                sessions={true}
-              />
-            )}
-            {this.state.updated.length > 0 && (
-              <Button onClick={this.handleOnSave}>Save</Button>
-            )}
-            {this.state.sessionData && (
-              <DropdownSelect
-                options={filter.filterNames(this.state.rosterData)}
-                title="Add Session"
-              />
-            )}
+          <Tab className="mb-5" eventKey="allSessions" title="All Sessions">
+            {this.renderDataTable("sessionData")}
+            {this.renderDropSelect()}
+            {this.renderSaveBtn("sessionData")}
           </Tab>
-          <Tab eventKey="roster" title="Roster">
-            {this.state.rosterData && (
-              <DataTable
-                handleRowUpdate={this.handleRowUpdate}
-                data={this.state.rosterData}
-              />
-            )}
-            <AddStudent />
+          <Tab className="mb-5" eventKey="roster" title="Roster">
+            {this.renderDataTable("rosterData")}
+            <Btn
+              variant="primary"
+              onClick={this.handleAddStudent}
+              text="Add Student"
+            />
+            {this.renderSaveBtn("rosterData")}
           </Tab>
         </Tabs>
       </>

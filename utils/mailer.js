@@ -53,7 +53,7 @@ const generateEmail = (emailInfo, template) => {
 };
 
 const reminders = () => {
-  emailUtils.generateRemindersList().then(emailList => {
+  emailUtils.generateList(1).then(emailList => {
     emailList.forEach(reminder => {
       generateEmail(reminder, "session-reminders");
     });
@@ -61,18 +61,18 @@ const reminders = () => {
 };
 
 const emailBlast = () => {
-  emailUtils.generateBlastList().then(emailArray => {
+  emailUtils.generateList(2).then(emailArray => {
     generateEmail(emailArray, "weekly-blast");
   });
 };
 
 (function() {
-  cron.schedule("30 10 * * *", function() {
-    console.log(`${Date.now().toLocaleString()}: Running reminders cron job`);
+  cron.schedule("* * * * *", function() {
+    console.log(`${Date.now()}: Running reminders cron job`);
     reminders();
   });
-  cron.schedule("30 12 * * 7", function() {
-    console.log(`${Date.now().toLocaleString()}: Running email blast cron job`);
+  cron.schedule("30 15 * * 7", function() {
+    console.log(`${Date.now()}: Running email blast cron job`);
     emailBlast();
   });
 })();

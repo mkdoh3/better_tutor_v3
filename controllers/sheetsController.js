@@ -30,8 +30,8 @@ module.exports = {
       .catch(err => res.status(422).json({ err }));
   },
   update: (req, res) => {
-    console.log(req.body.updates);
-    sheets.updateSessions(req.body.updates);
+    const { updates, tableName } = req.body;
+    sheets.updateSheet(updates, tableName);
     res.status(200).send("OK");
   },
   createSession: (req, res) => {

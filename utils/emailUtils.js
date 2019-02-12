@@ -2,17 +2,17 @@ const moment = require("moment");
 const sheets = require("./sheetsUtils");
 
 const emailUtils = {
-  generateBlastList: async () => {
-    const rows = await sheets.getRows(2);
-    const emailList = await rows.map(student => student.studentemail);
+  generateList: async tab => {
+    const rows = await sheets.get(tab);
+    let emailList;
+    if (tab === 1) {
+      emailList = await emailUtils.findUpcomingSessions(rows);
+    } else {
+      emailList = await rows.map(student => student.studentemail);
+    }
     return emailList;
   },
-  generateRemindersList: async () => {
-    const rows = await sheets.getRows(1);
-    const emailList = await emailUtils.buildRemindersList(rows);
-    return emailList;
-  },
-  buildRemindersList: rows => {
+  findUpcomingSessions: rows => {
     const upcomingSessions = [];
     //to get unix time based on a general date instead of an exact timestamp we first have to create
     //a YYY-MM-DD formatted date and then convert it back to seconds

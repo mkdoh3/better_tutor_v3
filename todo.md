@@ -25,9 +25,17 @@
 
 6.) manually add to roster & session tables & update google sheet
 7.) Seperate roster and sessions editing
+8.) add loaders
+9.) table input validation - disable some fields?
+10.) **refactor error handling - remove handling from lifecycle methods**
+11.) move in line function calls from render into new method
+12.) Pagination on all sessions table
+13.) save confirmation
+14.)**start building active session page**
 
-**Future Features?**
+\*\*Future Features?\*\*
+1.) save cell edit after clicking/tabbing instead of having to hit enter.
+2.) tab between cells to edit if possible
 
 **BUGS**
 1.) tried everything I could possibly think of to get rid of the sheetUtils filter function and instead use a structured query. google doesnt like querying by email address.. I tried to url encode it and everything!!
-2.) google sheets may still be having trouble with the tz_dif field.. converting it to a date for some reason?!
