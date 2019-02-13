@@ -67,11 +67,11 @@ const emailBlast = () => {
 };
 
 (function() {
-  cron.schedule("*/15 * * * * *", function() {
+  cron.schedule("30 15 * * *", function() {
     console.log(`${Date.now().toLocaleString()}: Running reminders cron job`);
     reminders();
   });
-  cron.schedule("*/15 * * * * *", function() {
+  cron.schedule("30 15 * * 7", function() {
     console.log(`${Date.now().toLocaleString()}: Running email blast cron job`);
     emailBlast();
   });
