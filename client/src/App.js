@@ -14,27 +14,30 @@ class App extends Component {
     updated: []
   };
   componentDidMount() {
-    this.fetchSessionData()
-      .then(sessionData => {
-        this.fetchRosterData()
-          .then(rosterData => this.setState({ sessionData, rosterData }))
-          .catch(err => console.log(err));
-      })
-      .catch(err => console.log(err));
+    this.fetchSessionData();
+    this.fetchRosterData();
   }
 
   fetchSessionData = async () => {
-    const sessionRes = await API.getRows(1);
-    const sessionRows = await sessionRes.data;
-    const sessionData = await filter.filterRowData(sessionRows, "sessions");
-    return sessionData;
+    try {
+      const sessionRes = await API.getRows(1);
+      const sessionRows = await sessionRes.data;
+      const sessionData = await filter.filterRowData(sessionRows, "sessions");
+      return this.setState({ sessionData });
+    } catch (err) {
+      throw new Error(err);
+    }
   };
 
   fetchRosterData = async () => {
-    const rosterRes = await API.getRows(2);
-    const rosterRows = await rosterRes.data;
-    const rosterData = await filter.filterRowData(rosterRows, "roster");
-    return rosterData;
+    try {
+      const rosterRes = await API.getRows(2);
+      const rosterRows = await rosterRes.data;
+      const rosterData = await filter.filterRowData(rosterRows, "roster");
+      return this.setState({ rosterData });
+    } catch (err) {
+      throw new Error(err);
+    }
   };
 
   //this is probably a little sloppy. The idea is to save the indices of updated object to later do a batch update on the backend on save or componentWillUnmount
@@ -111,13 +114,13 @@ class App extends Component {
     }
   };
 
-  renderDataTable = table => {
+  renderDataTable = (table, sessions = false) => {
     return this.state[table].length > 0 ? (
       <DataTable
         tableName={table}
         handleRowUpdate={this.handleRowUpdate}
         data={this.state[table]}
-        sessions={true}
+        sessions={sessions}
       />
     ) : (
       <h1>Fetching Table Data</h1>
@@ -136,32 +139,30 @@ class App extends Component {
 
   render() {
     return (
-      <>
-        <Tabs defaultActiveKey="todaysSessions">
-          <Tab
-            className="mb-5"
-            eventKey="todaysSessions"
-            title="Today's Sessions"
-          >
-            {this.renderTodaysSession()}
-            {this.renderSaveBtn("sessionData")}
-          </Tab>
-          <Tab className="mb-5" eventKey="allSessions" title="All Sessions">
-            {this.renderDataTable("sessionData")}
-            {this.renderDropSelect()}
-            {this.renderSaveBtn("sessionData")}
-          </Tab>
-          <Tab className="mb-5" eventKey="roster" title="Roster">
-            {this.renderDataTable("rosterData")}
-            <Btn
-              variant="primary"
-              onClick={this.handleAddStudent}
-              text="Add Student"
-            />
-            {this.renderSaveBtn("rosterData")}
-          </Tab>
-        </Tabs>
-      </>
+      <Tabs defaultActiveKey="todaysSessions">
+        <Tab
+          className="mb-5"
+          eventKey="todaysSessions"
+          title="Today's Sessions"
+        >
+          {this.renderTodaysSession()}
+          {this.renderSaveBtn("sessionData")}
+        </Tab>
+        <Tab className="mb-5" eventKey="allSessions" title="All Sessions">
+          {this.renderDataTable("sessionData", true)}
+          {this.renderDropSelect()}
+          {this.renderSaveBtn("sessionData")}
+        </Tab>
+        <Tab className="mb-5" eventKey="roster" title="Roster">
+          {this.renderDataTable("rosterData")}
+          <Btn
+            variant="primary"
+            onClick={this.handleAddStudent}
+            text="Add Student"
+          />
+          {this.renderSaveBtn("rosterData")}
+        </Tab>
+      </Tabs>
     );
   }
 }
