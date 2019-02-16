@@ -3,28 +3,53 @@ export default {
   filterRowData: (data, table) => {
     const filteredData = [];
     data.forEach((row, i) => {
-      const rowData = {
+      const {
+        classCode,
+        graduationDate,
+        studentName,
+        studentEmail,
+        studentGithubUserName,
+        studentTz,
+        tzDif,
+        zoomLink
+      } = row;
+
+      let rowData = {
         index: i,
-        classcode: row.classcode,
-        graduationdate: row.graduationdate,
-        studentname: row.studentname,
-        studentemail: row.studentemail,
-        studentgithubusername: row.studentgithubusername,
-        studenttz: row.studenttz,
-        tzdif: row.tzdif,
-        zoomlink: row.zoomlink
+        classCode,
+        graduationDate,
+        studentName,
+        studentEmail,
+        studentGithubUserName,
+        studentTz,
+        tzDif,
+        zoomLink
       };
 
       if (table === "sessions") {
-        rowData.sessiondate = row.sessiondate;
-        rowData.adptimein = row.adptimein;
-        rowData.adptimeout = row.adptimeout;
-        rowData.back2back = row.back2back;
-        rowData.shownoshow = row.shownoshow;
-        rowData.topicscovered = row.topicscovered;
-        rowData.notes = row.notes;
-        rowData.tutorsevalformsubmitted = row.tutorsevalformsubmitted;
-        rowData.paymentdateamnt = row.paymentdateamnt;
+        const {
+          sessionDate,
+          adpTimeIn,
+          adpTimeOut,
+          back2Back,
+          showNoShow,
+          topicsCovered,
+          notes,
+          tutorsEvalFormSubmitted,
+          paymentDateAmnt
+        } = row;
+        rowData = {
+          ...rowData,
+          sessionDate,
+          adpTimeIn,
+          adpTimeOut,
+          back2Back,
+          showNoShow,
+          topicsCovered,
+          notes,
+          tutorsEvalFormSubmitted,
+          paymentDateAmnt
+        };
       }
       filteredData.push(rowData);
     });

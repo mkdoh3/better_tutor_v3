@@ -1,7 +1,8 @@
 const GoogleSpreadsheet = require("google-spreadsheet");
 const creds = require("../google-creds");
-const { promisify } = require("util");
 const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID);
+const casingUtils = require("./casingUtils");
+const { promisify } = require("util");
 const moment = require("moment");
 
 const sheetsUtils = {
@@ -11,6 +12,9 @@ const sheetsUtils = {
     await useServiceAccountAuth(creds);
     const getRows = promisify(doc.getRows);
     const rows = await getRows(tabNumber, options);
+    for (let obj of rows) {
+      casingUtils.kebabKeysToCamel(obj);
+    }
     return rows;
   },
 

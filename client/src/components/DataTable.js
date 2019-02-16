@@ -5,28 +5,28 @@ import cellEditFactory from "react-bootstrap-table2-editor";
 
 const DataTable = props => {
   const columns = [
-    { dataField: "classcode", text: "Code" },
-    { dataField: "graduationdate", text: "Grad Date" },
-    { dataField: "studentname", text: "Name" },
-    { dataField: "studentemail", text: "Email" },
-    { dataField: "studentgithubusername", text: "Github" },
-    { dataField: "studenttz", text: "Student Tz" },
-    { dataField: "tzdif", text: "Tz Dif" }
+    { dataField: "classCode", text: "Code" },
+    { dataField: "graduationDate", text: "Grad Date" },
+    { dataField: "studentName", text: "Name" },
+    { dataField: "studentEmail", text: "Email" },
+    { dataField: "studentGithubUsername", text: "Github" },
+    { dataField: "studentTz", text: "Student Tz" },
+    { dataField: "tzDif", text: "Tz Dif" }
   ];
   if (props.sessions) {
     columns.push(
-      { dataField: "sessiondate", text: "Session Date" },
-      { dataField: "adptimein", text: "ADP In" },
-      { dataField: "adptimeout", text: "ADP Out" },
-      { dataField: "back2back", text: "B2B?" },
-      { dataField: "shownoshow", text: "Show/No?" },
-      { dataField: "topicscovered", text: "Topics" },
+      { dataField: "sessionDate", text: "Session Date" },
+      { dataField: "adpTimeIn", text: "ADP In" },
+      { dataField: "adpTimeOut", text: "ADP Out" },
+      { dataField: "back2Back", text: "B2B?" },
+      { dataField: "showNoShow", text: "Show/No?" },
+      { dataField: "topicsCovered", text: "Topics" },
       { dataField: "notes", text: "Notes" },
-      { dataField: "tutorsevalformsubmitted", text: "Eval Form" },
-      { dataField: "paymentdateamnt", text: "Payment Date Amnt" }
+      { dataField: "tutorsEvalFormSubmitted", text: "Eval Form" },
+      { dataField: "paymentDateAmnt", text: "Payment Date Amnt" }
     );
     columns.push({
-      dataField: "zoomlink",
+      dataField: "zoomLink",
       text: "Zoom Link",
       events: {
         onClick: e => {

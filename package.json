@@ -24,6 +24,8 @@
   },
   "homepage": "https://github.com/itsbaska/better-tutor#readme",
   "dependencies": {
+    "camelcase": "^5.0.0",
+    "decamelize": "^2.0.0",
     "dotenv": "^6.2.0",
     "email-templates": "^5.0.3",
     "express": "^4.16.4",
