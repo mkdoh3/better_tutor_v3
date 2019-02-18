@@ -21,8 +21,8 @@ class App extends Component {
   fetchSessionData = async () => {
     try {
       const sessionRes = await API.getRows(1);
-      const sessionRows = await sessionRes.data;
-      const sessionData = await filter.filterRowData(sessionRows, "sessions");
+      const sessionData = await sessionRes.data;
+      sessionData.forEach((record, i) => (record.index = i));
       return this.setState({ sessionData });
     } catch (err) {
       throw new Error(err);
@@ -31,9 +31,9 @@ class App extends Component {
 
   fetchRosterData = async () => {
     try {
-      const rosterRes = await API.getRows(2);
-      const rosterRows = await rosterRes.data;
-      const rosterData = await filter.filterRowData(rosterRows, "roster");
+      const rosterRes = await API.getRosterData();
+      const rosterData = await rosterRes.data;
+      rosterData.forEach((record, i) => (record.index = i));
       return this.setState({ rosterData });
     } catch (err) {
       throw new Error(err);
@@ -42,6 +42,7 @@ class App extends Component {
 
   //this is probably a little sloppy. The idea is to save the indices of updated object to later do a batch update on the backend on save or componentWillUnmount
   handleRowUpdate = (data, table) => {
+    console.log(data);
     const indexRef = data.index;
     const tableData = [...this.state[table]];
     const updated = [...this.state.updated];
@@ -79,8 +80,13 @@ class App extends Component {
     const updated = [...this.state.updated];
     const newIndex = sessionData.length;
     const rowData = this.state.rosterData.find(
-      student => student.studentname === eventKey
+      student => student.studentName === eventKey
     );
+    for (let key in sessionData[0]) {
+      if (!rowData.hasOwnProperty(key)) {
+        rowData[key] = "";
+      }
+    }
     rowData.index = newIndex;
     rowData.newRow = true;
     sessionData.push(rowData);

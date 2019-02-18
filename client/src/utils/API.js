@@ -18,6 +18,9 @@ async function Post(url, params = {}) {
 }
 
 export default {
+  getRosterData: () => {
+    return Get("sheets/roster");
+  },
   getRows: tabNumber => {
     return Get(`sheets/${tabNumber}`);
   },
