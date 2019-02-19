@@ -21,8 +21,8 @@ const email = new Email({
 function Message(emailInfo) {
   //this "to" field will eventually be set as centralsupport
   this.to = "mkdohertyta@gmail.com";
-  if (emailInfo.address) {
-    this.cc = emailInfo.address;
+  if (emailInfo.studentEmail) {
+    this.cc = emailInfo.studentEmail;
   }
   if (typeof emailInfo[0] === "string") {
     this.bcc = emailInfo;
@@ -30,13 +30,13 @@ function Message(emailInfo) {
 }
 
 function Locals(emailInfo) {
-  const { name, timeDate, link } = emailInfo;
+  const { name, timeDate, zoomLink } = emailInfo;
   this.name = name;
   this.timeDate = timeDate;
-  this.link = link;
+  this.link = zoomLink;
 }
 
-const generateEmail = (emailInfo, template) => {
+function generateEmail(emailInfo, template) {
   const message = new Message(emailInfo);
   let locals = null;
   if (emailInfo.name) {
@@ -50,29 +50,29 @@ const generateEmail = (emailInfo, template) => {
     })
     .then(console.log)
     .catch(console.error);
-};
+}
 
-const reminders = () => {
+function sendReminders() {
   emailUtils.generateRemindersList().then(emailList => {
     emailList.forEach(reminder => {
       generateEmail(reminder, "session-reminders");
     });
   });
-};
+}
 
-const emailBlast = () => {
+function sendBlast() {
   emailUtils.generateBlastList().then(emailArray => {
     generateEmail(emailArray, "weekly-blast");
   });
-};
+}
 
 (function() {
-  cron.schedule("30 15 * * *", function() {
+  cron.schedule("*/10 * * * * *", function() {
     console.log(`${Date.now().toLocaleString()}: Running reminders cron job`);
-    reminders();
+    sendReminders();
   });
-  cron.schedule("30 15 * * 7", function() {
+  cron.schedule("*/10 * * * * *", function() {
     console.log(`${Date.now().toLocaleString()}: Running email blast cron job`);
-    emailBlast();
+    sendBlast();
   });
 })();
