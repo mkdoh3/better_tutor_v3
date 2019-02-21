@@ -20,11 +20,13 @@ const email = new Email({
 
 function Message(emailInfo) {
   //this "to" field will eventually be set as centralsupport
-  this.to = "mkdohertyta@gmail.com";
   if (emailInfo.studentEmail) {
-    this.cc = emailInfo.studentEmail;
+    this.to = emailInfo.studentEmail;
+    this.cc = ["mkdohertyta@gmail.com", "centralsupport@test.com"];
   }
   if (typeof emailInfo[0] === "string") {
+    this.to = "mkdohertyta@gmail.com";
+    this.cc = "centralsupport@test.com";
     this.bcc = emailInfo;
   }
 }
