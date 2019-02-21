@@ -1,3 +1,4 @@
+const moment = require("moment");
 const calendly = {
   FilterHookData: data => {
     this.sessionDate = moment(data.event.start_time).format("YYYY-MM-DD");
