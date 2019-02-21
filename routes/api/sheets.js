@@ -1,14 +1,13 @@
 const router = require("express").Router();
 const sheetsController = require("../../controllers/sheetsController");
 
-router.route("/sheets/roster").get(sheetsController.getRoster);
-router.route("/sheets/session").post(sheetsController.createSession);
-router.route("/sheets/update").post(sheetsController.update);
-router.route("/sheets/hook").post(sheetsController.handleHook);
+router.route("/session").post(sheetsController.createSession);
+router.route("/update").post(sheetsController.updateRows);
+router.route("/hook").post(sheetsController.handleHook);
 
 router
-  .route("/sheets/:tab")
-  .get(sheetsController.getRows)
+  .route("/tab/:tab")
+  .get(sheetsController.getSheetData)
   .post(sheetsController.addRow);
 
 module.exports = router;

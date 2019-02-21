@@ -20,7 +20,7 @@ class App extends Component {
 
   fetchSessionData = async () => {
     try {
-      const sessionRes = await API.getRows(1);
+      const sessionRes = await API.getSheetData(1);
       const sessionData = await sessionRes.data;
       sessionData.forEach((record, i) => (record.index = i));
       return this.setState({ sessionData });
@@ -31,7 +31,7 @@ class App extends Component {
 
   fetchRosterData = async () => {
     try {
-      const rosterRes = await API.getRosterData();
+      const rosterRes = await API.getSheetData(2);
       const rosterData = await rosterRes.data;
       rosterData.forEach((record, i) => (record.index = i));
       return this.setState({ rosterData });

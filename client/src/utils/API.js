@@ -18,13 +18,12 @@ async function Post(url, params = {}) {
 }
 
 export default {
-  getRosterData: () => {
-    return Get("sheets/roster");
+  getSheetData: tab => {
+    return Get(`sheets/tab/${tab}`);
   },
-  getRows: tabNumber => {
-    return Get(`sheets/${tabNumber}`);
+  getSessionData: () => {
+    return Get(`sheets/sessions`);
   },
-
   update: (updates, tableName) => {
     return Post(`sheets/update`, { updates, tableName });
   }

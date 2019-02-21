@@ -12,15 +12,7 @@ module.exports = {
       });
     }
   },
-
-  getRoster: (req, res) => {
-    sheets
-      .getRosterData(2)
-      .then(rows => res.json(rows))
-      .catch(err => res.status(422).json(err));
-  },
-
-  getRows: (req, res) => {
+  getSheetData: (req, res) => {
     const tabNumber = parseInt(req.params.tab);
     sheets
       .getAllRows(tabNumber)
@@ -36,10 +28,10 @@ module.exports = {
       .then(row => res.status(200).json(row))
       .catch(err => res.status(422).json({ err }));
   },
-  update: (req, res) => {
+  updateRows: async (req, res) => {
     const { updates, tableName } = req.body;
-    sheets.updateSheet(updates, tableName);
-    res.status(200).send("OK");
+    const updated = await sheets.updateSheet(updates, tableName);
+    res.status(200).json(updated);
   },
   createSession: async (req, res) => {
     try {

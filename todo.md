@@ -12,8 +12,8 @@
 9.) setup bcc or cc to myself for copy of email confirmations
 10.) Update sheetsUtils to utilize queries where possible
 11.) add more robust routes to handle more specific calls from the front end
-11.a) move filtering logic to the backend
 12.) email myself on mailer/sheets errors
+13.) rewrite 'getAllRows' as "getSessionData"
 
 **Front End**
 1.)generate adp notes based on session info - this could be done from the front end as the data will already be displayed there

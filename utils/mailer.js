@@ -67,11 +67,11 @@ function sendBlast() {
 }
 
 (function() {
-  cron.schedule("*/10 * * * * *", function() {
+  cron.schedule("30 15 * * *", function() {
     console.log(`${Date.now().toLocaleString()}: Running reminders cron job`);
     sendReminders();
   });
-  cron.schedule("*/10 * * * * *", function() {
+  cron.schedule("30 15 * * 7", function() {
     console.log(`${Date.now().toLocaleString()}: Running email blast cron job`);
     sendBlast();
   });

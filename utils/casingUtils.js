@@ -5,16 +5,27 @@ const decamelize = require("decamelize");
 
 const casingUtils = {
   kebabCaseToCamel: obj => {
-    for (let oldKey in obj) {
-      delete Object.assign(obj, { [camelCase(oldKey)]: obj[oldKey] })[oldKey];
+    const objCopy = { ...obj };
+    for (let key in objCopy) {
+      //prevents deleting save, del, _links, and _xml keys
+      if (!key.includes("-")) {
+        continue;
+      }
+      const camelCasedKey = camelCase(key);
+      delete Object.assign(objCopy, { [camelCasedKey]: objCopy[key] })[key];
     }
+    return objCopy;
   },
   camelCaseToKebab: obj => {
-    for (let oldKey in obj) {
-      delete Object.assign(obj, { [decamelize(oldKey, "-")]: obj[oldKey] })[
-        oldKey
-      ];
+    const objCopy = { ...obj };
+    for (let key in objCopy) {
+      const kebabCasedKey = decamelize(key, "-");
+      //prevent deletion of single word keys
+      if (kebabCasedKey !== key) {
+        delete Object.assign(objCopy, { [kebabCasedKey]: objCopy[key] })[key];
+      }
     }
+    return objCopy;
   }
 };
 

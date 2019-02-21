@@ -1,8 +1,10 @@
 require("dotenv").config();
 const express = require("express");
 const routes = require("./routes");
-require("./utils/mailer");
+const wwwhisper = require("connect-wwwhisper");
 const app = express();
+app.use(wwwhisper());
+require("./utils/mailer");
 const PORT = process.env.PORT || 3001;
 
 app.use(express.urlencoded({ extended: true }));
