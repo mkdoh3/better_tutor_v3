@@ -3,7 +3,7 @@ const GoogleSpreadsheet = require("google-spreadsheet");
 const creds = require("../google-creds");
 const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID);
 const casing = require("./casingUtils");
-const calendly = require("./calendlyUtils");
+const { FilteredHookData } = require("./calendlyUtils");
 const _ = require("lodash");
 
 function omitData(obj) {
@@ -78,7 +78,7 @@ const sheetsUtils = {
     const rows = await sheetsUtils.getAllRows(2);
     let newSession;
     if (data.payload) {
-      const calendlyData = calendly.FilterHookData(data);
+      const calendlyData = new FilteredHookData(data.payload);
       const studentData = await rows.filter(row => {
         return row.studentEmail === calendlyData.studentEmail;
       })[0];
