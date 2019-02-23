@@ -1,5 +1,6 @@
 **Back End**
-1.)parse roster for graduated students - del graduated students
+1.)parse roster for graduated students - del graduated students**
+1a.)Send congrat email and reminder of tutoring ending to grad students**
 
 <!-- 2.)parse sessions - check dates for upcoming sessions to be used for session email reminders -->
 <!-- 3.)parse roster - gather email addresses to generate weekly blast emails -->
@@ -9,29 +10,39 @@
 
 7.) try/catch error handling in the utils
 8.) error handling for failed session creation/deletion after calendly hook
-9.) setup bcc or cc to myself for copy of email confirmations
+
+<!-- 9.) setup bcc or cc to myself for copy of email confirmations -->
+
 10.) Update sheetsUtils to utilize queries where possible
 11.) add more robust routes to handle more specific calls from the front end
 12.) email myself on mailer/sheets errors
-13.) rewrite 'getAllRows' as "getSessionData"
+
+<!-- 13.) rewrite 'getAllRows' as "getSessionData" -->
+
+14.) **_Figure out how to get calendly hooks to work with the wwwhisper auth system!_**
 
 **Front End**
 1.)generate adp notes based on session info - this could be done from the front end as the data will already be displayed there
 2.)embed and autofill for tutor survey
 3.) copy student class code and student eval form to clipboard
-4.) move filtering logic to the backend
+
+<!-- 4.) move filtering logic to the backend -->
 
 <!-- 5.) Make session cell editable & update google sheet -->
 
-6.) manually add to roster & session tables & update google sheet
-7.) Seperate roster and sessions editing
+<!-- 6.) manually add to roster & session tables & update google sheet -->
+<!-- 7.) Seperate roster and sessions editing -->
+
 8.) add loaders
 9.) table input validation - disable some fields?
-10.) **refactor error handling - remove handling from lifecycle methods**
-11.) move in line function calls from render into new method
+
+<!-- 10.) **refactor error handling - remove handling from lifecycle methods** -->
+<!-- 11.) move in line function calls from render into new method -->
+
 12.) Pagination on all sessions table
 13.) save confirmation
 14.)**start building active session page**
+15.) **_Refactor table data show - add student session time and my session time_**
 
 \*\*Future Features?\*\*
 1.) save cell edit after clicking/tabbing instead of having to hit enter.

@@ -22,11 +22,11 @@ function Message(emailInfo) {
   //this "to" field will eventually be set as centralsupport
   if (emailInfo.studentEmail) {
     this.to = emailInfo.studentEmail;
-    this.cc = ["mkdohertyta@gmail.com", "centralsupport@test.com"];
+    this.cc = ["mkdohertyta@gmail.com", "centraltutorsupport@bootcampspot.com"];
   }
   if (typeof emailInfo[0] === "string") {
     this.to = "mkdohertyta@gmail.com";
-    this.cc = "centralsupport@test.com";
+    this.cc = "centraltutorsupport@bootcampspot.com";
     this.bcc = emailInfo;
   }
 }
