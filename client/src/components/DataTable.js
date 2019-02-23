@@ -5,13 +5,13 @@ import cellEditFactory from "react-bootstrap-table2-editor";
 
 const DataTable = props => {
   const columns = [
-    { dataField: "classCode", text: "Code" },
-    { dataField: "graduationDate", text: "Grad Date" },
-    { dataField: "studentName", text: "Name" },
-    { dataField: "studentEmail", text: "Email" },
-    { dataField: "studentGithubUsername", text: "Github" },
-    { dataField: "studentTz", text: "Student Tz" },
-    { dataField: "tzDif", text: "Tz Dif" }
+    { dataField: "classCode", text: "Code", editable: false },
+    { dataField: "graduationDate", text: "Grad Date", editable: false },
+    { dataField: "studentName", text: "Name", editable: false },
+    { dataField: "studentEmail", text: "Email", editable: false },
+    { dataField: "studentGithubUsername", text: "Github", editable: false },
+    { dataField: "studentTz", text: "Student Tz", editable: false },
+    { dataField: "tzDif", text: "Tz Dif", editable: false }
   ];
   if (props.sessions) {
     columns.push(
@@ -38,24 +38,32 @@ const DataTable = props => {
       }
     });
   }
+
   const cellEdit = cellEditFactory({
-    mode: "dbclick",
+    mode: "click",
     afterSaveCell: (oldValue, newValue, row, column) => {
       props.handleRowUpdate(row, props.tableName);
     }
   });
 
+  const rowEvents = {
+    onDoubleClick: (e, row, rowIndex) => {
+      props.handleStartSession(row);
+    }
+  };
+
   return (
     <BootstrapTable
+      hover
       striped
       bordered
-      hover
       condensed
-      classes="table-sm data-table"
       keyField="index"
       data={props.data}
       columns={columns}
       cellEdit={cellEdit}
+      rowEvents={rowEvents}
+      classes="table-sm data-table"
     />
   );
 };

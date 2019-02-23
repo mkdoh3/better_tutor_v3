@@ -19,7 +19,9 @@
 
 <!-- 13.) rewrite 'getAllRows' as "getSessionData" -->
 
-14.) **_Figure out how to get calendly hooks to work with the wwwhisper auth system!_**
+<!-- 14.) **_Figure out how to get calendly hooks to work with the wwwhisper auth system!_** -->
+
+15.) set no-show and b2b as false by default?
 
 **Front End**
 1.)generate adp notes based on session info - this could be done from the front end as the data will already be displayed there
@@ -41,7 +43,9 @@
 
 12.) Pagination on all sessions table
 13.) save confirmation
-14.)**start building active session page**
+
+<!-- 14.)**start building active session page** -->
+
 15.) **_Refactor table data show - add student session time and my session time_**
 
 \*\*Future Features?\*\*

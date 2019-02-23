@@ -11,7 +11,8 @@ class App extends Component {
   state = {
     sessionData: [],
     rosterData: [],
-    updated: []
+    updated: [],
+    currentSession: null
   };
   componentDidMount() {
     this.fetchSessionData();
@@ -93,6 +94,15 @@ class App extends Component {
     updated.push(newIndex);
     this.setState({ sessionData, updated });
   };
+  //this is set up to grab all of the row data on row double click within the 'todays sessions' tab
+  //that data should be used to render everything else relevant to the current session - adp notes form(b2b, no-show etc. copy to clipboard and launch link to adp)
+  //survey link and class code(copy to clip board option), embedded tutor survey pre populated with student data
+  //timer? launch zoom link? update adp time in and out? better way to save data after session end?
+  handleStartSession = currentSession => {
+    if (!this.state.currentSession) {
+      this.setState({ currentSession });
+    }
+  };
 
   renderSaveBtn = table => {
     return this.state.updated.length > 0 ? (
@@ -111,10 +121,11 @@ class App extends Component {
     } else {
       return (
         <DataTable
-          tableName="sessionData"
-          handleRowUpdate={this.handleRowUpdate}
           data={data}
           sessions={true}
+          tableName="sessionData"
+          handleRowUpdate={this.handleRowUpdate}
+          handleStartSession={this.handleStartSession}
         />
       );
     }
@@ -124,9 +135,9 @@ class App extends Component {
     return this.state[table].length > 0 ? (
       <DataTable
         tableName={table}
-        handleRowUpdate={this.handleRowUpdate}
-        data={this.state[table]}
         sessions={sessions}
+        data={this.state[table]}
+        handleRowUpdate={this.handleRowUpdate}
       />
     ) : (
       <h1>Fetching Table Data</h1>
@@ -136,9 +147,9 @@ class App extends Component {
   renderDropSelect = () => {
     return this.state.rosterData.length > 0 ? (
       <DropSelect
-        options={filter.filterNames(this.state.rosterData)}
         title="Add Session"
         onSelect={this.handleAddSession}
+        options={filter.filterNames(this.state.rosterData)}
       />
     ) : null;
   };
