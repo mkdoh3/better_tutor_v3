@@ -22,6 +22,8 @@
 <!-- 14.) **_Figure out how to get calendly hooks to work with the wwwhisper auth system!_** -->
 
 15.) set no-show and b2b as false by default?
+16.) **_Figure out the best way to handle reoccurring sessions!_**
+17.) Set the session reminder email for a later time
 
 **Front End**
 1.)generate adp notes based on session info - this could be done from the front end as the data will already be displayed there
@@ -54,3 +56,4 @@
 
 **BUGS**
 1.) tried everything I could possibly think of to get rid of the sheetUtils filter function and instead use a structured query. google doesnt like querying by email address.. I tried to url encode it and everything!!
+2.) A calendly event showed up in sheets one day ahead of the actual date.. could not recreate

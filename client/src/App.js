@@ -4,6 +4,7 @@ import DataTable from "./components/DataTable";
 import DropSelect from "./components/DropSelect";
 import Btn from "./components/Btn";
 import API from "./utils/API";
+import ActiveSession from "./components/ActiveSession";
 import filter from "./utils/dataFilter";
 import "./App.css";
 
@@ -12,7 +13,7 @@ class App extends Component {
     sessionData: [],
     rosterData: [],
     updated: [],
-    currentSession: null
+    activeSession: null
   };
   componentDidMount() {
     this.fetchSessionData();
@@ -38,6 +39,15 @@ class App extends Component {
       return this.setState({ rosterData });
     } catch (err) {
       throw new Error(err);
+    }
+  };
+
+  findSessionNotes = (studentEmail, index) => {
+    const sessionData = this.state.sessionData;
+    for (let i = index - 1; i >= 0; i--) {
+      if (sessionData[i].studentEmail === studentEmail) {
+        return sessionData[i].notes;
+      }
     }
   };
 
@@ -98,9 +108,12 @@ class App extends Component {
   //that data should be used to render everything else relevant to the current session - adp notes form(b2b, no-show etc. copy to clipboard and launch link to adp)
   //survey link and class code(copy to clip board option), embedded tutor survey pre populated with student data
   //timer? launch zoom link? update adp time in and out? better way to save data after session end?
-  handleStartSession = currentSession => {
-    if (!this.state.currentSession) {
-      this.setState({ currentSession });
+  handleStartSession = activeSession => {
+    //do we need to even save all of this active session data in state?? can I just do state.activeSession: true?
+    //then from here could we pass the row data directly to renderActiveSession?
+    console.log(activeSession);
+    if (!this.state.activeSession) {
+      this.setState({ activeSession });
     }
   };
 
@@ -154,6 +167,15 @@ class App extends Component {
     ) : null;
   };
 
+  renderActiveSession = () => {
+    //this component already has the whole list of session, so we should probs just find the previous session notes from here and make ActiveSession stateless
+    const studentData = { ...this.state.activeSession };
+    const { studentEmail, index } = studentData;
+    const prevNotes = this.findSessionNotes(studentEmail, index);
+    studentData.prevNotes = prevNotes;
+    return <ActiveSession studentData={studentData} />;
+  };
+
   render() {
     return (
       <Tabs defaultActiveKey="todaysSessions">
@@ -164,6 +186,7 @@ class App extends Component {
         >
           {this.renderTodaysSession()}
           {this.renderSaveBtn("sessionData")}
+          {this.state.activeSession && this.renderActiveSession()}
         </Tab>
         <Tab className="mb-5" eventKey="allSessions" title="All Sessions">
           {this.renderDataTable("sessionData", true)}

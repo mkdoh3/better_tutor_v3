@@ -46,11 +46,13 @@ const DataTable = props => {
     }
   });
 
-  const rowEvents = {
-    onDoubleClick: (e, row, rowIndex) => {
-      props.handleStartSession(row);
-    }
-  };
+  const rowEvents = props.handleStartSession
+    ? {
+        onDoubleClick: (e, row, rowIndex) => {
+          props.handleStartSession(row);
+        }
+      }
+    : null;
 
   return (
     <BootstrapTable
