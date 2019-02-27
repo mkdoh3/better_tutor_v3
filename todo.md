@@ -26,7 +26,9 @@
 17.) Set the session reminder email for a later time
 
 **Front End**
-1.)generate adp notes based on session info - this could be done from the front end as the data will already be displayed there
+
+<!-- 1.)generate adp notes based on session info - this could be done from the front end as the data will already be displayed there -->
+
 2.)embed and autofill for tutor survey
 3.) copy student class code and student eval form to clipboard
 
@@ -49,6 +51,8 @@
 <!-- 14.)**start building active session page** -->
 
 15.) **_Refactor table data show - add student session time and my session time_**
+16.) Add Countdown Timer with start button and end button - blink tab when done??
+17.)Figure out how to handle session ending - auto fill time-in/time-out if possible??
 
 \*\*Future Features?\*\*
 1.) save cell edit after clicking/tabbing instead of having to hit enter.
