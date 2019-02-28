@@ -23,36 +23,50 @@ function updateObj(oldObj, newObj) {
 //tried everything I could to get the sheets api to accept an email as a query param, but it didn't like it.
 //so for now at least, I'm stuck querying for everything and then filtering after the fact
 async function filterStudentByEmail(email) {
-  const rows = await sheetsUtils.querySheet(2);
-  const studentData = await rows.filter(row => {
-    return row.studentEmail === email;
-  })[0];
-  return studentData;
+  try {
+    const rows = await sheetsUtils.querySheet(2);
+    const studentData = await rows.filter(row => {
+      return row.studentEmail === email;
+    })[0];
+    return studentData;
+  } catch (err) {
+    throw new Error(err);
+  }
 }
 
 async function formatDataOnCalendly(data) {
-  const calendlyData = new FilteredHookData(data);
-  console.log("calendly ---> ", calendlyData);
-  const studentData = await filterStudentByEmail(calendlyData.studentEmail);
-  console.log("student -->", studentData);
-  return { ...studentData, ...calendlyData };
+  try {
+    const calendlyData = new FilteredHookData(data);
+    const studentData = await filterStudentByEmail(calendlyData.studentEmail);
+    return { ...studentData, ...calendlyData };
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+function formatQueryReturn(rows) {
+  for (let i = 0; i < rows.length; i++) {
+    let formattedObj = omitData(rows[i]);
+    formattedObj = casing.kebabCaseToCamel(formattedObj);
+    rows[i] = formattedObj;
+  }
 }
 
 const sheetsUtils = {
   //tabNumber references the tabs of a google sheet - first tab being 1
   querySheet: async (tabNumber, options = { offset: 0, formatted: true }) => {
-    const useServiceAccountAuth = promisify(doc.useServiceAccountAuth);
-    await useServiceAccountAuth(creds);
-    const getRows = promisify(doc.getRows);
-    const rows = await getRows(tabNumber, options);
-    if (options.formatted) {
-      for (let i = 0; i < rows.length; i++) {
-        let formattedObj = omitData(rows[i]);
-        formattedObj = casing.kebabCaseToCamel(formattedObj);
-        rows[i] = formattedObj;
+    try {
+      const useServiceAccountAuth = promisify(doc.useServiceAccountAuth);
+      await useServiceAccountAuth(creds);
+      const getRows = promisify(doc.getRows);
+      const rows = await getRows(tabNumber, options);
+      if (options.formatted) {
+        formatQueryReturn(rows);
       }
+      return rows;
+    } catch (err) {
+      throw new Error(err);
     }
-    return rows;
   },
 
   addNewRow: async (data, tabNumber) => {
@@ -81,20 +95,24 @@ const sheetsUtils = {
 
   updateSheet: async (updates, tableName) => {
     const tab = tableName === "sessionData" ? 1 : 2;
-    const rows = await sheetsUtils.querySheet(tab, { formatted: false });
-    updates.forEach(rowData => {
-      if (rowData.newRow) {
-        sheetsUtils.addNewRow(rowData, tab);
-      } else {
-        rowData = casing.camelCaseToKebab(rowData);
-        const { index } = rowData;
-        const updatedRow = updateObj(rows[index], rowData);
-        updatedRow.save();
-      }
-    });
+    try {
+      const rows = await sheetsUtils.querySheet(tab, { formatted: false });
+      updates.forEach(rowData => {
+        if (rowData.newRow) {
+          sheetsUtils.addNewRow(rowData, tab);
+        } else {
+          rowData = casing.camelCaseToKebab(rowData);
+          const { index } = rowData;
+          const updatedRow = updateObj(rows[index], rowData);
+          updatedRow.save();
+        }
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 
-  createSession: async data => {
+  createSession: async (data, date) => {
     let newSession = {
       ConfirmationSent: "Y",
       back2Back: "N",
@@ -107,6 +125,9 @@ const sheetsUtils = {
       } else {
         const studentData = await filterStudentByEmail(data.studentEmail);
         newSession = { ...studentData };
+        if (date) {
+          newSession.sessionDate = date;
+        }
       }
       sheetsUtils.addNewRow({ ...newSession }, 1);
     } catch (err) {

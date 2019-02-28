@@ -15,7 +15,7 @@ const email = new Email({
     from: process.env.EMAIL_ADDRESS
   },
   transport,
-  send: true
+  send: false
 });
 
 function Message(emailInfo) {
@@ -49,7 +49,7 @@ function generateEmail(emailInfo, template) {
       message,
       locals
     })
-    .then(console.log)
+    .then(console.log("email sent successfully"))
     .catch(console.error);
 }
 
@@ -68,11 +68,11 @@ function sendBlast() {
 }
 
 (function() {
-  cron.schedule("30 15 * * *", function() {
+  cron.schedule("* * * * *", function() {
     console.log(`${Date.now().toLocaleString()}: Running reminders cron job`);
     sendReminders();
   });
-  cron.schedule("30 15 * * 7", function() {
+  cron.schedule("* * * * *", function() {
     console.log(`${Date.now().toLocaleString()}: Running email blast cron job`);
     sendBlast();
   });
