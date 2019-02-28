@@ -19,7 +19,6 @@ const email = new Email({
 });
 
 function Message(emailInfo) {
-  //this "to" field will eventually be set as centralsupport
   if (emailInfo.studentEmail) {
     this.to = emailInfo.studentEmail;
     this.cc = ["mkdohertyta@gmail.com", "centraltutorsupport@bootcampspot.com"];

@@ -53,6 +53,8 @@
 15.) **_Refactor table data show - add student session time and my session time_**
 16.) Add Countdown Timer with start button and end button - blink tab when done??
 17.)Figure out how to handle session ending - auto fill time-in/time-out if possible??
+18.) the create session button should probably be using a new route to use the backend's sheetUtils.createSession as oppose to using sheetsUtils.update
+19.) Add ability to delete a session
 
 \*\*Future Features?\*\*
 1.) save cell edit after clicking/tabbing instead of having to hit enter.

@@ -15,7 +15,7 @@ module.exports = {
   getSheetData: (req, res) => {
     const tabNumber = parseInt(req.params.tab);
     sheets
-      .getAllRows(tabNumber)
+      .querySheet(tabNumber)
       .then(rows => res.status(200).json(rows))
       .catch(err => res.status(422).json(err));
   },

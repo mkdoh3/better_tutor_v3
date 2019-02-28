@@ -6,6 +6,8 @@ const casing = require("./casingUtils");
 const { FilteredHookData } = require("./calendlyUtils");
 const _ = require("lodash");
 
+//this file could probably use some rewrites and better error handling
+
 function omitData(obj) {
   //remove extra data from the sheets return that is irrelevant to the front end
   return _.omit(obj, ["_xml", "_links", "id", "save", "del", "app:edited"]);
@@ -18,9 +20,27 @@ function updateObj(oldObj, newObj) {
   return oldObj;
 }
 
+//tried everything I could to get the sheets api to accept an email as a query param, but it didn't like it.
+//so for now at least, I'm stuck querying for everything and then filtering after the fact
+async function filterStudentByEmail(email) {
+  const rows = await sheetsUtils.querySheet(2);
+  const studentData = await rows.filter(row => {
+    return row.studentEmail === email;
+  })[0];
+  return studentData;
+}
+
+async function formatDataOnCalendly(data) {
+  const calendlyData = new FilteredHookData(data);
+  console.log("calendly ---> ", calendlyData);
+  const studentData = await filterStudentByEmail(calendlyData.studentEmail);
+  console.log("student -->", studentData);
+  return { ...studentData, ...calendlyData };
+}
+
 const sheetsUtils = {
   //tabNumber references the tabs of a google sheet - first tab being 1
-  getAllRows: async (tabNumber, options = { offset: 0, formatted: true }) => {
+  querySheet: async (tabNumber, options = { offset: 0, formatted: true }) => {
     const useServiceAccountAuth = promisify(doc.useServiceAccountAuth);
     await useServiceAccountAuth(creds);
     const getRows = promisify(doc.getRows);
@@ -50,7 +70,7 @@ const sheetsUtils = {
 
   deleteSession: async id => {
     try {
-      const row = await sheetsUtils.getAllRows(1, {
+      const row = await sheetsUtils.querySheet(1, {
         query: `session-id=${id}`
       });
       row[0].del();
@@ -61,7 +81,7 @@ const sheetsUtils = {
 
   updateSheet: async (updates, tableName) => {
     const tab = tableName === "sessionData" ? 1 : 2;
-    const rows = await sheetsUtils.getAllRows(tab, { formatted: false });
+    const rows = await sheetsUtils.querySheet(tab, { formatted: false });
     updates.forEach(rowData => {
       if (rowData.newRow) {
         sheetsUtils.addNewRow(rowData, tab);
@@ -75,28 +95,20 @@ const sheetsUtils = {
   },
 
   createSession: async data => {
-    const rows = await sheetsUtils.getAllRows(2);
-    let newSession;
-    if (data.payload) {
-      const calendlyData = new FilteredHookData(data.payload);
-      const studentData = await rows.filter(row => {
-        return row.studentEmail === calendlyData.studentEmail;
-      })[0];
-      newSession = { ...studentData, ...calendlyData };
-    } else {
-      const studentData = await rows.filter(row => {
-        return row.studentName === data.studentName;
-      })[0];
-      newSession = { ...studentData };
-    }
+    let newSession = {
+      ConfirmationSent: "Y",
+      back2Back: "N",
+      showNoShow: "Show"
+    };
     try {
-      sheetsUtils.addNewRow(
-        {
-          ...newSession,
-          ConfirmationSent: "Y"
-        },
-        1
-      );
+      if (data.payload) {
+        const calendlyData = await formatDataOnCalendly(data.payload);
+        newSession = { ...newSession, ...calendlyData };
+      } else {
+        const studentData = await filterStudentByEmail(data.studentEmail);
+        newSession = { ...studentData };
+      }
+      sheetsUtils.addNewRow({ ...newSession }, 1);
     } catch (err) {
       throw new Error(err);
     }
