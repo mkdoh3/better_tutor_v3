@@ -61,6 +61,7 @@ const sessionDefaults = {
 
 const sheetsUtils = {
   //tabNumber references the tabs of a google sheet - first tab being 1
+  /***** Always write to the unsorted session sheet! *****/
   async querySheet(tabNumber, options = { offset: 0, formatted: true }) {
     try {
       const useServiceAccountAuth = promisify(doc.useServiceAccountAuth);
@@ -143,12 +144,13 @@ const sheetsUtils = {
   async createReoccurringSession(data, sessionDate) {
     try {
       const studentData = await filterStudentByEmail(data.studentEmail);
-      const { studentSessionTime } = data;
+      const { studentSessionTime, localTime } = data;
       const newSession = {
         ...sessionDefaults,
         ...studentData,
         sessionDate,
-        studentSessionTime
+        studentSessionTime,
+        localTime
       };
       this.addNewRow({ ...newSession }, 2);
     } catch (err) {

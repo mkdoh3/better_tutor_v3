@@ -143,7 +143,7 @@ class App extends Component {
       );
     }
   };
-
+  //pretty sure the sessions arg is now obsolete?
   renderDataTable = (table, sessions = false) => {
     return this.state[table].length > 0 ? (
       <DataTable

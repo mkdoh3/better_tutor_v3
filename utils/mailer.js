@@ -15,7 +15,7 @@ const email = new Email({
     from: process.env.EMAIL_ADDRESS
   },
   transport,
-  send: false
+  send: true //set to false for testing
 });
 
 function Message(emailInfo) {
@@ -77,9 +77,10 @@ function sendBlast() {
 }
 
 (function() {
-  cron.schedule("30 18 * * *", function() {
+  cron.schedule("* * * * *", function() {
     console.log(`${Date.now().toLocaleString()}: Running reminders cron job`);
     // sendCongrats();
+    //also inserts next weeks session for reoccurring events
     sendReminders();
   });
   cron.schedule("30 15 * * 7", function() {

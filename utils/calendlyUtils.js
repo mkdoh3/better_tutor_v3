@@ -5,6 +5,7 @@ function FilteredHookData(data) {
     .format("YYYY-MM-DD");
   this.topicsCovered = data.questions_and_responses["1_response"];
   this.studentSessionTime = data.event.invitee_start_time_pretty.split(" -")[0];
+  this.localTime = data.event.start_time_pretty.split(" -")[0];
   this.studentEmail = data.invitee.email;
   this.sessionId = data.event.uuid;
 }

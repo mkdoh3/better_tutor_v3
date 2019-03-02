@@ -32,6 +32,8 @@
 
 <!-- 17.) Set the session reminder email for a later time -->
 
+18.) Give all sessions a unique id - not just calendly - then the same delete function used on the calendly cancel hook should be able to be used for manually deleting from the front end
+
 **Front End**
 
 <!-- 1.)generate adp notes based on session info - this could be done from the front end as the data will already be displayed there -->
@@ -64,7 +66,8 @@
 18.) the create session button should probably be using a new route to use the backend's sheetUtils.createSession as oppose to using sheetsUtils.update
 19.) Add ability to delete a session
 20.) bring in react router and make active session its own page with its own state??
-21.) Make everything look better!
+21.) Tab for tomorrow's sessions
+22.) Make everything look better!
 
 \*\*Future Features?\*\*
 1.) save cell edit after clicking/tabbing instead of having to hit enter.
