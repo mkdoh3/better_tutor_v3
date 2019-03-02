@@ -51,6 +51,8 @@ function formatQueryReturn(rows) {
     rows[i] = formattedObj;
   }
 }
+
+//true much more often than not
 const sessionDefaults = {
   ConfirmationSent: "Y",
   back2Back: "N",
@@ -91,6 +93,17 @@ const sheetsUtils = {
     try {
       const row = await this.querySheet(2, {
         query: `session-id=${id}`
+      });
+      row[0].del();
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+  async removeStudent(githubName) {
+    console.log(githubName);
+    try {
+      const row = await this.querySheet(3, {
+        query: `student-github-username=${githubName}`
       });
       row[0].del();
     } catch (err) {

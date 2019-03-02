@@ -11,6 +11,9 @@ function checkIfTomorrow(date) {
     .format("YYYY-MM-DD");
   return moment(date).format("YYYY-MM-DD") === tomorrowsDate;
 }
+function checkIfToday(date) {
+  return moment(date).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD");
+}
 
 function getNextSessionDate(date) {
   return moment(date)
@@ -22,6 +25,21 @@ function formatTimeDate(date, time, tz) {
   return `${moment(date).format("ddd, MMM Do")} ${time} ${tz}`;
 }
 
+function findGraduates(rows) {
+  const grads = [];
+  rows.forEach(row => {
+    if (checkIfToday(row.graduationDate)) {
+      grads.push(row.studentEmail);
+      sheets.removeStudent(row.studentGithubUsername);
+      //cause sheets queries fucking hate email addresses...
+    }
+  });
+  //this seems a little wonky
+
+  console.log("grads!!! ========> ", grads);
+  return grads;
+}
+
 function findUpcomingSession(rows) {
   const upcomingSessions = [];
   //dont parse the entire sheet - just the most recent/upcoming sessions
@@ -29,9 +47,11 @@ function findUpcomingSession(rows) {
   for (i; i < rows.length; i++) {
     const row = rows[i];
     const sessionDate = row.sessionDate;
+    //can this be simplified by using filter instead??
     if (checkIfTomorrow(sessionDate)) {
       const emailInfo = formatEmailInfo(row);
       upcomingSessions.push(emailInfo);
+      //kind of dont like mixing this logic into the email utils because its unrelated.. but it does fit here very nicely
       if (row.reoccurring.toLowerCase() === "y") {
         const date = getNextSessionDate(row.sessionDate);
         sheets.createReoccurringSession(row, date);
@@ -70,6 +90,12 @@ const emailUtils = {
   generateRemindersList: async () => {
     const rows = await sheets.querySheet(2);
     const emailList = await findUpcomingSession(rows);
+    return emailList;
+  },
+  generateCongratsList: async () => {
+    const rows = await sheets.querySheet(3);
+    const emailList = await findGraduates(rows);
+    //got the list of graduates emails - just need to build the template and send an email to each of them!
     return emailList;
   }
 };

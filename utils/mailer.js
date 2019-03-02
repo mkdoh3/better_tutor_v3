@@ -53,6 +53,15 @@ function generateEmail(emailInfo, template) {
     .catch(console.error);
 }
 
+function sendCongrats() {
+  emailUtils.generateCongratsList();
+  // .then(emailList => {
+  //   emailList.forEach(grad => {
+  //     need to add this template
+  //     generateEmail(grad, "congrats");
+  //   });
+}
+
 function sendReminders() {
   emailUtils.generateRemindersList().then(emailList => {
     emailList.forEach(reminder => {
@@ -68,9 +77,10 @@ function sendBlast() {
 }
 
 (function() {
-  cron.schedule("30 18 * * *", function() {
+  cron.schedule("* * * * *", function() {
     console.log(`${Date.now().toLocaleString()}: Running reminders cron job`);
-    sendReminders();
+    sendCongrats();
+    // sendReminders();
   });
   cron.schedule("30 15 * * 7", function() {
     console.log(`${Date.now().toLocaleString()}: Running email blast cron job`);

@@ -1,5 +1,6 @@
 **Back End**
 1.)parse roster for graduated students - del graduated students**
+1a) still need to delete that shit!
 1a.)Send congrat email and reminder of tutoring ending to grad students**
 
 <!-- 2.)parse sessions - check dates for upcoming sessions to be used for session email reminders -->
