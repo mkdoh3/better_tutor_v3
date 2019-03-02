@@ -1,7 +1,10 @@
 **Back End**
-1.)parse roster for graduated students - del graduated students**
-1a) still need to delete that shit!
-1a.)Send congrat email and reminder of tutoring ending to grad students**
+
+<!-- 1.)parse roster for graduated students - del graduated students** -->
+<!-- 1a) still need to delete that shit! -->
+<!-- 1b.)create congrats email list -->
+
+1c.) create congrats template and send that shit wih reminder of tutoring ending,
 
 <!-- 2.)parse sessions - check dates for upcoming sessions to be used for session email reminders -->
 <!-- 3.)parse roster - gather email addresses to generate weekly blast emails -->
@@ -27,7 +30,7 @@
 <!-- 15.) set no-show and b2b as false by default? -->
 <!-- 16.) **_Figure out the best way to handle reoccurring sessions!_** -->
 
-17.) Set the session reminder email for a later time
+<!-- 17.) Set the session reminder email for a later time -->
 
 **Front End**
 

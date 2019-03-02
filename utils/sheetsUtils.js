@@ -134,7 +134,6 @@ const sheetsUtils = {
     try {
       const calendlyData = await formatDataOnCalendly(data.payload);
       const newSession = { ...sessionDefaults, ...calendlyData };
-
       this.addNewRow({ ...newSession }, 2);
     } catch (err) {
       throw new Error(err);

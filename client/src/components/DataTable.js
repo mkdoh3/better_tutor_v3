@@ -4,18 +4,17 @@ import cellEditFactory from "react-bootstrap-table2-editor";
 // import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
 const DataTable = props => {
-  const columns = [
-    { dataField: "classCode", text: "Code", editable: false },
-    { dataField: "graduationDate", text: "Grad Date", editable: false },
-    { dataField: "studentName", text: "Name", editable: false },
-    { dataField: "studentEmail", text: "Email", editable: false },
-    { dataField: "studentGithubUsername", text: "Github", editable: false },
-    { dataField: "studentTz", text: "Student Tz", editable: false },
-    { dataField: "tzDif", text: "Tz Dif", editable: false }
-  ];
+  //there are some repeated line between the two here, was thinking of setting columns to have the two common fields
+  //by default.. but then the order in which their displayed would get all screwed up - didn't seem worth all of the
+  //extra code to fix it. Anyway.. this is where data displayed can be adjusted as wanted - everything from sheets is passed as
+  //props and available here.
+  let columns = [];
   if (props.sessions) {
-    columns.push(
+    columns = [
+      { dataField: "studentName", text: "Name" },
       { dataField: "sessionDate", text: "Session Date" },
+      { dataField: "studentSessionTime", text: "Student Time" },
+      { dataField: "localTime", text: "Local Time" },
       { dataField: "adpTimeIn", text: "ADP In" },
       { dataField: "adpTimeOut", text: "ADP Out" },
       { dataField: "back2Back", text: "B2B?" },
@@ -23,22 +22,20 @@ const DataTable = props => {
       { dataField: "topicsCovered", text: "Topics" },
       { dataField: "notes", text: "Notes" },
       { dataField: "tutorsEvalFormSubmitted", text: "Eval Form" },
-      { dataField: "paymentDateAmnt", text: "Payment Date Amnt" }
-    );
-    columns.push({
-      dataField: "zoomLink",
-      text: "Zoom Link",
-      events: {
-        onClick: e => {
-          const url = e.target.textContent;
-          console.log(url);
-          const newTab = window.open(url, "_blank");
-          newTab.focus();
-        }
-      }
-    });
+      { dataField: "zoomLink", text: "Zoom Link" }
+    ];
+  } else {
+    columns = [
+      { dataField: "classCode", text: "Code" },
+      { dataField: "graduationDate", text: "Grad Date" },
+      { dataField: "studentName", text: "Name" },
+      { dataField: "studentEmail", text: "Email" },
+      { dataField: "studentGithubUsername", text: "Github" },
+      { dataField: "studentTz", text: "Student Tz" },
+      { dataField: "tzDif", text: "Tz Dif" },
+      { dataField: "zoomLink", text: "Zoom Link" }
+    ];
   }
-
   const cellEdit = cellEditFactory({
     mode: "click",
     afterSaveCell: (oldValue, newValue, row, column) => {

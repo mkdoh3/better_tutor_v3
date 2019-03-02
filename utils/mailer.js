@@ -77,10 +77,10 @@ function sendBlast() {
 }
 
 (function() {
-  cron.schedule("* * * * *", function() {
+  cron.schedule("30 18 * * *", function() {
     console.log(`${Date.now().toLocaleString()}: Running reminders cron job`);
-    sendCongrats();
-    // sendReminders();
+    // sendCongrats();
+    sendReminders();
   });
   cron.schedule("30 15 * * 7", function() {
     console.log(`${Date.now().toLocaleString()}: Running email blast cron job`);
