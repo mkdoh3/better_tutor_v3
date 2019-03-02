@@ -4,9 +4,17 @@ import StudentInfo from "./StudentInfo";
 import SurveyLink from "./SurveyLink";
 import ADPNotes from "./ADPNotes";
 import Countdown from "./Countdown";
+import TutorForm from "./TutorForm";
 
 const ActiveSession = props => {
-  const { studentName, zoomLink, prevNotes, classCode } = props.studentData;
+  const {
+    classCode,
+    studentName,
+    studentEmail,
+    studentGithubUsername,
+    zoomLink,
+    prevNotes
+  } = props.studentData;
   return (
     <>
       <Countdown />
@@ -30,10 +38,11 @@ const ActiveSession = props => {
           </div>
         </Card.Body>
       </Card>
-      <iframe
-        src="https://docs.google.com/forms/d/e/1FAIpQLSc_q0CSp5Bpn7lfDAdoPCbBTW-OxWQVhC3gG5P9e6iE4FERjw/viewform"
-        frameborder="0"
-        style={{ width: "50vw", margin: "0 auto" }}
+      <TutorForm
+        code={classCode}
+        name={studentName}
+        email={studentEmail}
+        github={studentGithubUsername}
       />
     </>
   );

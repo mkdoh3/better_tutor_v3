@@ -24,7 +24,7 @@ function updateObj(oldObj, newObj) {
 //so for now at least, I'm stuck querying for everything and then filtering after the fact
 async function filterStudentByEmail(email) {
   try {
-    const rows = await sheetsUtils.querySheet(2);
+    const rows = await sheetsUtils.querySheet(3);
     const studentData = await rows.filter(row => {
       return row.studentEmail === email;
     })[0];
@@ -51,10 +51,15 @@ function formatQueryReturn(rows) {
     rows[i] = formattedObj;
   }
 }
+const sessionDefaults = {
+  ConfirmationSent: "Y",
+  back2Back: "N",
+  showNoShow: "Show"
+};
 
 const sheetsUtils = {
   //tabNumber references the tabs of a google sheet - first tab being 1
-  querySheet: async (tabNumber, options = { offset: 0, formatted: true }) => {
+  async querySheet(tabNumber, options = { offset: 0, formatted: true }) {
     try {
       const useServiceAccountAuth = promisify(doc.useServiceAccountAuth);
       await useServiceAccountAuth(creds);
@@ -69,7 +74,7 @@ const sheetsUtils = {
     }
   },
 
-  addNewRow: async (data, tabNumber) => {
+  async addNewRow(data, tabNumber) {
     try {
       const useServiceAccountAuth = promisify(doc.useServiceAccountAuth);
       await useServiceAccountAuth(creds);
@@ -82,9 +87,9 @@ const sheetsUtils = {
     }
   },
 
-  deleteSession: async id => {
+  async deleteSession(id) {
     try {
-      const row = await sheetsUtils.querySheet(1, {
+      const row = await this.querySheet(2, {
         query: `session-id=${id}`
       });
       row[0].del();
@@ -93,13 +98,13 @@ const sheetsUtils = {
     }
   },
 
-  updateSheet: async (updates, tableName) => {
-    const tab = tableName === "sessionData" ? 1 : 2;
+  async updateSheet(updates, tableName) {
+    const tab = tableName === "sessionData" ? 2 : 3;
     try {
-      const rows = await sheetsUtils.querySheet(tab, { formatted: false });
+      const rows = await this.querySheet(tab, { formatted: false });
       updates.forEach(rowData => {
         if (rowData.newRow) {
-          sheetsUtils.addNewRow(rowData, tab);
+          this.addNewRow(rowData, tab);
         } else {
           rowData = casing.camelCaseToKebab(rowData);
           const { index } = rowData;
@@ -112,24 +117,28 @@ const sheetsUtils = {
     }
   },
 
-  createSession: async (data, date) => {
-    let newSession = {
-      ConfirmationSent: "Y",
-      back2Back: "N",
-      showNoShow: "Show"
-    };
+  async createSession(data) {
     try {
-      if (data.payload) {
-        const calendlyData = await formatDataOnCalendly(data.payload);
-        newSession = { ...newSession, ...calendlyData };
-      } else {
-        const studentData = await filterStudentByEmail(data.studentEmail);
-        newSession = { ...studentData };
-        if (date) {
-          newSession.sessionDate = date;
-        }
-      }
-      sheetsUtils.addNewRow({ ...newSession }, 1);
+      const calendlyData = await formatDataOnCalendly(data.payload);
+      const newSession = { ...sessionDefaults, ...calendlyData };
+
+      this.addNewRow({ ...newSession }, 2);
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+
+  async createReoccurringSession(data, sessionDate) {
+    try {
+      const studentData = await filterStudentByEmail(data.studentEmail);
+      const { studentSessionTime } = data;
+      const newSession = {
+        ...sessionDefaults,
+        ...studentData,
+        sessionDate,
+        studentSessionTime
+      };
+      this.addNewRow({ ...newSession }, 2);
     } catch (err) {
       throw new Error(err);
     }

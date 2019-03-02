@@ -4,7 +4,7 @@ const decamelize = require("decamelize");
 //the google sheets api seems to only respect kebab-casing, otherwise every column header is lower-cased and concatenated
 
 const casingUtils = {
-  kebabCaseToCamel: obj => {
+  kebabCaseToCamel(obj) {
     const objCopy = { ...obj };
     for (let key in objCopy) {
       //prevents deleting save, del, _links, and _xml keys
@@ -16,7 +16,7 @@ const casingUtils = {
     }
     return objCopy;
   },
-  camelCaseToKebab: obj => {
+  camelCaseToKebab(obj) {
     const objCopy = { ...obj };
     for (let key in objCopy) {
       const kebabCasedKey = decamelize(key, "-");

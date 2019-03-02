@@ -22,25 +22,19 @@ function formatTimeDate(date, time, tz) {
   return `${moment(date).format("ddd, MMM Do")} ${time} ${tz}`;
 }
 
-function createReoccurringSession(data) {
-  const date = getNextSessionDate(data.sessionDate);
-  sheets.createSession(data, date);
-}
-
 function findUpcomingSession(rows) {
   const upcomingSessions = [];
   //dont parse the entire sheet - just the most recent/upcoming sessions
-  for (let i = rows.length >= 10 ? rows.length - 10 : 0; i < rows.length; i++) {
-    const sessionDate = rows[i].sessionDate;
+  let i = rows.length >= 20 ? rows.length - 20 : 0;
+  for (i; i < rows.length; i++) {
+    const row = rows[i];
+    const sessionDate = row.sessionDate;
     if (checkIfTomorrow(sessionDate)) {
-      //add student data to list of reminder emails
-      const emailInfo = formatEmailInfo(rows[i]);
+      const emailInfo = formatEmailInfo(row);
       upcomingSessions.push(emailInfo);
-      //if the session is reoccurring, add next weeks session to the spreadsheet
-      //this is being weird.. and it might be better to add these on sundays instead??
-      //keep in mind that if I student adding a bunch of sessions ahead of time - I'll probably have to change the above 4 loop to include more rows
-      if (rows[i].reoccurring.toLowerCase() === "y") {
-        createReoccurringSession(rows[i]);
+      if (row.reoccurring.toLowerCase() === "y") {
+        const date = getNextSessionDate(row.sessionDate);
+        sheets.createReoccurringSession(row, date);
       }
     }
   }
@@ -69,12 +63,12 @@ function formatEmailInfo(data) {
 
 const emailUtils = {
   generateBlastList: async () => {
-    const rows = await sheets.querySheet(2);
+    const rows = await sheets.querySheet(3);
     const emailList = await rows.map(student => student.studentEmail);
     return emailList;
   },
   generateRemindersList: async () => {
-    const rows = await sheets.querySheet(1);
+    const rows = await sheets.querySheet(2);
     const emailList = await findUpcomingSession(rows);
     return emailList;
   }

@@ -4,7 +4,7 @@ const routes = require("./routes");
 const wwwhisper = require("connect-wwwhisper");
 const app = express();
 
-app.use(wwwhisper()); //false removes the logout iframe - login is maintained by cookies
+app.use(wwwhisper(false)); //false removes the logout iframe - login is maintained by cookies
 require("./utils/mailer");
 const PORT = process.env.PORT || 3001;
 

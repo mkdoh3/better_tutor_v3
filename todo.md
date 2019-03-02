@@ -8,28 +8,32 @@
 <!-- 5.) Setup cron job for blast emails -->
 <!-- 6.) Calendly API integration to automatically update the sessions sheet -->
 
-7.) try/catch error handling in the utils
+<!-- 7.) try/catch error handling in the utils -->
+
 8.) error handling for failed session creation/deletion after calendly hook
 
 <!-- 9.) setup bcc or cc to myself for copy of email confirmations -->
 
-10.) Update sheetsUtils to utilize queries where possible
-11.) add more robust routes to handle more specific calls from the front end
+<!-- 10.) Update sheetsUtils to utilize queries where possible -->
+<!-- 11.) add more robust routes to handle more specific calls from the front end -->
+
 12.) email myself on mailer/sheets errors
 
 <!-- 13.) rewrite 'getAllRows' as "getSessionData" -->
 
 <!-- 14.) **_Figure out how to get calendly hooks to work with the wwwhisper auth system!_** -->
 
-15.) set no-show and b2b as false by default?
-16.) **_Figure out the best way to handle reoccurring sessions!_**
+<!-- 15.) set no-show and b2b as false by default? -->
+<!-- 16.) **_Figure out the best way to handle reoccurring sessions!_** -->
+
 17.) Set the session reminder email for a later time
 
 **Front End**
 
 <!-- 1.)generate adp notes based on session info - this could be done from the front end as the data will already be displayed there -->
 
-2.)embed and autofill for tutor survey
+<!-- 2.)embed and autofill for tutor survey -->
+
 3.) copy student class code and student eval form to clipboard
 
 <!-- 4.) move filtering logic to the backend -->
@@ -55,6 +59,8 @@
 17.)Figure out how to handle session ending - auto fill time-in/time-out if possible??
 18.) the create session button should probably be using a new route to use the backend's sheetUtils.createSession as oppose to using sheetsUtils.update
 19.) Add ability to delete a session
+20.) bring in react router and make active session its own page with its own state??
+21.) Make everything look better!
 
 \*\*Future Features?\*\*
 1.) save cell edit after clicking/tabbing instead of having to hit enter.
@@ -62,4 +68,5 @@
 
 **BUGS**
 1.) tried everything I could possibly think of to get rid of the sheetUtils filter function and instead use a structured query. google doesnt like querying by email address.. I tried to url encode it and everything!!
-2.) A calendly event showed up in sheets one day ahead of the actual date.. could not recreate
+
+<!-- 2.) A calendly event showed up in sheets one day ahead of the actual date.. could not recreate -->

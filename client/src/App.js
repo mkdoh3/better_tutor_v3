@@ -33,7 +33,7 @@ class App extends Component {
 
   fetchRosterData = async () => {
     try {
-      const rosterRes = await API.getSheetData(2);
+      const rosterRes = await API.getSheetData(3);
       const rosterData = await rosterRes.data;
       rosterData.forEach((record, i) => (record.index = i));
       return this.setState({ rosterData });
