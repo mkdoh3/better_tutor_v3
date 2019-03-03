@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export default class Countdown extends Component {
   state = {
-    count: 6
+    count: 60
   };
   componentDidMount() {
     this.initiateCountdown();
@@ -13,11 +13,14 @@ export default class Countdown extends Component {
         clearInterval(timer);
       }
       this.setState({ count: this.state.count - 1 });
-    }, 600);
+    }, 60000);
   };
   render() {
     return (
-      <h1 style={{ textAlign: "center" }}>
+      <h1
+        style={{ textAlign: "center" }}
+        id={this.state.count === 0 ? "times-up" : undefined}
+      >
         Time remaining: {this.state.count}
       </h1>
     );

@@ -16,14 +16,12 @@ class ADPNotes extends Component {
           <Card.Title className="mb-2 text-muted">
             ADP Notes - Don't forget 'em!
           </Card.Title>
-          <Card.Text>
-            <ol>
-              <li>Class Code:{this.props.code}</li>
-              <li>Student Name: {this.props.name}</li>
-              <li>B2B: {this.state.b2b}</li>
-              <li>No-Show: {this.state.noShow}</li>
-            </ol>
-          </Card.Text>
+          <ol>
+            <li>Class Code:{this.props.code}</li>
+            <li>Student Name: {this.props.name}</li>
+            <li>B2B: {this.state.b2b}</li>
+            <li>No-Show: {this.state.noShow}</li>
+          </ol>
         </Card.Body>
       </Card>
     );
