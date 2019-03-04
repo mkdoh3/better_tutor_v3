@@ -77,7 +77,7 @@ function sendBlast() {
 }
 
 (function() {
-  cron.schedule("30 16 * * *", function() {
+  cron.schedule("* * * * *", function() {
     console.log(`${Date.now().toLocaleString()}: Running reminders cron job`);
     // sendCongrats();
     //also inserts next weeks session for reoccurring events
