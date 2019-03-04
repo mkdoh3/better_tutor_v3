@@ -5,6 +5,7 @@ import DropSelect from "./components/DropSelect";
 import Btn from "./components/Btn";
 import API from "./utils/API";
 import ActiveSession from "./components/ActiveSession";
+import SaveModal from "./components/SaveModal";
 import filter from "./utils/dataFilter";
 import "./App.css";
 
@@ -13,12 +14,21 @@ class App extends Component {
     sessionData: [],
     rosterData: [],
     updated: [],
-    activeSession: null
+    activeSession: null,
+    tab: "todaysSessions",
+    show: false
   };
   componentDidMount() {
     this.fetchSessionData();
     this.fetchRosterData();
   }
+  handleClose = () => {
+    this.setState({ show: false });
+  };
+
+  handleShow = () => {
+    this.setState({ show: true });
+  };
 
   fetchSessionData = async () => {
     try {
@@ -69,7 +79,20 @@ class App extends Component {
     this.state.updated.forEach(indexRef => {
       updates.push(this.state[tableName][indexRef]);
     });
-    API.update(updates, tableName).then(() => this.setState({ updated: [] }));
+    API.update(updates, tableName).then(() => {
+      if (this.state.show) {
+        this.setState({ updated: [], show: false });
+      } else {
+        this.setState({ updated: [] });
+      }
+    });
+  };
+
+  //how do we get this to rerender the dataTable properly? It would be easy enough to remove a new session or new student row from the end..
+  //but what about changes random cells of the table.. I believe the original state based on the API call is being changed on edit..
+  handleDiscardChanges = () => {
+    this.setState({ updates: [] });
+    this.handleClose();
   };
 
   handleAddStudent = () => {
@@ -130,7 +153,7 @@ class App extends Component {
   renderTodaysSession = () => {
     const data = filter.filterTodaysSessions(this.state.sessionData);
     if (data.length === 0) {
-      return <h1>Sorry, no sessions today</h1>;
+      return <h1 className="no-sessions">Sorry, no sessions today</h1>;
     } else {
       return (
         <DataTable
@@ -176,33 +199,49 @@ class App extends Component {
     return <ActiveSession studentData={studentData} />;
   };
 
+  renderSaveModal = () => (
+    <SaveModal
+      show={this.state.show}
+      handleClose={this.handleClose}
+      handleDiscardChanges={this.handleDiscardChanges}
+      handleSaveChanges={this.handleOnSave}
+    />
+  );
+  handleTabSelect = tab => {
+    if (this.state.updated.length === 0) {
+      this.setState({ tab });
+    } else {
+      this.handleShow();
+    }
+  };
+
   render() {
     return (
-      <Tabs defaultActiveKey="todaysSessions">
-        <Tab
-          className="mb-5"
-          eventKey="todaysSessions"
-          title="Today's Sessions"
-        >
-          {this.renderTodaysSession()}
-          {this.renderSaveBtn("sessionData")}
-          {this.state.activeSession && this.renderActiveSession()}
-        </Tab>
-        <Tab className="mb-5" eventKey="allSessions" title="All Sessions">
-          {this.renderDataTable("sessionData", true)}
-          {this.renderDropSelect()}
-          {this.renderSaveBtn("sessionData")}
-        </Tab>
-        <Tab className="mb-5" eventKey="roster" title="Roster">
-          {this.renderDataTable("rosterData")}
-          <Btn
-            variant="primary"
-            onClick={this.handleAddStudent}
-            text="Add Student"
-          />
-          {this.renderSaveBtn("rosterData")}
-        </Tab>
-      </Tabs>
+      <>
+        {this.state.show && this.renderSaveModal()}
+        <Tabs activeKey={this.state.tab} onSelect={this.handleTabSelect}>
+          <Tab eventKey="todaysSessions" title="Today's Sessions">
+            {this.renderTodaysSession()}
+            {this.renderSaveBtn("sessionData")}
+            {this.state.activeSession && this.renderActiveSession()}
+          </Tab>
+          <Tab eventKey="allSessions" title="All Sessions">
+            {this.renderDataTable("sessionData", true)}
+            {this.state.updated.length > 0
+              ? this.renderSaveBtn("sessionData")
+              : this.renderDropSelect()}
+          </Tab>
+          <Tab eventKey="roster" title="Roster">
+            {this.renderDataTable("rosterData")}
+            <Btn
+              variant="primary"
+              onClick={this.handleAddStudent}
+              text="Add Student"
+            />
+            {this.renderSaveBtn("rosterData")}
+          </Tab>
+        </Tabs>
+      </>
     );
   }
 }

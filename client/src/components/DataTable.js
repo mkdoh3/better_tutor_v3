@@ -1,6 +1,7 @@
 import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import cellEditFactory from "react-bootstrap-table2-editor";
+// import paginationFactory from 'react-bootstrap-table2-paginator';
 // import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
 const DataTable = props => {
@@ -12,9 +13,9 @@ const DataTable = props => {
   if (props.sessions) {
     columns = [
       { dataField: "studentName", text: "Name" },
-      { dataField: "sessionDate", text: "Session Date" },
+      { dataField: "sessionDate", text: "Session Date", sort: true },
       { dataField: "studentSessionTime", text: "Student Time" },
-      { dataField: "localTime", text: "Local Time" },
+      { dataField: "localTime", text: "Local Time", sort: true },
       { dataField: "adpTimeIn", text: "ADP In" },
       { dataField: "adpTimeOut", text: "ADP Out" },
       { dataField: "back2Back", text: "B2B?" },
@@ -62,6 +63,7 @@ const DataTable = props => {
       columns={columns}
       cellEdit={cellEdit}
       rowEvents={rowEvents}
+      headerClasses="header-class"
       classes="table-sm data-table"
     />
   );

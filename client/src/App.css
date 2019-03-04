@@ -1,7 +1,61 @@
+body {
+  height: 100vh;
+}
 .data-table {
   margin: 1.5em auto;
-  max-width: 98vw;
+  max-width: 94vw;
+  background-color: #f0f2ef;
 }
+
+.header-class {
+  background-color: #d64d55;
+}
+.table thead th {
+  border: 1px solid black;
+  font-weight: 600;
+}
+
+.active {
+  background-color: #fdfdfd;
+}
+
+.nav-link,
+.nav-link:hover {
+  color: #161617;
+}
+.nav-tabs .nav-link.active {
+  font-weight: 600;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus {
+  color: #000;
+  background-color: #ffd660 !important;
+  border-color: #edae49 !important;
+  margin-left: 40px;
+}
+.show > .btn-primary.dropdown-toggle {
+  color: #000;
+  background-color: #ffd660;
+  border-color: #edae49;
+}
+.btn-success,
+.btn-success:hover {
+  color: #000;
+  background-color: #d64d55;
+  border-color: #775b5b;
+  width: 110px;
+  margin-left: 50px;
+  font-size: 18px;
+}
+.no-sessions {
+  height: 100%;
+  text-align: center;
+  vertical-align: top;
+  line-height: 250px;
+}
+
 @-webkit-keyframes blinky {
   0% {
     background-color: #fff;
