@@ -40,7 +40,7 @@
 
 <!-- 2.)embed and autofill for tutor survey -->
 
-3.) copy student class code and student eval form to clipboard
+<!-- 3.) copy student class code and student eval form to clipboard -->
 
 <!-- 4.) move filtering logic to the backend -->
 
@@ -60,7 +60,8 @@
 
 <!-- 14.)**start building active session page** -->
 
-15.) **_Refactor table data show - add student session time and my session time_**
+<!-- 15.) **_Refactor table data show - add student session time and my session time_** -->
+
 16.) Add Countdown Timer with start button and end button - blink tab when done??
 17.)Figure out how to handle session ending - auto fill time-in/time-out if possible??
 18.) the create session button should probably be using a new route to use the backend's sheetUtils.createSession as oppose to using sheetsUtils.update
@@ -68,6 +69,9 @@
 20.) bring in react router and make active session its own page with its own state??
 21.) Tab for tomorrow's sessions
 22.) Make everything look better!
+23.) Should adp open on copy click?? or should that be a separate button??
+24.) should adp notes and survey link show up after the session is done?? - should they be editable??
+25.) can adp notes and survey be combined into one array??
 
 \*\*Future Features?\*\*
 1.) save cell edit after clicking/tabbing instead of having to hit enter.

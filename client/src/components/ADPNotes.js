@@ -1,14 +1,18 @@
 import React, { Component } from "react";
-import { Card } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 
 //display name, zoomLink, notes from last session, what topics they want to cover maybe..
 
 class ADPNotes extends Component {
   state = {
-    b2b: "no",
-    noShow: "no"
+    copied: ""
   };
-
+  copyToClipBoard = () => {
+    const info = document.getElementById("adp-notes");
+    info.select();
+    document.execCommand("copy", info.value);
+    window.open("https://workforcenow.adp.com/portal/theme");
+  };
   render() {
     return (
       <Card style={{ width: "30vw" }}>
@@ -16,12 +20,17 @@ class ADPNotes extends Component {
           <Card.Title className="mb-2 text-muted">
             ADP Notes - Don't forget 'em!
           </Card.Title>
-          <ol>
-            <li>Class Code:{this.props.code}</li>
-            <li>Student Name: {this.props.name}</li>
-            <li>B2B: {this.state.b2b}</li>
-            <li>No-Show: {this.state.noShow}</li>
-          </ol>
+          <textarea
+            value={`1. Class Code: ${this.props.code}\n 2. Student Name: ${
+              this.props.name
+            }\n 3. B2B: ${this.props.b2b}\n 4. No-Show: ${
+              this.props.showNoShow
+            }`}
+            id="adp-notes"
+            readOnly
+            style={{ width: "100%", minHeight: "105px" }}
+          />
+          <Button onClick={this.copyToClipBoard}>Copy</Button>
         </Card.Body>
       </Card>
     );

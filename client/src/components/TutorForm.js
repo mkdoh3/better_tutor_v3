@@ -26,16 +26,3 @@ const TutorForm = props => {
 };
 
 export default TutorForm;
-
-//   /* <iframe
-//   frameborder="0"
-//   src={prefillURL}
-//   title="Tutor Form"
-//   style={{ width: "50vw", margin: "0 auto", display: "block" }}
-// /> */
-
-// baseURL https://docs.google.com/forms/d/e/1FAIpQLSc_q0CSp5Bpn7lfDAdoPCbBTW-OxWQVhC3gG5P9e6iE4FERjw/viewform
-// class code = ?entry.1626809215
-// student name(last, first) = ?entry.1262798942
-// student email = C
-// student github = ?entry.2097580399
