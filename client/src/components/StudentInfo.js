@@ -6,7 +6,7 @@ import { Card } from "react-bootstrap";
 const StudentInfo = props => {
   return (
     <Card style={{ width: "30vw" }}>
-      <Card.Body style={{ boxShadow: "1px 1px 1px" }}>
+      <Card.Body className="info-card">
         <Card.Title className="mb-2 text-muted">
           Previous Session Notes:
         </Card.Title>

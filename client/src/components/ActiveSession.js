@@ -18,10 +18,10 @@ const ActiveSession = props => {
     showNoShow
   } = props.studentData;
   return (
-    <>
+    <div className="container-flex" style={{ margin: "1.5rem auto" }}>
       <Countdown />
       <Card style={{ width: "95vw", margin: "0 auto" }}>
-        <Card.Body style={{ boxShadow: "1px 1px 1px" }}>
+        <Card.Body className="cards-wrapper">
           <Card.Title
             className="mb-2 text-muted"
             style={{ textAlign: "center", padding: "10px" }}
@@ -51,7 +51,7 @@ const ActiveSession = props => {
         email={studentEmail}
         github={studentGithubUsername}
       />
-    </>
+    </div>
   );
 };
 export default ActiveSession;

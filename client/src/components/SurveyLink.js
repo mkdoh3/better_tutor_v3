@@ -17,13 +17,12 @@ class ADPNotes extends Component {
   render() {
     return (
       <Card style={{ width: "30vw" }}>
-        <Card.Body style={{ boxShadow: "1px 1px 1px" }}>
+        <Card.Body className="info-card">
           <Card.Title className="mb-2 text-muted">Slack These!</Card.Title>
           <textarea
             value={`${studentEval} \n ${this.props.code}`}
             id="student-eval"
             readOnly
-            style={{ width: "100%", minHeight: "105px" }}
           />
           <Button onClick={this.copyToClipBoard}>Copy</Button>
         </Card.Body>

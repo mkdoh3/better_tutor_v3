@@ -1,18 +1,22 @@
+@import url("https://fonts.googleapis.com/css?family=Lato");
 body {
   height: 100vh;
+  font-family: "Lato", sans-serif;
 }
 .data-table {
-  margin: 1.5em auto;
+  margin: 1.5rem auto;
   max-width: 94vw;
   background-color: #f0f2ef;
+  box-shadow: -2px -1px 20px 2px #dcd7d7;
 }
 
 .header-class {
   background-color: #d64d55;
 }
 .table thead th {
-  border: 1px solid black;
-  font-weight: 600;
+  border: 1px solid #753e3e;
+  font-weight: 500;
+  box-shadow: 1px 2px 0px #676767;
 }
 
 .active {
@@ -26,7 +30,7 @@ body {
 .nav-tabs .nav-link.active {
   font-weight: 600;
 }
-
+/* should probably just not use bootstrap buttons at this point lol */
 .btn-primary,
 .btn-primary:hover,
 .btn-primary:focus {
@@ -34,6 +38,7 @@ body {
   background-color: #ffd660 !important;
   border-color: #edae49 !important;
   margin-left: 40px;
+  box-shadow: 3px 2px 10px #c5c0c0;
 }
 .show > .btn-primary.dropdown-toggle {
   color: #000;
@@ -48,6 +53,7 @@ body {
   width: 110px;
   margin-left: 50px;
   font-size: 18px;
+  box-shadow: 3px 2px 10px #c5c0c0;
 }
 .no-sessions {
   height: 100%;
@@ -62,7 +68,7 @@ body {
   }
 
   100% {
-    background-color: red;
+    background-color: #e0424d;
   }
 }
 @-moz-keyframes blinky {
@@ -71,7 +77,7 @@ body {
   }
 
   100% {
-    background-color: red;
+    background-color: #e0424d;
   }
 }
 @keyframes blinky {
@@ -80,11 +86,50 @@ body {
   }
 
   100% {
-    background-color: red;
+    background-color: #e0424d;
   }
 }
+.countdown {
+  text-align: center;
+  margin: 2rem;
+  line-height: 60px;
+  text-shadow: 0 1px 0 #bdbdbd;
+}
+
 #times-up {
-  -webkit-animation: blinky 0.75s infinite;
-  -moz-animation: blinky 0.75s infinite;
-  animation: blinky 0.75s infinite;
+  -webkit-animation: blinky 0.9s infinite;
+  -moz-animation: blinky 0.9s infinite;
+  animation: blinky 0.9s infinite;
+}
+
+.cards-wrapper {
+  box-shadow: 4px 4px 20px #ece1e1;
+  background-color: #f7f7f7;
+  border-radius: 5px;
+}
+
+.info-card {
+  box-shadow: 1px 1px 1px;
+  background-color: #fdfdfd;
+}
+
+textarea {
+  background-color: #d5ebf15e;
+  box-shadow: inset 1px 2px 1px 0px #989494;
+  padding: 5px;
+  width: 100%;
+  min-height: 110px;
+}
+
+iframe {
+  box-shadow: 1px 1px 15px 0px #8e8383;
+  border: 1px solid black;
+  width: 60vw;
+  display: flex;
+  height: 1200px;
+  margin: 50px auto;
+}
+
+.card-body .btn {
+  margin-left: 0px;
 }

@@ -18,7 +18,7 @@ export default class Countdown extends Component {
   render() {
     return (
       <h1
-        style={{ textAlign: "center" }}
+        className="countdown"
         id={this.state.count === 0 ? "times-up" : undefined}
       >
         Time remaining: {this.state.count}

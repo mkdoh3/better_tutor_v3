@@ -1,7 +1,4 @@
 import React from "react";
-import ReactIframeResizer from "react-iframe-resizer-super";
-
-const iframeResizerOptions = { checkOrigin: false };
 
 const TutorForm = props => {
   const baseURL =
@@ -11,18 +8,7 @@ const TutorForm = props => {
   const email = `&entry.1509111758=${props.email}`;
   const github = `&entry.2097580399=${props.github}`;
   const prefillURL = `${baseURL}${code}${name}${email}${github}`;
-  return (
-    <ReactIframeResizer
-      iframeResizerOptions={iframeResizerOptions}
-      src={prefillURL}
-      style={{
-        width: "60vw",
-        display: "flex",
-        height: "1200px",
-        margin: "30px auto"
-      }}
-    />
-  );
+  return <iframe title="tutor evaluation form" src={prefillURL} />;
 };
 
 export default TutorForm;

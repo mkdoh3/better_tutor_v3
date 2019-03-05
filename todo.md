@@ -68,10 +68,13 @@
 19.) Add ability to delete a session
 20.) bring in react router and make active session its own page with its own state??
 21.) Tab for tomorrow's sessions
-22.) Make everything look better!
+
+<!-- 22.) Make everything look better! -->
+
 23.) Should adp open on copy click?? or should that be a separate button??
 24.) should adp notes and survey link show up after the session is done?? - should they be editable??
 25.) can adp notes and survey be combined into one array??
+26.) fix embedded for styling.. again
 
 \*\*Future Features?\*\*
 1.) save cell edit after clicking/tabbing instead of having to hit enter.
