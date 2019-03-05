@@ -3,10 +3,11 @@ import { Tab, Tabs } from "react-bootstrap";
 import DataTable from "./components/DataTable";
 import DropSelect from "./components/DropSelect";
 import Btn from "./components/Btn";
-import API from "./utils/API";
 import ActiveSession from "./components/ActiveSession";
 import SaveModal from "./components/SaveModal";
-import filter from "./utils/dataFilter";
+import API from "./services/API";
+// import filter from "./utils/dataFilter";
+import { filter, obj } from "./utils";
 import "./App.css";
 
 class App extends Component {
@@ -63,7 +64,6 @@ class App extends Component {
 
   //this is probably a little sloppy. The idea is to save the indices of updated object to later do a batch update on the backend on save or componentWillUnmount
   handleRowUpdate = (data, table) => {
-    console.log(data);
     const indexRef = data.index;
     const tableData = [...this.state[table]];
     const updated = [...this.state.updated];
@@ -97,35 +97,27 @@ class App extends Component {
 
   handleAddStudent = () => {
     const rosterData = [...this.state.rosterData];
+    const updated = [...this.state.updated];
     const rowData = { ...this.state.rosterData[0] };
-    //set placeholder text
-    for (let key in rowData) {
-      rowData[key] = key;
-    }
-    rowData.index = rosterData.length;
-    //set newRow property for properly handling update in the sheetsUtils.updateSheet
-    rowData.newRow = true;
-    rosterData.push(rowData);
-    this.setState({ rosterData });
+    obj.placeholderObj(rowData);
+    this.handleAddRow("rosterData", rosterData, rowData, updated);
   };
 
   handleAddSession = eventKey => {
     const sessionData = [...this.state.sessionData];
     const updated = [...this.state.updated];
-    const newIndex = sessionData.length;
-    const rowData = this.state.rosterData.find(
-      student => student.studentName === eventKey
-    );
-    for (let key in sessionData[0]) {
-      if (!rowData.hasOwnProperty(key)) {
-        rowData[key] = "";
-      }
-    }
-    rowData.index = newIndex;
-    rowData.newRow = true;
-    sessionData.push(rowData);
+    const rowData = filter.findStudent(eventKey, this.state.rosterData);
+    obj.mergeObjects(sessionData[0], rowData);
+    this.handleAddRow("sessionData", sessionData, rowData, updated);
+  };
+
+  handleAddRow = (table, data, newRow, updated) => {
+    const newIndex = data.length;
+    newRow.index = newIndex;
+    newRow.newRow = true;
+    data.push(newRow);
     updated.push(newIndex);
-    this.setState({ sessionData, updated });
+    this.setState({ [table]: data, updated });
   };
   //this is set up to grab all of the row data on row double click within the 'todays sessions' tab
   //that data should be used to render everything else relevant to the current session - adp notes form(b2b, no-show etc. copy to clipboard and launch link to adp)
@@ -138,16 +130,6 @@ class App extends Component {
     if (!this.state.activeSession) {
       this.setState({ activeSession });
     }
-  };
-
-  renderSaveBtn = table => {
-    return this.state.updated.length > 0 ? (
-      <Btn
-        variant="success"
-        text="save"
-        onClick={() => this.handleOnSave(table)}
-      />
-    ) : null;
   };
 
   renderTodaysSession = () => {
@@ -190,6 +172,20 @@ class App extends Component {
     ) : null;
   };
 
+  renderAddStudentBtn = () => (
+    <Btn variant="primary" onClick={this.handleAddStudent} text="Add Student" />
+  );
+
+  renderSaveBtn = table => {
+    return this.state.updated.length > 0 ? (
+      <Btn
+        variant="success"
+        text="save"
+        onClick={() => this.handleOnSave(table)}
+      />
+    ) : null;
+  };
+
   renderActiveSession = () => {
     //this component already has the whole list of session, so we should probs just find the previous session notes from here and make ActiveSession stateless
     const studentData = { ...this.state.activeSession };
@@ -216,6 +212,8 @@ class App extends Component {
   };
 
   render() {
+    console.log(filter);
+
     return (
       <>
         {this.state.show && this.renderSaveModal()}
@@ -233,12 +231,9 @@ class App extends Component {
           </Tab>
           <Tab eventKey="roster" title="Roster">
             {this.renderDataTable("rosterData")}
-            <Btn
-              variant="primary"
-              onClick={this.handleAddStudent}
-              text="Add Student"
-            />
-            {this.renderSaveBtn("rosterData")}
+            {this.state.updated.length > 0
+              ? this.renderSaveBtn("rosterData")
+              : this.renderAddStudentBtn()}
           </Tab>
         </Tabs>
       </>

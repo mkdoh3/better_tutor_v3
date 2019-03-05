@@ -1,44 +1,53 @@
 import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
-import cellEditFactory from "react-bootstrap-table2-editor";
-// import paginationFactory from 'react-bootstrap-table2-paginator';
-// import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
+import cellEditFactory, { Type } from "react-bootstrap-table2-editor";
 
 const DataTable = props => {
-  //there are some repeated line between the two here, was thinking of setting columns to have the two common fields
-  //by default.. but then the order in which their displayed would get all screwed up - didn't seem worth all of the
-  //extra code to fix it. Anyway.. this is where data displayed can be adjusted as wanted - everything from sheets is passed as
-  //props and available here.
+  // I might want to rewrite this to use a new dataFilter function and a constructor to build the columns
   let columns = [];
+  const ec = { editorClassName: () => "editing-cell" };
   if (props.sessions) {
     columns = [
-      { dataField: "studentName", text: "Name" },
-      { dataField: "sessionDate", text: "Session Date", sort: true },
-      { dataField: "studentSessionTime", text: "Student Time" },
-      { dataField: "localTime", text: "Local Time", sort: true },
-      { dataField: "adpTimeIn", text: "ADP In" },
-      { dataField: "adpTimeOut", text: "ADP Out" },
-      { dataField: "back2Back", text: "B2B?" },
-      { dataField: "showNoShow", text: "Show/No?" },
-      { dataField: "topicsCovered", text: "Topics" },
-      { dataField: "notes", text: "Notes" },
-      { dataField: "tutorsEvalFormSubmitted", text: "Eval Form" },
-      { dataField: "zoomLink", text: "Zoom Link" }
+      { ...ec, dataField: "studentName", text: "Name" },
+      { ...ec, dataField: "sessionDate", text: "Session Date", sort: true },
+      { ...ec, dataField: "studentSessionTime", text: "Student Time" },
+      { ...ec, dataField: "localTime", text: "Local Time", sort: true },
+      {
+        ...ec,
+        dataField: "adpTimeIn",
+        text: "ADP In"
+      },
+      { ...ec, dataField: "adpTimeOut", text: "ADP Out" },
+      {
+        ...ec,
+        dataField: "back2Back",
+        text: "B2B?"
+      },
+      {
+        ...ec,
+        dataField: "showNoShow",
+        text: "Show/No?"
+      },
+      { ...ec, dataField: "topicsCovered", text: "Topics" },
+      { ...ec, dataField: "notes", text: "Notes" },
+      { ...ec, dataField: "tutorsEvalFormSubmitted", text: "Eval Form" },
+      { ...ec, dataField: "zoomLink", text: "Zoom Link" }
     ];
   } else {
     columns = [
-      { dataField: "classCode", text: "Code" },
-      { dataField: "graduationDate", text: "Grad Date" },
-      { dataField: "studentName", text: "Name" },
-      { dataField: "studentEmail", text: "Email" },
-      { dataField: "studentGithubUsername", text: "Github" },
-      { dataField: "studentTz", text: "Student Tz" },
-      { dataField: "tzDif", text: "Tz Dif" },
-      { dataField: "zoomLink", text: "Zoom Link" }
+      { ...ec, dataField: "classCode", text: "Code" },
+      { ...ec, dataField: "graduationDate", text: "Grad Date" },
+      { ...ec, dataField: "studentName", text: "Name" },
+      { ...ec, dataField: "studentEmail", text: "Email" },
+      { ...ec, dataField: "studentGithubUsername", text: "Github" },
+      { ...ec, dataField: "studentTz", text: "Student Tz" },
+      { ...ec, dataField: "tzDif", text: "Tz Dif" },
+      { ...ec, dataField: "zoomLink", text: "Zoom Link" }
     ];
   }
   const cellEdit = cellEditFactory({
     mode: "click",
+    blurToSave: true,
     afterSaveCell: (oldValue, newValue, row, column) => {
       props.handleRowUpdate(row, props.tableName);
     }
@@ -70,3 +79,31 @@ const DataTable = props => {
 };
 
 export default DataTable;
+
+// editor: {
+//   type: Type.SELECT,
+//   options: [
+//     {
+//       value: "N",
+//       label: "No"
+//     },
+//     {
+//       value: "Y",
+//       label: "Yes"
+//     }
+//   ]
+// }
+
+// editor: {
+//   type: Type.SELECT,
+//   options: [
+//     {
+//       value: "Show",
+//       label: "Show"
+//     },
+//     {
+//       value: "No Show",
+//       label: "No show"
+//     }
+//   ]
+// }

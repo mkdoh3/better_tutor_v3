@@ -1,22 +1,30 @@
 @import url("https://fonts.googleapis.com/css?family=Lato");
 body {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
   font-family: "Lato", sans-serif;
+  background-color: #fdfdfd;
+}
+
+.tab-content {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .data-table {
-  margin: 1.5rem auto;
-  max-width: 94vw;
-  background-color: #f0f2ef;
-  box-shadow: -2px -1px 20px 2px #dcd7d7;
+  background-color: #e9eaec2b;
+  box-shadow: 2px 5px 16px 0px #aba1a1e0;
 }
 
 .header-class {
-  background-color: #d64d55;
+  background-color: #20c9f7a6;
 }
 .table thead th {
-  border: 1px solid #753e3e;
+  border: 1px solid #3e4575;
   font-weight: 500;
-  box-shadow: 1px 2px 0px #676767;
+  box-shadow: 0px 2px 0px 0px #5d5959;
 }
 
 .active {
@@ -28,32 +36,31 @@ body {
   color: #161617;
 }
 .nav-tabs .nav-link.active {
-  font-weight: 600;
+  font-size: 1.05rem;
 }
 /* should probably just not use bootstrap buttons at this point lol */
 .btn-primary,
 .btn-primary:hover,
 .btn-primary:focus {
+  width: 125px;
   color: #000;
-  background-color: #ffd660 !important;
+  background-color: #ffee7d !important;
   border-color: #edae49 !important;
-  margin-left: 40px;
-  box-shadow: 3px 2px 10px #c5c0c0;
+  box-shadow: 2px 2px 0px #c5c0c0;
 }
 .show > .btn-primary.dropdown-toggle {
   color: #000;
-  background-color: #ffd660;
+  background-color: #ffee7d;
   border-color: #edae49;
 }
 .btn-success,
 .btn-success:hover {
+  width: 125px;
   color: #000;
-  background-color: #d64d55;
+  background-color: #4fef5978;
   border-color: #775b5b;
-  width: 110px;
-  margin-left: 50px;
   font-size: 18px;
-  box-shadow: 3px 2px 10px #c5c0c0;
+  box-shadow: 2px 2px 0px #c5c0c0;
 }
 .no-sessions {
   height: 100%;
@@ -116,7 +123,7 @@ body {
 textarea {
   background-color: #d5ebf15e;
   box-shadow: inset 1px 2px 1px 0px #989494;
-  padding: 5px;
+  padding: 6px 10px;
   width: 100%;
   min-height: 110px;
 }

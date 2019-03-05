@@ -33,6 +33,7 @@
 <!-- 17.) Set the session reminder email for a later time -->
 
 18.) Give all sessions a unique id - not just calendly - then the same delete function used on the calendly cancel hook should be able to be used for manually deleting from the front end
+19.) change utils to named exports - export all of them from an index file
 
 **Front End**
 
@@ -74,7 +75,10 @@
 23.) Should adp open on copy click?? or should that be a separate button??
 24.) should adp notes and survey link show up after the session is done?? - should they be editable??
 25.) can adp notes and survey be combined into one array??
-26.) fix embedded for styling.. again
+
+<!-- 26.) fix embedded for styling.. again -->
+
+27.) fix zoom link (\_blank)
 
 \*\*Future Features?\*\*
 1.) save cell edit after clicking/tabbing instead of having to hit enter.

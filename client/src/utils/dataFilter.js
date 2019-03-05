@@ -7,5 +7,8 @@ export default {
   },
   filterNames: data => {
     return data.map(row => row.studentName);
+  },
+  findStudent: (name, roster) => {
+    return roster.find(student => student.studentName === name);
   }
 };
