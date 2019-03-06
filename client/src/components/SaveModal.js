@@ -12,7 +12,7 @@ const SaveModal = props => {
         {/* have to figure out how to make the table passed to handleSave dynamic */}
         <Button
           variant="primary"
-          onClick={() => props.handleSaveChanges("sessionData")}
+          onClick={() => props.handleSaveChanges(props.table)}
         >
           Save Changes
         </Button>

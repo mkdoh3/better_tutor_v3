@@ -1,7 +1,7 @@
 const cron = require("node-cron");
 const nodemailer = require("nodemailer");
 const Email = require("email-templates");
-const emailUtils = require("./emailUtils");
+const emailUtils = require("../utils/emailUtils");
 
 const transport = nodemailer.createTransport({
   service: "gmail",
@@ -19,8 +19,8 @@ const email = new Email({
 });
 
 function Message(emailInfo) {
-  if (emailInfo.studentEmail) {
-    this.to = emailInfo.studentEmail;
+  if (emailInfo.email) {
+    this.to = emailInfo.email;
     this.cc = ["mkdohertyta@gmail.com", "centraltutorsupport@bootcampspot.com"];
   }
   if (typeof emailInfo[0] === "string") {
@@ -31,8 +31,8 @@ function Message(emailInfo) {
 }
 
 function Locals(emailInfo) {
-  const { name, timeDate, zoomLink } = emailInfo;
-  this.name = name;
+  const { firstName, timeDate, zoomLink } = emailInfo;
+  this.firstName = firstName;
   this.timeDate = timeDate;
   this.link = zoomLink;
 }
@@ -40,8 +40,10 @@ function Locals(emailInfo) {
 function generateEmail(emailInfo, template) {
   const message = new Message(emailInfo);
   let locals = null;
-  if (emailInfo.name) {
+  if (template === "session-reminders") {
     locals = new Locals(emailInfo);
+  } else if (template === "congrats") {
+    locals = { firstName: emailInfo.firstName };
   }
   email
     .send({
@@ -54,12 +56,11 @@ function generateEmail(emailInfo, template) {
 }
 
 function sendCongrats() {
-  emailUtils.generateCongratsList();
-  // .then(emailList => {
-  //   emailList.forEach(grad => {
-  //     need to add this template
-  //     generateEmail(grad, "congrats");
-  //   });
+  emailUtils.generateCongratsList().then(emailList => {
+    emailList.forEach(grad => {
+      generateEmail(grad, "congrats");
+    });
+  });
 }
 
 function sendReminders() {
@@ -77,13 +78,13 @@ function sendBlast() {
 }
 
 (function() {
-  cron.schedule("30 16 * * *", function() {
+  cron.schedule("30 17 * * *", function() {
     console.log(`${Date.now().toLocaleString()}: Running reminders cron job`);
-    // sendCongrats();
+    sendCongrats();
     //also inserts next weeks session for reoccurring events
     sendReminders();
   });
-  cron.schedule("30 15 * * 7", function() {
+  cron.schedule("30 16 * * 7", function() {
     console.log(`${Date.now().toLocaleString()}: Running email blast cron job`);
     sendBlast();
   });

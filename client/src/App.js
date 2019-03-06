@@ -91,8 +91,7 @@ class App extends Component {
   //how do we get this to rerender the dataTable properly? It would be easy enough to remove a new session or new student row from the end..
   //but what about changes random cells of the table.. I believe the original state based on the API call is being changed on edit..
   handleDiscardChanges = () => {
-    this.setState({ updates: [] });
-    this.handleClose();
+    this.setState({ updated: [], show: false });
   };
 
   handleAddStudent = () => {
@@ -195,14 +194,22 @@ class App extends Component {
     return <ActiveSession studentData={studentData} />;
   };
 
-  renderSaveModal = () => (
-    <SaveModal
-      show={this.state.show}
-      handleClose={this.handleClose}
-      handleDiscardChanges={this.handleDiscardChanges}
-      handleSaveChanges={this.handleOnSave}
-    />
-  );
+  renderSaveModal = () => {
+    const { tab } = this.state;
+    const table =
+      this.state.tab === "todaysSession" || tab === "allSessions"
+        ? "sessionData"
+        : "rosterData";
+    return (
+      <SaveModal
+        table={table}
+        show={this.state.show}
+        handleClose={this.handleClose}
+        handleDiscardChanges={this.handleDiscardChanges}
+        handleSaveChanges={this.handleOnSave}
+      />
+    );
+  };
   handleTabSelect = tab => {
     if (this.state.updated.length === 0) {
       this.setState({ tab });

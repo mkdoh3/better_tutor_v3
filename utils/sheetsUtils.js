@@ -26,7 +26,7 @@ async function filterStudentByEmail(email) {
   try {
     const rows = await sheetsUtils.querySheet(3);
     const studentData = await rows.filter(row => {
-      return row.studentEmail === email;
+      return row.email === email;
     })[0];
     return studentData;
   } catch (err) {
@@ -37,7 +37,7 @@ async function filterStudentByEmail(email) {
 async function formatDataOnCalendly(data) {
   try {
     const calendlyData = new FilteredHookData(data);
-    const studentData = await filterStudentByEmail(calendlyData.studentEmail);
+    const studentData = await filterStudentByEmail(calendlyData.email);
     return { ...studentData, ...calendlyData };
   } catch (err) {
     throw new Error(err);
@@ -54,8 +54,8 @@ function formatQueryReturn(rows) {
 
 //true much more often than not
 const sessionDefaults = {
-  ConfirmationSent: "Y",
-  back2Back: "N",
+  confirmed: "Y",
+  b2b: "N",
   showNoShow: "Show"
 };
 
@@ -100,11 +100,11 @@ const sheetsUtils = {
       throw new Error(err);
     }
   },
-  async removeStudent(githubName) {
-    console.log(githubName);
+  async removeStudent(github) {
+    console.log(github);
     try {
       const row = await this.querySheet(3, {
-        query: `student-github-username=${githubName}`
+        query: `github=${github}`
       });
       row[0].del();
     } catch (err) {
@@ -143,13 +143,13 @@ const sheetsUtils = {
 
   async createReoccurringSession(data, sessionDate) {
     try {
-      const studentData = await filterStudentByEmail(data.studentEmail);
-      const { studentSessionTime, localTime } = data;
+      const studentData = await filterStudentByEmail(data.email);
+      const { studentTime, localTime } = data;
       const newSession = {
         ...sessionDefaults,
         ...studentData,
         sessionDate,
-        studentSessionTime,
+        studentTime,
         localTime
       };
       this.addNewRow({ ...newSession }, 2);

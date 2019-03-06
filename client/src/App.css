@@ -16,15 +16,17 @@ body {
 .data-table {
   background-color: #e9eaec2b;
   box-shadow: 2px 5px 16px 0px #aba1a1e0;
+  width: 94vw;
 }
 
 .header-class {
-  background-color: #20c9f7a6;
+  background-color: #1ba9d0a6;
 }
 .table thead th {
-  border: 1px solid #3e4575;
+  border: 1px double #3e4575;
   font-weight: 500;
   box-shadow: 0px 2px 0px 0px #5d5959;
+  padding: 6px;
 }
 
 .active {
@@ -46,7 +48,7 @@ body {
   color: #000;
   background-color: #ffee7d !important;
   border-color: #edae49 !important;
-  box-shadow: 2px 2px 0px #c5c0c0;
+  box-shadow: 2px 2px 1px 1px #d6bc3dde;
 }
 .show > .btn-primary.dropdown-toggle {
   color: #000;
@@ -57,10 +59,10 @@ body {
 .btn-success:hover {
   width: 125px;
   color: #000;
-  background-color: #4fef5978;
-  border-color: #775b5b;
+  background-color: #51e25aa3;
+  border-color: #42c325f7;
   font-size: 18px;
-  box-shadow: 2px 2px 0px #c5c0c0;
+  box-shadow: 2px 2px 1px 1px #32791b61;
 }
 .no-sessions {
   height: 100%;
@@ -140,3 +142,7 @@ iframe {
 .card-body .btn {
   margin-left: 0px;
 }
+
+/* .editing-cell {
+  
+} */

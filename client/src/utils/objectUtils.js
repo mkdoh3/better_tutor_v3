@@ -1,3 +1,5 @@
+import decamelize from "decamelize";
+
 export default {
   placeholderObj: obj => {
     for (let key in obj) {
@@ -17,5 +19,5 @@ export default {
 export const Column = function(field) {
   this.editorClassName = () => "editing-cell";
   this.dataField = field;
-  this.text = field;
+  this.text = decamelize(field, " ");
 };

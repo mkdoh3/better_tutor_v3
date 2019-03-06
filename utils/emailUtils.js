@@ -29,13 +29,10 @@ function findGraduates(rows) {
   const grads = [];
   rows.forEach(row => {
     if (checkIfToday(row.graduationDate)) {
-      grads.push(row.studentEmail);
-      sheets.removeStudent(row.studentGithubUsername);
-      //cause sheets queries fucking hate email addresses...
+      grads.push({ email: row.email, firstName: getFirstName(row.name) });
+      sheets.removeStudent(row.github);
     }
   });
-  //this seems a little wonky
-
   console.log("grads!!! ========> ", grads);
   return grads;
 }
@@ -62,19 +59,12 @@ function findUpcomingSession(rows) {
 }
 
 function formatEmailInfo(data) {
-  const {
-    studentEmail,
-    studentName,
-    sessionDate,
-    studentSessionTime,
-    studentTz,
-    zoomLink
-  } = data;
-  const timeDate = formatTimeDate(sessionDate, studentSessionTime, studentTz);
-  const name = getFirstName(studentName);
+  const { email, name, sessionDate, studentTime, studentTz, zoomLink } = data;
+  const timeDate = formatTimeDate(sessionDate, studentTime, studentTz);
+  const firstName = getFirstName(name);
   const emailInfo = {
-    studentEmail,
-    name,
+    email,
+    firstName,
     timeDate,
     zoomLink
   };
@@ -84,7 +74,7 @@ function formatEmailInfo(data) {
 const emailUtils = {
   generateBlastList: async () => {
     const rows = await sheets.querySheet(3);
-    const emailList = await rows.map(student => student.studentEmail);
+    const emailList = await rows.map(student => student.email);
     return emailList;
   },
   generateRemindersList: async () => {

@@ -8,6 +8,7 @@
   "proxy": "http://localhost:3001/",
   "dependencies": {
     "axios": "^0.18.0",
+    "decamelize": "^2.0.0",
     "iframe-resizer": "^3.6.6",
     "moment": "^2.24.0",
     "react": "^16.8.1",
