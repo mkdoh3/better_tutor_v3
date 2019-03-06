@@ -17,6 +17,7 @@ export default {
 };
 
 export const Column = function(field) {
+  //still need to actually use this classname in css to change editing textarea style
   this.editorClassName = () => "editing-cell";
   this.dataField = field;
   this.text = decamelize(field, " ");

@@ -5,8 +5,9 @@ import DropSelect from "./components/DropSelect";
 import Btn from "./components/Btn";
 import ActiveSession from "./components/ActiveSession";
 import SaveModal from "./components/SaveModal";
+
+import uniqid from "uniqid";
 import API from "./services/API";
-// import filter from "./utils/dataFilter";
 import { filter, obj } from "./utils";
 import "./App.css";
 
@@ -23,12 +24,8 @@ class App extends Component {
     this.fetchSessionData();
     this.fetchRosterData();
   }
-  handleClose = () => {
-    this.setState({ show: false });
-  };
-
-  handleShow = () => {
-    this.setState({ show: true });
+  modalToggle = () => {
+    this.setState({ show: !this.state.show });
   };
 
   fetchSessionData = async () => {
@@ -79,7 +76,7 @@ class App extends Component {
     this.state.updated.forEach(indexRef => {
       updates.push(this.state[tableName][indexRef]);
     });
-    API.update(updates, tableName).then(() => {
+    API.updateSheet(updates, tableName).then(() => {
       if (this.state.show) {
         this.setState({ updated: [], show: false });
       } else {
@@ -91,7 +88,10 @@ class App extends Component {
   //how do we get this to rerender the dataTable properly? It would be easy enough to remove a new session or new student row from the end..
   //but what about changes random cells of the table.. I believe the original state based on the API call is being changed on edit..
   handleDiscardChanges = () => {
-    this.setState({ updated: [], show: false });
+    const sessionData = this.state.sessionData.filter(
+      session => !session.hasOwnProperty("newRow")
+    );
+    this.setState({ sessionData, updated: [], show: false });
   };
 
   handleAddStudent = () => {
@@ -104,28 +104,35 @@ class App extends Component {
 
   handleAddSession = eventKey => {
     const sessionData = [...this.state.sessionData];
-    const updated = [...this.state.updated];
     const rowData = filter.findStudent(eventKey, this.state.rosterData);
+    rowData.b2b = "N";
+    rowData.showNoShow = "Show";
     obj.mergeObjects(sessionData[0], rowData);
-    this.handleAddRow("sessionData", sessionData, rowData, updated);
+    this.handleAddRow("sessionData", sessionData, rowData);
   };
 
-  handleAddRow = (table, data, newRow, updated) => {
+  handleAddRow = (table, data, newRow) => {
+    const updated = [...this.state.updated];
     const newIndex = data.length;
     newRow.index = newIndex;
     newRow.newRow = true;
+    newRow.sessionId = uniqid();
     data.push(newRow);
     updated.push(newIndex);
     this.setState({ [table]: data, updated });
   };
-  //this is set up to grab all of the row data on row double click within the 'todays sessions' tab
-  //that data should be used to render everything else relevant to the current session - adp notes form(b2b, no-show etc. copy to clipboard and launch link to adp)
-  //survey link and class code(copy to clip board option), embedded tutor survey pre populated with student data
-  //timer? launch zoom link? update adp time in and out? better way to save data after session end?
+
+  handleRowDelete = id => {
+    API.deleteRow(id);
+    const sessionData = this.state.sessionData.filter(
+      session => session.sessionId !== id
+    );
+    this.setState({ sessionData });
+  };
+
   handleStartSession = activeSession => {
     //do we need to even save all of this active session data in state?? can I just do state.activeSession: true?
     //then from here could we pass the row data directly to renderActiveSession?
-    console.log(activeSession);
     if (!this.state.activeSession) {
       this.setState({ activeSession });
     }
@@ -140,6 +147,7 @@ class App extends Component {
         <DataTable
           data={data}
           sessions={true}
+          todaysSessions={true}
           tableName="sessionData"
           handleRowUpdate={this.handleRowUpdate}
           handleStartSession={this.handleStartSession}
@@ -155,6 +163,7 @@ class App extends Component {
         sessions={sessions}
         data={this.state[table]}
         handleRowUpdate={this.handleRowUpdate}
+        handleRowDelete={this.handleRowDelete}
       />
     ) : (
       <h1>Fetching Table Data</h1>
@@ -204,7 +213,7 @@ class App extends Component {
       <SaveModal
         table={table}
         show={this.state.show}
-        handleClose={this.handleClose}
+        modalToggle={this.modalToggle}
         handleDiscardChanges={this.handleDiscardChanges}
         handleSaveChanges={this.handleOnSave}
       />
@@ -214,7 +223,7 @@ class App extends Component {
     if (this.state.updated.length === 0) {
       this.setState({ tab });
     } else {
-      this.handleShow();
+      this.modalToggle();
     }
   };
 

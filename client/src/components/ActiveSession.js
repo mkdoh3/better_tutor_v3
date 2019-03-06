@@ -9,12 +9,12 @@ import TutorForm from "./TutorForm";
 const ActiveSession = props => {
   const {
     classCode,
-    studentName,
-    studentEmail,
-    studentGithubUsername,
+    name,
+    email,
+    github,
     zoomLink,
     prevNotes,
-    back2Back,
+    b2b,
     showNoShow
   } = props.studentData;
   return (
@@ -26,31 +26,25 @@ const ActiveSession = props => {
             className="mb-2 text-muted"
             style={{ textAlign: "center", padding: "10px" }}
           >
-            Session Details -{" "}
-            <span style={{ fontWeight: "bold" }}>{studentName}</span> -{" "}
-            <Card.Link href={zoomLink}>Launch Zoom</Card.Link>
+            Session Details - <span style={{ fontWeight: "bold" }}>{name}</span>{" "}
+            - <Card.Link href={zoomLink}>Launch Zoom</Card.Link>
           </Card.Title>
           <div
             className="card-main"
             style={{ display: "flex", justifyContent: "space-between" }}
           >
-            <StudentInfo name={studentName} link={zoomLink} notes={prevNotes} />
+            <StudentInfo name={name} link={zoomLink} notes={prevNotes} />
             <ADPNotes
               code={classCode}
-              name={studentName}
-              b2b={back2Back}
+              name={name}
+              b2b={b2b}
               showNoShow={showNoShow}
             />
             <SurveyLink code={classCode} />
           </div>
         </Card.Body>
       </Card>
-      <TutorForm
-        code={classCode}
-        name={studentName}
-        email={studentEmail}
-        github={studentGithubUsername}
-      />
+      <TutorForm code={classCode} name={name} email={email} github={github} />
     </div>
   );
 };

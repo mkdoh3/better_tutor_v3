@@ -4,7 +4,7 @@
 <!-- 1a) still need to delete that shit! -->
 <!-- 1b.)create congrats email list -->
 
-1c.) create congrats template and send that shit wih reminder of tutoring ending,
+<!-- 1c.) create congrats template and send that shit wih reminder of tutoring ending, -->
 
 <!-- 2.)parse sessions - check dates for upcoming sessions to be used for session email reminders -->
 <!-- 3.)parse roster - gather email addresses to generate weekly blast emails -->
@@ -57,7 +57,8 @@
 <!-- 11.) move in line function calls from render into new method -->
 
 12.) Pagination on all sessions table
-13.) save confirmation
+
+<!-- 13.) save confirmation -->
 
 <!-- 14.)**start building active session page** -->
 
@@ -82,7 +83,8 @@
 
 \*\*Future Features?\*\*
 1.) save cell edit after clicking/tabbing instead of having to hit enter.
-2.) tab between cells to edit if possible
+
+<!-- 2.) tab between cells to edit if possible -->
 
 **BUGS**
 1.) tried everything I could possibly think of to get rid of the sheetUtils filter function and instead use a structured query. google doesnt like querying by email address.. I tried to url encode it and everything!!

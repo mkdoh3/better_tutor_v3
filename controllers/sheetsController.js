@@ -40,5 +40,13 @@ module.exports = {
     } catch (err) {
       res.status(422).json(err);
     }
+  },
+  deleteRow: async (req, res) => {
+    try {
+      const row = await sheets.deleteSession(req.body.id);
+      res.status(200).json(row);
+    } catch (err) {
+      res.status(422).json(err);
+    }
   }
 };

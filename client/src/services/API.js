@@ -16,6 +16,14 @@ async function Post(url, params = {}) {
     throw new Error(err);
   }
 }
+async function Delete(url, params = {}) {
+  try {
+    const response = await axios.delete(`/api/${url}`, params);
+    return response;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
 
 export default {
   getSheetData: tab => {
@@ -24,7 +32,10 @@ export default {
   getSessionData: () => {
     return Get(`sheets/sessions`);
   },
-  update: (updates, tableName) => {
+  updateSheet: (updates, tableName) => {
     return Post(`sheets/update`, { updates, tableName });
+  },
+  deleteRow: id => {
+    return Delete("sheets/session", { data: { id: `${id}` } });
   }
 };
