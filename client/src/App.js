@@ -228,8 +228,6 @@ class App extends Component {
   };
 
   render() {
-    console.log(filter);
-
     return (
       <>
         {this.state.show && this.renderSaveModal()}
