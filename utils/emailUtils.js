@@ -6,17 +6,25 @@ function getFirstName(fullName) {
 }
 
 function checkIfTomorrow(date) {
+  console.log("tomorrow --->  ", date);
   const tomorrowsDate = moment()
     .add(1, "day")
     .format("YYYY-MM-DD");
-  return moment(date).format("YYYY-MM-DD") === tomorrowsDate;
+  return moment(date, "YYYY-MM-DD").format("YYYY-MM-DD") === tomorrowsDate;
 }
 function checkIfToday(date) {
-  return moment(date).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD");
+  console.log("today --->  ", date);
+
+  return (
+    moment(date, "YYYY-MM-DD").format("YYYY-MM-DD") ===
+    moment().format("YYYY-MM-DD")
+  );
 }
 
 function getNextSessionDate(date) {
-  return moment(date)
+  console.log("next --->  ", date);
+
+  return moment(date, "YYYY-MM-DD")
     .add(7, "days")
     .format("YYYY-MM-DD");
 }
@@ -33,7 +41,6 @@ function findGraduates(rows) {
       sheets.removeStudent(row.github);
     }
   });
-  console.log("grads!!! ========> ", grads);
   return grads;
 }
 

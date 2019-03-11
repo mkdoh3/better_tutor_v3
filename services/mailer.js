@@ -15,7 +15,7 @@ const email = new Email({
     from: process.env.EMAIL_ADDRESS
   },
   transport,
-  send: false //set to false for testing
+  send: true //set to false for testing
 });
 
 function Message(emailInfo) {
@@ -84,7 +84,7 @@ function sendBlast() {
     //also inserts next weeks session for reoccurring events
     sendReminders();
   });
-  cron.schedule("* * * * *", function() {
+  cron.schedule("30 17 * * 7", function() {
     console.log(`${Date.now().toLocaleString()}: Running email blast cron job`);
     sendBlast();
   });
