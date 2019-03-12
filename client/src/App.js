@@ -5,10 +5,9 @@ import DropSelect from "./components/DropSelect";
 import Btn from "./components/Btn";
 import ActiveSession from "./components/ActiveSession";
 import SaveModal from "./components/SaveModal";
-
-import uniqid from "uniqid";
 import API from "./services/API";
 import { filter, obj } from "./utils";
+import uniqid from "uniqid";
 import "./App.css";
 
 class App extends Component {
@@ -33,7 +32,7 @@ class App extends Component {
       const sessionRes = await API.getSheetData(1);
       const sessionData = await sessionRes.data;
       sessionData.forEach((record, i) => (record.index = i));
-      return this.setState({ sessionData });
+      return this.setState({ sessionData, show: false, updated: [] });
     } catch (err) {
       throw new Error(err);
     }
@@ -44,7 +43,7 @@ class App extends Component {
       const rosterRes = await API.getSheetData(3);
       const rosterData = await rosterRes.data;
       rosterData.forEach((record, i) => (record.index = i));
-      return this.setState({ rosterData });
+      return this.setState({ rosterData, show: false, updated: [] });
     } catch (err) {
       throw new Error(err);
     }
@@ -86,12 +85,13 @@ class App extends Component {
   };
 
   //how do we get this to rerender the dataTable properly? It would be easy enough to remove a new session or new student row from the end..
-  //but what about changes random cells of the table.. I believe the original state based on the API call is being changed on edit..
+  //but what about changes random cells of the table.. I believe the original state based on the API call is being changed on edit.. sooo
   handleDiscardChanges = () => {
-    const sessionData = this.state.sessionData.filter(
-      session => !session.hasOwnProperty("newRow")
-    );
-    this.setState({ sessionData, updated: [], show: false });
+    if (this.state.tab === "rosterData") {
+      this.fetchRosterData();
+    } else {
+      this.fetchSessionData();
+    }
   };
 
   handleAddStudent = () => {

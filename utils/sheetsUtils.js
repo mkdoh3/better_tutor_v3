@@ -5,6 +5,7 @@ const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID);
 const casing = require("./casingUtils");
 const { FilteredHookData } = require("./calendlyUtils");
 const _ = require("lodash");
+const uniqid = require("uniqid");
 
 //this file could probably use some rewrites and better error handling
 
@@ -101,7 +102,6 @@ const sheetsUtils = {
     }
   },
   async removeStudent(github) {
-    console.log(github);
     try {
       const row = await this.querySheet(3, {
         query: `github=${github}`
@@ -143,12 +143,30 @@ const sheetsUtils = {
 
   async createReoccurringSession(data, sessionDate) {
     try {
-      const studentData = await filterStudentByEmail(data.email);
-      const { studentTime, localTime } = data;
+      const {
+        name,
+        email,
+        github,
+        reoccurring,
+        classCode,
+        graduationDate,
+        studentTz,
+        tzDif,
+        studentTime,
+        localTime,
+        sessionId
+      } = data;
       const newSession = {
         ...sessionDefaults,
-        ...studentData,
         sessionDate,
+        name,
+        email,
+        github,
+        reoccurring,
+        classCode,
+        graduationDate,
+        studentTz,
+        tzDif,
         studentTime,
         localTime
       };

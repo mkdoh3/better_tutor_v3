@@ -96,5 +96,6 @@ const emailUtils = {
     return emailList;
   }
 };
+emailUtils.generateRemindersList();
 
 module.exports = emailUtils;
