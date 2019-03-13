@@ -8,6 +8,7 @@ import SaveModal from "./components/SaveModal";
 import API from "./services/API";
 import { filter, obj } from "./utils";
 import uniqid from "uniqid";
+import { sortBy, findIndex } from "lodash";
 import "./App.css";
 
 class App extends Component {
@@ -48,16 +49,16 @@ class App extends Component {
       throw new Error(err);
     }
   };
-
-  findSessionNotes = (studentEmail, index) => {
-    const sessionData = this.state.sessionData;
-    for (let i = index - 1; i >= 0; i--) {
-      if (sessionData[i].studentEmail === studentEmail) {
-        return sessionData[i].notes;
-      }
-    }
+  //rework to rely on actual data instead of made up index
+  findSessionNotes = (email, date) => {
+    const sessionData = this.state.sessionData.filter(
+      row => row.email === email
+    );
+    const sortedSessions = sortBy(sessionData, "sessionDate");
+    const prevIndex = findIndex(sortedSessions, { sessionDate: date }) - 1;
+    return sessionData[prevIndex].notes;
   };
-
+  //maybe update based on sessionId instead of index
   //this is probably a little sloppy. The idea is to save the indices of updated object to later do a batch update on the backend on save or componentWillUnmount
   handleRowUpdate = (data, table) => {
     const indexRef = data.index;
@@ -84,8 +85,6 @@ class App extends Component {
     });
   };
 
-  //how do we get this to rerender the dataTable properly? It would be easy enough to remove a new session or new student row from the end..
-  //but what about changes random cells of the table.. I believe the original state based on the API call is being changed on edit.. sooo
   handleDiscardChanges = () => {
     if (this.state.tab === "rosterData") {
       this.fetchRosterData();
@@ -197,8 +196,8 @@ class App extends Component {
   renderActiveSession = () => {
     //this component already has the whole list of session, so we should probs just find the previous session notes from here and make ActiveSession stateless
     const studentData = { ...this.state.activeSession };
-    const { studentEmail, index } = studentData;
-    const prevNotes = this.findSessionNotes(studentEmail, index);
+    const { email, sessionDate } = studentData;
+    const prevNotes = this.findSessionNotes(email, sessionDate);
     studentData.prevNotes = prevNotes;
     return <ActiveSession studentData={studentData} />;
   };

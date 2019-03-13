@@ -98,5 +98,5 @@
 3.) is adding 7 days to the auto reschedule completely reliable?
 4.) need to figure out a way to handle auto rescheduling after a reoccurring meeting has a one-time reschedule
 **\*\***5.) discard changes - broken in a few ways. if you add a new row and save it - then make a change and discard it - the new row will also disappear - something to do with the newRow flag. Also - editing a cell on an existing row and then discarding the change might also not be working properly
-****\*****6.) mailer is currently fucked up
+
 **\*\*\***87.) the calendly hook handler seems to insert new sessions on the next day for some reason.. might have to do with the moment js formatting and the server's local time... should probably work on localization of my times!**\*\*\*\***\*\*\***\*\*\*\***
