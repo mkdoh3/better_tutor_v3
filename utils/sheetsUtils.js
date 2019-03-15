@@ -141,36 +141,12 @@ const sheetsUtils = {
     }
   },
 
-  async createReoccurringSession(data, sessionDate) {
+  async createReoccurringSession(sessionData, sessionDate) {
+    console.log("reocurring sessionData --->", sessionData);
     try {
-      const {
-        name,
-        email,
-        github,
-        reoccurring,
-        classCode,
-        graduationDate,
-        studentTz,
-        tzDif,
-        studentTime,
-        localTime,
-        sessionId
-      } = data;
-      const newSession = {
-        ...sessionDefaults,
-        sessionDate,
-        name,
-        email,
-        github,
-        reoccurring,
-        classCode,
-        graduationDate,
-        studentTz,
-        tzDif,
-        studentTime,
-        localTime
-      };
-      this.addNewRow({ ...newSession }, 2);
+      sessionData.sessionDate = sessionDate;
+      sessionData.sessionId = uniqid();
+      this.addNewRow({ ...sessionData }, 2);
     } catch (err) {
       throw new Error(err);
     }
