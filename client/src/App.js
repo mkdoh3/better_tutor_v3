@@ -72,6 +72,7 @@ class App extends Component {
   };
 
   handleOnSave = tableName => {
+    debugger;
     const updates = [];
     this.state.updated.forEach(indexRef => {
       updates.push(this.state[tableName][indexRef]);

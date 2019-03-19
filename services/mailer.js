@@ -15,7 +15,7 @@ const email = new Email({
     from: process.env.EMAIL_ADDRESS
   },
   transport,
-  send: true //set to false for testing
+  send: false //set to false for testing
 });
 
 function Message(emailInfo) {

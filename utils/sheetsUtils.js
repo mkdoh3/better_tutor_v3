@@ -7,8 +7,7 @@ const { FilteredHookData } = require("./calendlyUtils");
 const _ = require("lodash");
 const uniqid = require("uniqid");
 
-//this file could probably use some rewrites and better error handling
-
+//these functions should be moved into obj utils
 function omitData(obj) {
   //remove extra data from the sheets return that is irrelevant to the front end
   return _.omit(obj, ["_xml", "_links", "id", "save", "del", "app:edited"]);
@@ -111,6 +110,7 @@ const sheetsUtils = {
       throw new Error(err);
     }
   },
+  //should query each row one at a time using the session id if not a new row?
 
   async updateSheet(updates, tableName) {
     const tab = tableName === "sessionData" ? 2 : 3;
@@ -120,8 +120,11 @@ const sheetsUtils = {
         if (rowData.newRow) {
           this.addNewRow(rowData, tab);
         } else {
+          //is the casing even necessary here??
           rowData = casing.camelCaseToKebab(rowData);
+          //should remove the reliance on index and focus on using something like session id
           const { index } = rowData;
+          //using session id I should be able to query the sheet just for the single session and not have to find it amongst all rows base on id
           const updatedRow = updateObj(rows[index], rowData);
           updatedRow.save();
         }
@@ -142,7 +145,6 @@ const sheetsUtils = {
   },
 
   async createReoccurringSession(sessionData, sessionDate) {
-    console.log("reocurring sessionData --->", sessionData);
     try {
       sessionData.sessionDate = sessionDate;
       sessionData.sessionId = uniqid();
