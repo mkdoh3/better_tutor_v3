@@ -6,15 +6,12 @@ function getFirstName(fullName) {
 }
 
 function checkIfTomorrow(date) {
-  console.log("tomorrow --->  ", date);
   const tomorrowsDate = moment()
     .add(1, "day")
     .format("YYYY-MM-DD");
   return moment(date, "YYYY-MM-DD").format("YYYY-MM-DD") === tomorrowsDate;
 }
 function checkIfToday(date) {
-  console.log("today --->  ", date);
-
   return (
     moment(date, "YYYY-MM-DD").format("YYYY-MM-DD") ===
     moment().format("YYYY-MM-DD")
@@ -22,8 +19,6 @@ function checkIfToday(date) {
 }
 
 function getNextSessionDate(date) {
-  console.log("next --->  ", date);
-
   return moment(date, "YYYY-MM-DD")
     .add(7, "days")
     .format("YYYY-MM-DD");

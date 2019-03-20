@@ -1,19 +1,28 @@
 import decamelize from "decamelize";
+import uniqid from "uniqid";
 
-export default {
-  placeholderObj: obj => {
+const objUtils = {
+  placeholderObj(obj) {
     for (let key in obj) {
       obj[key] = key;
     }
   },
 
-  //spread operator??
-  mergeObjects: (obj1, obj2) => {
+  mergeObjects(obj1, obj2) {
     for (let key in obj1) {
       if (!obj2.hasOwnProperty(key)) {
         obj2[key] = "";
       }
     }
+  },
+
+  buildSession(template, rowData) {
+    this.mergeObjects(template, rowData);
+    rowData.rowId = uniqid();
+    rowData.showNoShow = "Show";
+    rowData.b2b = "N";
+    rowData.newRow = true;
+    return rowData;
   }
 };
 
@@ -23,3 +32,5 @@ export const Column = function(field) {
   this.dataField = field;
   this.text = decamelize(field, " ");
 };
+
+export default objUtils;

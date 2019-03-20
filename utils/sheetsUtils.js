@@ -93,7 +93,7 @@ const sheetsUtils = {
   async deleteSession(id) {
     try {
       const row = await this.querySheet(2, {
-        query: `session-id=${id}`
+        query: `row-id=${id}`
       });
       row[0].del();
     } catch (err) {
@@ -111,10 +111,10 @@ const sheetsUtils = {
     }
   },
   //should query each row one at a time using the session id if not a new row?
-  ///////////////
-  ///////////////   still need to change the frontend 'updated' state to be sessionId instead of index
+  ///////////////   still need to change the frontend 'updated' state to be ID instead of index
+  ///////////////   ..but then what about roster updates??
   //////////////////
-  //////////////
+
   async updateSheet(updates, tableName) {
     const tab = tableName === "sessionData" ? 2 : 3;
     for (let update of updates) {
@@ -124,7 +124,7 @@ const sheetsUtils = {
         update = casing.camelCaseToKebab(update);
         try {
           const response = await this.querySheet(tab, {
-            query: `session-id=${update["session-id"]}`
+            query: `row-id=${update["row-id"]}`
           });
           const row = response[0];
           const updatedRow = updateObj(row, update);
@@ -149,7 +149,7 @@ const sheetsUtils = {
   async createReoccurringSession(sessionData, sessionDate) {
     try {
       sessionData.sessionDate = sessionDate;
-      sessionData.sessionId = uniqid();
+      sessionData.rowId = uniqid();
       this.addNewRow({ ...sessionData }, 2);
     } catch (err) {
       throw new Error(err);

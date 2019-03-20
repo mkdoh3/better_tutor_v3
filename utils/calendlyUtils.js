@@ -4,7 +4,7 @@ function FilteredHookData(data) {
   this.studentTime = data.event.invitee_start_time_pretty.split(" -")[0];
   this.localTime = data.event.start_time_pretty.split(" -")[0];
   this.email = data.invitee.email;
-  this.sessionId = data.event.uuid;
+  this.rowId = data.event.uuid;
 }
 
 module.exports = { FilteredHookData };

@@ -30,7 +30,6 @@ module.exports = {
   },
   updateRows: async (req, res) => {
     const { updates, tableName } = req.body;
-    console.log(updates, tableName);
     const updated = await sheets.updateSheet(updates, tableName);
     res.status(200).json(updated);
   },

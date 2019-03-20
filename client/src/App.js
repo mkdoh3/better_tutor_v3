@@ -7,7 +7,6 @@ import ActiveSession from "./components/ActiveSession";
 import SaveModal from "./components/SaveModal";
 import API from "./services/API";
 import { filter, obj } from "./utils";
-import uniqid from "uniqid";
 import { sortBy, findIndex } from "lodash";
 import "./App.css";
 
@@ -18,6 +17,7 @@ class App extends Component {
     updated: [],
     activeSession: null,
     tab: "todaysSessions",
+    attemptedTabClick: null,
     show: false
   };
   componentDidMount() {
@@ -32,7 +32,6 @@ class App extends Component {
     try {
       const sessionRes = await API.getSheetData(1);
       const sessionData = await sessionRes.data;
-      sessionData.forEach((record, i) => (record.index = i));
       return this.setState({ sessionData, show: false, updated: [] });
     } catch (err) {
       throw new Error(err);
@@ -43,7 +42,7 @@ class App extends Component {
     try {
       const rosterRes = await API.getSheetData(3);
       const rosterData = await rosterRes.data;
-      rosterData.forEach((record, i) => (record.index = i));
+      console.log("get dis data -------> ", rosterData);
       return this.setState({ rosterData, show: false, updated: [] });
     } catch (err) {
       throw new Error(err);
@@ -58,40 +57,40 @@ class App extends Component {
     const prevIndex = findIndex(sortedSessions, { sessionDate: date }) - 1;
     return sessionData[prevIndex].notes;
   };
-  //maybe update based on sessionId instead of index
+  //maybe update based on id instead of index
   //this is probably a little sloppy. The idea is to save the indices of updated object to later do a batch update on the backend on save or componentWillUnmount
-  handleRowUpdate = (data, table) => {
-    const indexRef = data.index;
-    const tableData = [...this.state[table]];
+  handleSessionUpdate = (data, table) => {
+    const { rowId } = data;
+    const sessionData = [...this.state.sessionData];
     const updated = [...this.state.updated];
-    if (!updated.includes(indexRef)) {
-      updated.push(indexRef);
+    if (!updated.includes(rowId)) {
+      updated.push(rowId);
     }
-    tableData[indexRef] = data;
-    this.setState({ [table]: tableData, updated });
+    const index = findIndex(sessionData, { rowId });
+    sessionData[index] = data;
+    this.setState({ sessionData, updated });
   };
 
-  handleOnSave = tableName => {
-    const updates = [];
-    this.state.updated.forEach(indexRef => {
-      const row = this.state[tableName][indexRef];
-      updates.push(this.state[tableName][indexRef]);
+  handleSaveSessions = () => {
+    debugger;
+    const updates = this.state.sessionData.filter(session => {
+      return this.state.updated.includes(session.rowId);
     });
-    API.updateSheet(updates, tableName).then(() => {
-      if (this.state.show) {
-        this.setState({ updated: [], show: false });
-      } else {
-        this.setState({ updated: [] });
-      }
+    API.updateSheet(updates, "sessionData").then(() => {
+      this.fetchSessionData();
     });
   };
 
   handleDiscardChanges = () => {
-    if (this.state.tab === "rosterData") {
+    if (this.state.tab === "roster") {
       this.fetchRosterData();
     } else {
       this.fetchSessionData();
     }
+    this.setState({
+      tab: this.state.attemptedTabClick,
+      attemptedTabClick: null
+    });
   };
 
   handleAddStudent = () => {
@@ -104,11 +103,12 @@ class App extends Component {
 
   handleAddSession = eventKey => {
     const sessionData = [...this.state.sessionData];
+    const updated = [...this.state.updated];
     const rowData = filter.findStudent(eventKey, this.state.rosterData);
-    rowData.b2b = "N";
-    rowData.showNoShow = "Show";
-    obj.mergeObjects(sessionData[0], rowData);
-    this.handleAddRow("sessionData", sessionData, rowData);
+    const newRow = obj.buildSession(sessionData[0], rowData);
+    sessionData.push(newRow);
+    updated.push(newRow.rowId);
+    this.setState({ sessionData, updated });
   };
 
   handleAddRow = (table, data, newRow) => {
@@ -116,7 +116,6 @@ class App extends Component {
     const newIndex = data.length;
     newRow.index = newIndex;
     newRow.newRow = true;
-    newRow.sessionId = uniqid();
     data.push(newRow);
     updated.push(newIndex);
     this.setState({ [table]: data, updated });
@@ -125,7 +124,7 @@ class App extends Component {
   handleRowDelete = id => {
     API.deleteRow(id);
     const sessionData = this.state.sessionData.filter(
-      session => session.sessionId !== id
+      session => session.rowId !== id
     );
     this.setState({ sessionData });
   };
@@ -149,7 +148,7 @@ class App extends Component {
           sessions={true}
           todaysSessions={true}
           tableName="sessionData"
-          handleRowUpdate={this.handleRowUpdate}
+          handleRowUpdate={this.handleSessionUpdate}
           handleStartSession={this.handleStartSession}
         />
       );
@@ -157,12 +156,16 @@ class App extends Component {
   };
   //pretty sure the sessions arg is now obsolete?
   renderDataTable = (table, sessions = false) => {
+    const handler =
+      table === "sessionData"
+        ? this.handleSessionUpdate
+        : this.handleRosterUpdate;
     return this.state[table].length > 0 ? (
       <DataTable
         tableName={table}
         sessions={sessions}
         data={this.state[table]}
-        handleRowUpdate={this.handleRowUpdate}
+        handleRowUpdate={handler}
         handleRowDelete={this.handleRowDelete}
       />
     ) : (
@@ -185,12 +188,10 @@ class App extends Component {
   );
 
   renderSaveBtn = table => {
+    const handler =
+      table === "sessionData" ? this.handleSaveSessions : this.handleSaveRoster;
     return this.state.updated.length > 0 ? (
-      <Btn
-        variant="success"
-        text="save"
-        onClick={() => this.handleOnSave(table)}
-      />
+      <Btn variant="success" text="save" onClick={handler} />
     ) : null;
   };
 
@@ -223,6 +224,7 @@ class App extends Component {
     if (this.state.updated.length === 0) {
       this.setState({ tab });
     } else {
+      this.setState({ attemptedTabClick: tab });
       this.modalToggle();
     }
   };

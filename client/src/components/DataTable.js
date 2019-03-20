@@ -70,10 +70,11 @@ const DataTable = props => {
           classes: "table-btn",
           events: {
             onClick: (e, column, columnIndex, row) => {
+              console.log("row --------->  ", row);
               if (
                 window.confirm("Are you sure you wish to delete this item?")
               ) {
-                props.handleRowDelete(row.sessionId);
+                props.handleRowDelete(row.rowId);
               }
             }
           },
@@ -82,8 +83,8 @@ const DataTable = props => {
           }
         },
         {
-          dataField: "sessionId",
-          text: "session id",
+          dataField: "rowId",
+          text: "row id",
           hidden: true
         }
       );
@@ -95,7 +96,7 @@ const DataTable = props => {
       striped
       bordered
       condensed
-      keyField="index"
+      keyField="rowId"
       data={props.data}
       columns={columns}
       cellEdit={cellEdit}
