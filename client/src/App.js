@@ -8,6 +8,7 @@ import SaveModal from "./components/SaveModal";
 import API from "./services/API";
 import { filter, obj } from "./utils";
 import { sortBy, findIndex } from "lodash";
+import uniqid from "uniqid";
 import "./App.css";
 
 class App extends Component {
@@ -57,9 +58,8 @@ class App extends Component {
     const prevIndex = findIndex(sortedSessions, { sessionDate: date }) - 1;
     return sessionData[prevIndex].notes;
   };
-  //maybe update based on id instead of index
-  //this is probably a little sloppy. The idea is to save the indices of updated object to later do a batch update on the backend on save or componentWillUnmount
-  handleSessionUpdate = (data, table) => {
+
+  handleSessionUpdate = data => {
     const { rowId } = data;
     const sessionData = [...this.state.sessionData];
     const updated = [...this.state.updated];
@@ -97,29 +97,33 @@ class App extends Component {
     const rosterData = [...this.state.rosterData];
     const updated = [...this.state.updated];
     const rowData = { ...this.state.rosterData[0] };
-    obj.placeholderObj(rowData);
-    this.handleAddRow("rosterData", rosterData, rowData, updated);
+    const newRow = obj.placeholderObj(rowData);
+    newRow.rowId = uniqid();
+    newRow.newRow = true;
+    rosterData.push(newRow);
+    updated.push(newRow.rowId);
+    this.setState({ rosterData, updated });
   };
 
   handleAddSession = eventKey => {
     const sessionData = [...this.state.sessionData];
     const updated = [...this.state.updated];
     const rowData = filter.findStudent(eventKey, this.state.rosterData);
-    const newRow = obj.buildSession(sessionData[0], rowData);
+    const newRow = obj.buildSessionRow(sessionData[0], rowData);
     sessionData.push(newRow);
     updated.push(newRow.rowId);
     this.setState({ sessionData, updated });
   };
 
-  handleAddRow = (table, data, newRow) => {
-    const updated = [...this.state.updated];
-    const newIndex = data.length;
-    newRow.index = newIndex;
-    newRow.newRow = true;
-    data.push(newRow);
-    updated.push(newIndex);
-    this.setState({ [table]: data, updated });
-  };
+  // handleAddRow = (table, data, newRow) => {
+  //   const updated = [...this.state.updated];
+  //   const newIndex = data.length;
+  //   newRow.index = newIndex;
+  //   newRow.newRow = true;
+  //   data.push(newRow);
+  //   updated.push(newIndex);
+  //   this.setState({ [table]: data, updated });
+  // };
 
   handleRowDelete = id => {
     API.deleteRow(id);
@@ -210,13 +214,15 @@ class App extends Component {
       this.state.tab === "todaysSession" || tab === "allSessions"
         ? "sessionData"
         : "rosterData";
+    const saveHandler =
+      table === "sessionData" ? this.handleSaveSessions : this.handleSaveRoster;
     return (
       <SaveModal
         table={table}
         show={this.state.show}
         modalToggle={this.modalToggle}
         handleDiscardChanges={this.handleDiscardChanges}
-        handleSaveChanges={this.handleOnSave}
+        handleSaveChanges={saveHandler}
       />
     );
   };

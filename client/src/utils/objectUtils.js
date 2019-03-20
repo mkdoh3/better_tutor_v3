@@ -6,6 +6,7 @@ const objUtils = {
     for (let key in obj) {
       obj[key] = key;
     }
+    return obj;
   },
 
   mergeObjects(obj1, obj2) {
@@ -16,7 +17,7 @@ const objUtils = {
     }
   },
 
-  buildSession(template, rowData) {
+  buildSessionRow(template, rowData) {
     this.mergeObjects(template, rowData);
     rowData.rowId = uniqid();
     rowData.showNoShow = "Show";
