@@ -111,26 +111,28 @@ const sheetsUtils = {
     }
   },
   //should query each row one at a time using the session id if not a new row?
-
+  ///////////////
+  ///////////////   still need to change the frontend 'updated' state to be sessionId instead of index
+  //////////////////
+  //////////////
   async updateSheet(updates, tableName) {
     const tab = tableName === "sessionData" ? 2 : 3;
-    try {
-      const rows = await this.querySheet(tab, { formatted: false });
-      updates.forEach(rowData => {
-        if (rowData.newRow) {
-          this.addNewRow(rowData, tab);
-        } else {
-          //is the casing even necessary here??
-          rowData = casing.camelCaseToKebab(rowData);
-          //should remove the reliance on index and focus on using something like session id
-          const { index } = rowData;
-          //using session id I should be able to query the sheet just for the single session and not have to find it amongst all rows base on id
-          const updatedRow = updateObj(rows[index], rowData);
+    for (let update of updates) {
+      if (update.newRow) {
+        this.addNewRow(update, tab);
+      } else {
+        update = casing.camelCaseToKebab(update);
+        try {
+          const response = await this.querySheet(tab, {
+            query: `session-id=${update["session-id"]}`
+          });
+          const row = response[0];
+          const updatedRow = updateObj(row, update);
           updatedRow.save();
+        } catch (err) {
+          throw new Error(err);
         }
-      });
-    } catch (err) {
-      throw new Error(err);
+      }
     }
   },
 

@@ -72,9 +72,9 @@ class App extends Component {
   };
 
   handleOnSave = tableName => {
-    debugger;
     const updates = [];
     this.state.updated.forEach(indexRef => {
+      const row = this.state[tableName][indexRef];
       updates.push(this.state[tableName][indexRef]);
     });
     API.updateSheet(updates, tableName).then(() => {
