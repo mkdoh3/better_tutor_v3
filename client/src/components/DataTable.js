@@ -20,7 +20,7 @@ const DataTable = props => {
         "showNoShow",
         "notes",
         "evalSubmit",
-        "zoomLink"
+        "reoccurring"
       ])
     : (fields = [
         "classCode",
