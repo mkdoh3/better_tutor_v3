@@ -1,9 +1,10 @@
 import React from "react";
+import { Column } from "../utils";
 import BootstrapTable from "react-bootstrap-table-next";
 import cellEditFactory from "react-bootstrap-table2-editor";
-// import paginationFactory from "react-bootstrap-table2-paginator";
+import ToolkitProvider, { ColumnToggle } from "react-bootstrap-table2-toolkit";
+const { ToggleList } = ColumnToggle;
 
-import { Column } from "../utils";
 const DataTable = props => {
   const columns = [];
   let fields = [];
@@ -70,7 +71,6 @@ const DataTable = props => {
           classes: "table-btn",
           events: {
             onClick: (e, column, columnIndex, row) => {
-              console.log("row --------->  ", row);
               if (
                 window.confirm("Are you sure you wish to delete this item?")
               ) {
@@ -102,7 +102,6 @@ const DataTable = props => {
       cellEdit={cellEdit}
       headerClasses="header-class"
       classes="table-sm data-table"
-      // pagination={paginationFactory()}
     />
   );
 };

@@ -84,6 +84,9 @@
 <!-- 26.) fix embedded for styling.. again -->
 
 27.) fix zoom link (\_blank)
+28.) change confirm to modal
+29.) finish handleSaveRoster
+30.) SESSION END
 
 \*\*Future Features?\*\*
 1.) save cell edit after clicking/tabbing instead of having to hit enter.
@@ -91,12 +94,14 @@
 <!-- 2.) tab between cells to edit if possible -->
 
 **BUGS**
-1.) tried everything I could possibly think of to get rid of the sheetUtils filter function and instead use a structured query. google doesnt like querying by email address.. I tried to url encode it and everything!!
+
+<!-- 1.) tried everything I could possibly think of to get rid of the sheetUtils filter function and instead use a structured query. google doesnt like querying by email address.. I tried to url encode it and everything!! -->
 
 <!-- 2.) A calendly event showed up in sheets one day ahead of the actual date.. could not recreate -->
 
 3.) is adding 7 days to the auto reschedule completely reliable?
 4.) need to figure out a way to handle auto rescheduling after a reoccurring meeting has a one-time reschedule
-**\*\***5.) discard changes - broken in a few ways. if you add a new row and save it - then make a change and discard it - the new row will also disappear - something to do with the newRow flag. Also - editing a cell on an existing row and then discarding the change might also not be working properly
 
-**\*\*\***87.) the calendly hook handler seems to insert new sessions on the next day for some reason.. might have to do with the moment js formatting and the server's local time... should probably work on localization of my times!**\*\*\*\***\*\*\***\*\*\*\***
+<!-- **\*\***5.) discard changes - broken in a few ways. if you add a new row and save it - then make a change and discard it - the new row will also disappear - something to do with the newRow flag. Also - editing a cell on an existing row and then discarding the change might also not be working properly -->
+
+<!-- **\*\*\***87.) the calendly hook handler seems to insert new sessions on the next day for some reason.. might have to do with the moment js formatting and the server's local time... should probably work on localization of my times!**\*\*\*\***\*\*\***\*\*\*\*** -->

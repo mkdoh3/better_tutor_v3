@@ -49,7 +49,7 @@ class App extends Component {
       throw new Error(err);
     }
   };
-  //rework to rely on actual data instead of made up index
+
   findSessionNotes = (email, date) => {
     const sessionData = this.state.sessionData.filter(
       row => row.email === email
@@ -59,39 +59,8 @@ class App extends Component {
     return sessionData[prevIndex].notes;
   };
 
-  handleSessionUpdate = data => {
-    const { rowId } = data;
-    const sessionData = [...this.state.sessionData];
-    const updated = [...this.state.updated];
-    if (!updated.includes(rowId)) {
-      updated.push(rowId);
-    }
-    const index = findIndex(sessionData, { rowId });
-    sessionData[index] = data;
-    this.setState({ sessionData, updated });
-  };
-
-  handleSaveSessions = () => {
-    debugger;
-    const updates = this.state.sessionData.filter(session => {
-      return this.state.updated.includes(session.rowId);
-    });
-    API.updateSheet(updates, "sessionData").then(() => {
-      this.fetchSessionData();
-    });
-  };
-
-  handleDiscardChanges = () => {
-    if (this.state.tab === "roster") {
-      this.fetchRosterData();
-    } else {
-      this.fetchSessionData();
-    }
-    this.setState({
-      tab: this.state.attemptedTabClick,
-      attemptedTabClick: null
-    });
-  };
+  //handleAddStudent and handleAddSession were originally a single function
+  // - but it seemed to cause more headaches than a few less lines of code were worth
 
   handleAddStudent = () => {
     const rosterData = [...this.state.rosterData];
@@ -115,15 +84,41 @@ class App extends Component {
     this.setState({ sessionData, updated });
   };
 
-  // handleAddRow = (table, data, newRow) => {
-  //   const updated = [...this.state.updated];
-  //   const newIndex = data.length;
-  //   newRow.index = newIndex;
-  //   newRow.newRow = true;
-  //   data.push(newRow);
-  //   updated.push(newIndex);
-  //   this.setState({ [table]: data, updated });
-  // };
+  //save a ref to the updated session obj for later batch save
+  handleRowUpdate = (data, table) => {
+    const { rowId } = data;
+    const rowData = [...this.state[table]];
+    const updated = [...this.state.updated];
+    if (!updated.includes(rowId)) {
+      updated.push(rowId);
+    }
+    const index = findIndex(table, { rowId });
+    rowData[index] = data;
+    this.setState({ [table]: rowData, updated });
+  };
+
+  handleSaveChanges = async table => {
+    console.log(table);
+    const updates = this.state[table].filter(row => {
+      return this.state.updated.includes(row.rowId);
+    });
+    await API.updateSheet(updates, table);
+    // re-fetching the data so that the row is no longer set as newRow: true
+    // ..couldn't figure out a better way to do this on the front end
+    this.fetchSessionData();
+  };
+
+  handleDiscardChanges = () => {
+    if (this.state.tab === "roster") {
+      this.fetchRosterData();
+    } else {
+      this.fetchSessionData();
+    }
+    this.setState({
+      tab: this.state.attemptedTabClick,
+      attemptedTabClick: null
+    });
+  };
 
   handleRowDelete = id => {
     API.deleteRow(id);
@@ -134,43 +129,42 @@ class App extends Component {
   };
 
   handleStartSession = activeSession => {
-    //do we need to even save all of this active session data in state?? can I just do state.activeSession: true?
+    //do we need to even save all of this active session data in state?? can I just do state.activeSession: true
     //then from here could we pass the row data directly to renderActiveSession?
     if (!this.state.activeSession) {
       this.setState({ activeSession });
     }
   };
 
-  renderTodaysSession = () => {
-    const data = filter.filterTodaysSessions(this.state.sessionData);
+  renderFilteredSessions = filterType => {
+    const data = filter.filterSessions(filterType, this.state.sessionData);
     if (data.length === 0) {
-      return <h1 className="no-sessions">Sorry, no sessions today</h1>;
+      return <h1 className="no-sessions">No Sessions Scheduled</h1>;
     } else {
-      return (
-        <DataTable
-          data={data}
-          sessions={true}
-          todaysSessions={true}
-          tableName="sessionData"
-          handleRowUpdate={this.handleSessionUpdate}
-          handleStartSession={this.handleStartSession}
-        />
-      );
+      return this.renderDataTable(data, true, true);
     }
   };
-  //pretty sure the sessions arg is now obsolete?
-  renderDataTable = (table, sessions = false) => {
-    const handler =
-      table === "sessionData"
-        ? this.handleSessionUpdate
-        : this.handleRosterUpdate;
-    return this.state[table].length > 0 ? (
+
+  renderTomorrowsSessions = () => {
+    const data = filter.filterTomorrowsSessions(this.state.sessionData);
+    if (data.length === 0) {
+      return (
+        <h1 className="no-sessions">No Sessions scheduled for tomorrow</h1>
+      );
+    } else {
+      return this.renderDataTable(data, true, true);
+    }
+  };
+
+  renderDataTable = (table, sessions = false, today = false) => {
+    return this.state.sessionData.length > 0 ? (
       <DataTable
         tableName={table}
         sessions={sessions}
-        data={this.state[table]}
-        handleRowUpdate={handler}
+        data={this.state[table] || table}
+        handleRowUpdate={this.handleRowUpdate}
         handleRowDelete={this.handleRowDelete}
+        handleStartSession={today && this.handleStartSession}
       />
     ) : (
       <h1>Fetching Table Data</h1>
@@ -191,11 +185,15 @@ class App extends Component {
     <Btn variant="primary" onClick={this.handleAddStudent} text="Add Student" />
   );
 
-  renderSaveBtn = table => {
-    const handler =
-      table === "sessionData" ? this.handleSaveSessions : this.handleSaveRoster;
+  renderSaveBtn = (table = "sessionData") => {
+    // const handler =
+    //   table === "sessionData" ? this.handleSaveSessions : this.handleSaveRoster;
     return this.state.updated.length > 0 ? (
-      <Btn variant="success" text="save" onClick={handler} />
+      <Btn
+        variant="success"
+        text="save"
+        onClick={() => this.handleSaveChanges(table)}
+      />
     ) : null;
   };
 
@@ -208,24 +206,24 @@ class App extends Component {
     return <ActiveSession studentData={studentData} />;
   };
 
+  //I'm sure there's a way reuse my save buttons inside of my modal
   renderSaveModal = () => {
     const { tab } = this.state;
     const table =
       this.state.tab === "todaysSession" || tab === "allSessions"
         ? "sessionData"
         : "rosterData";
-    const saveHandler =
-      table === "sessionData" ? this.handleSaveSessions : this.handleSaveRoster;
     return (
       <SaveModal
         table={table}
         show={this.state.show}
         modalToggle={this.modalToggle}
         handleDiscardChanges={this.handleDiscardChanges}
-        handleSaveChanges={saveHandler}
+        handleSaveChanges={() => this.handleSaveChanges(table)}
       />
     );
   };
+
   handleTabSelect = tab => {
     if (this.state.updated.length === 0) {
       this.setState({ tab });
@@ -241,14 +239,22 @@ class App extends Component {
         {this.state.show && this.renderSaveModal()}
         <Tabs activeKey={this.state.tab} onSelect={this.handleTabSelect}>
           <Tab eventKey="todaysSessions" title="Today's Sessions">
-            {this.renderTodaysSession()}
-            {this.renderSaveBtn("sessionData")}
+            {this.renderFilteredSessions("today")}
+            {this.renderSaveBtn()}
             {this.state.activeSession && this.renderActiveSession()}
+          </Tab>
+          <Tab eventKey="tomorrowsSessions" title="Tomorrow's Sessions">
+            {this.renderFilteredSessions("tomorrow")}
+            {this.renderSaveBtn()}
+          </Tab>
+          <Tab eventKey="weeksSessions" title="Next 7 Days">
+            {this.renderFilteredSessions("weekly")}
+            {this.renderSaveBtn()}
           </Tab>
           <Tab eventKey="allSessions" title="All Sessions">
             {this.renderDataTable("sessionData", true)}
             {this.state.updated.length > 0
-              ? this.renderSaveBtn("sessionData")
+              ? this.renderSaveBtn()
               : this.renderDropSelect()}
           </Tab>
           <Tab eventKey="roster" title="Roster">

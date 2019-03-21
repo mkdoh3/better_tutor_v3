@@ -27,11 +27,12 @@ const objUtils = {
   }
 };
 
-export const Column = function(field) {
+export const Column = function(field, show) {
   //still need to actually use this classname in css to change editing textarea style
   this.editorClassName = () => "editing-cell";
   this.dataField = field;
   this.text = decamelize(field, " ");
+  this.hidden = show;
 };
 
 export default objUtils;
