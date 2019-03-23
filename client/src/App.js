@@ -141,27 +141,22 @@ class App extends Component {
     if (data.length === 0) {
       return <h1 className="no-sessions">No Sessions Scheduled</h1>;
     } else {
-      return this.renderDataTable(data, true, true);
+      return this.renderDataTable("sessionData", true, true, data);
     }
   };
 
-  renderTomorrowsSessions = () => {
-    const data = filter.filterTomorrowsSessions(this.state.sessionData);
-    if (data.length === 0) {
-      return (
-        <h1 className="no-sessions">No Sessions scheduled for tomorrow</h1>
-      );
-    } else {
-      return this.renderDataTable(data, true, true);
-    }
-  };
-
-  renderDataTable = (table, sessions = false, today = false) => {
+  renderDataTable = (
+    tableName,
+    sessions = false,
+    today = false,
+    filteredData = false
+  ) => {
     return this.state.sessionData.length > 0 ? (
       <DataTable
-        tableName={table}
+        tableName={tableName}
         sessions={sessions}
-        data={this.state[table] || table}
+        data={filteredData || this.state[tableName]}
+        todaysSessions={today}
         handleRowUpdate={this.handleRowUpdate}
         handleRowDelete={this.handleRowDelete}
         handleStartSession={today && this.handleStartSession}

@@ -19,6 +19,7 @@ const DataTable = props => {
         "b2b",
         "showNoShow",
         "notes",
+        "topics",
         "evalSubmit",
         "reoccurring"
       ])

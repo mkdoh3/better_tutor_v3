@@ -1,8 +1,6 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 
-//display name, zoomLink, notes from last session, what topics they want to cover maybe..
-
 const StudentInfo = props => {
   return (
     <Card style={{ width: "30vw" }}>
@@ -11,6 +9,8 @@ const StudentInfo = props => {
           Previous Session Notes:
         </Card.Title>
         <Card.Text>{props.notes}</Card.Text>
+        <Card.Title className="mb-2 text-muted">Topics to cover:</Card.Title>
+        <Card.Text>{props.topics}</Card.Text>
       </Card.Body>
     </Card>
   );

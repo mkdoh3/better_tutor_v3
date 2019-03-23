@@ -15,7 +15,9 @@ const ActiveSession = props => {
     zoomLink,
     prevNotes,
     b2b,
-    showNoShow
+    showNoShow,
+    topics,
+    sessionDate
   } = props.studentData;
   return (
     <div className="container-flex" style={{ margin: "1.5rem auto" }}>
@@ -31,9 +33,14 @@ const ActiveSession = props => {
           </Card.Title>
           <div
             className="card-main"
-            style={{ display: "flex", justifyContent: "space-between" }}
+            style={{ display: "flex", justifyContent: "space-around" }}
           >
-            <StudentInfo name={name} link={zoomLink} notes={prevNotes} />
+            <StudentInfo
+              name={name}
+              link={zoomLink}
+              notes={prevNotes}
+              topics={topics}
+            />
             <ADPNotes
               code={classCode}
               name={name}
@@ -44,7 +51,13 @@ const ActiveSession = props => {
           </div>
         </Card.Body>
       </Card>
-      <TutorForm code={classCode} name={name} email={email} github={github} />
+      <TutorForm
+        code={classCode}
+        name={name}
+        email={email}
+        github={github}
+        date={sessionDate}
+      />
     </div>
   );
 };
