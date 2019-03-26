@@ -34,8 +34,8 @@
 
 <!-- 18.) Give all sessions a unique id - not just calendly - then the same delete function used on the calendly cancel hook should be able to be used for manually deleting from the front end -->
 
-19.) change utils to named exports - export all of them from an index file
-20.) generate new uniqid on auto reschedule
+<!-- 19.) change utils to named exports - export all of them from an index file -->
+<!-- 20.) generate new uniqid on auto reschedule -->
 
 **Front End**
 
@@ -52,13 +52,12 @@
 <!-- 6.) manually add to roster & session tables & update google sheet -->
 <!-- 7.) Seperate roster and sessions editing -->
 
-8.) add loaders
+<!-- 8.) add loaders -->
+
 9.) table input validation - disable some fields?
 
 <!-- 10.) **refactor error handling - remove handling from lifecycle methods** -->
 <!-- 11.) move in line function calls from render into new method -->
-
-12.) Pagination on all sessions table
 
 <!-- 13.) save confirmation -->
 
@@ -66,30 +65,33 @@
 
 <!-- 15.) **_Refactor table data show - add student session time and my session time_** -->
 
-16.) Add Countdown Timer with start button and end button - blink tab when done??
+<!-- 16.) Add Countdown Timer with start button and end button - blink tab when done?? -->
+
 17.)Figure out how to handle session ending - auto fill time-in/time-out if possible??
 18.) the create session button should probably be using a new route to use the backend's sheetUtils.createSession as oppose to using sheetsUtils.update
 
 <!-- 19.) Add ability to delete a session -->
 
-20.) bring in react router and make active session its own page with its own state??
-21.) Tab for tomorrow's sessions
+<!-- 21.) Tab for tomorrow's sessions -->
 
 <!-- 22.) Make everything look better! -->
 
-23.) Should adp open on copy click?? or should that be a separate button??
-24.) should adp notes and survey link show up after the session is done?? - should they be editable??
-25.) can adp notes and survey be combined into one array??
-
 <!-- 26.) fix embedded for styling.. again -->
 
-27.) fix zoom link (\_blank)
+<!-- 27.) fix zoom link (\_blank) -->
+
 28.) change confirm to modal
-29.) finish handleSaveRoster
-30.) SESSION END
+29.) remove any remaining inline styling from components
+
+<!-- 29.) finish handleSaveRoster -->
 
 \*\*Future Features?\*\*
-1.) save cell edit after clicking/tabbing instead of having to hit enter.
+
+<!-- 1.) save cell edit after clicking/tabbing instead of having to hit enter. -->
+
+2.) Pagination on all sessions table
+3.) column toggle tabs
+4.) bring in react router and make active session its own page with its own state?
 
 <!-- 2.) tab between cells to edit if possible -->
 

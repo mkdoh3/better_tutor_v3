@@ -136,6 +136,10 @@ class App extends Component {
     }
   };
 
+  handleEndSession = () => {
+    // this.setState({ show: true });
+  };
+
   renderFilteredSessions = filterType => {
     const data = filter.filterSessions(filterType, this.state.sessionData);
     if (data.length === 0) {
@@ -181,8 +185,6 @@ class App extends Component {
   );
 
   renderSaveBtn = (table = "sessionData") => {
-    // const handler =
-    //   table === "sessionData" ? this.handleSaveSessions : this.handleSaveRoster;
     return this.state.updated.length > 0 ? (
       <Btn
         variant="success"

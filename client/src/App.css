@@ -114,9 +114,9 @@ body {
 }
 
 #times-up {
-  -webkit-animation: blinky 0.9s infinite;
-  -moz-animation: blinky 0.9s infinite;
-  animation: blinky 0.9s infinite;
+  -webkit-animation: blinky 1.15s infinite;
+  -moz-animation: blinky 1.15s infinite;
+  animation: blinky 1.15s infinite;
 }
 
 .cards-wrapper {
@@ -154,4 +154,12 @@ iframe {
 .table-btn {
   text-align: center;
   max-width: 50px;
+}
+
+#end-btn {
+  font-size: 18px;
+  display: block;
+  margin: 0 auto 15px;
+  width: 200px;
+  box-shadow: 1px 1px 3px 0px #000000e3;
 }

@@ -1,28 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 
-export default class Countdown extends Component {
-  state = {
-    count: 60
-  };
-  componentDidMount() {
-    this.initiateCountdown();
-  }
-  initiateCountdown = () => {
-    const timer = setInterval(() => {
-      if (this.state.count === 1) {
-        clearInterval(timer);
-      }
-      this.setState({ count: this.state.count - 1 });
-    }, 60000);
-  };
-  render() {
-    return (
-      <h1
-        className="countdown"
-        id={this.state.count === 0 ? "times-up" : undefined}
-      >
-        Time remaining: {this.state.count}
-      </h1>
-    );
-  }
-}
+const Countdown = props => {
+  return (
+    <h1 className="countdown" id={props.timer === 0 ? "times-up" : undefined}>
+      Time remaining: {props.timer}
+    </h1>
+  );
+};
+
+export default Countdown;

@@ -2,8 +2,6 @@ import React from "react";
 import { Column } from "../utils";
 import BootstrapTable from "react-bootstrap-table-next";
 import cellEditFactory from "react-bootstrap-table2-editor";
-import ToolkitProvider, { ColumnToggle } from "react-bootstrap-table2-toolkit";
-const { ToggleList } = ColumnToggle;
 
 const DataTable = props => {
   const columns = [];

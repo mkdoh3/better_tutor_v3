@@ -3,8 +3,6 @@ import { Card, Button } from "react-bootstrap";
 
 //display name, zoomLink, notes from last session, what topics they want to cover maybe..
 
-const studentEval = "http://bit.ly/students-eval";
-
 class ADPNotes extends Component {
   state = {
     copied: ""
@@ -15,6 +13,7 @@ class ADPNotes extends Component {
     document.execCommand("copy", info.value);
   };
   render() {
+    const studentEval = "http://bit.ly/students-eval";
     return (
       <Card style={{ width: "30vw" }}>
         <Card.Body className="info-card">
