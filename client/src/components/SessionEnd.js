@@ -13,7 +13,7 @@ const SessionEnd = props => {
         </Form.Group>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.handleEndSession}>
+        <Button variant="secondary" onClick={() => props.handleEndSession()}>
           End it!
         </Button>
       </Modal.Footer>

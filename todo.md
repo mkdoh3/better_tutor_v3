@@ -67,7 +67,8 @@
 
 <!-- 16.) Add Countdown Timer with start button and end button - blink tab when done?? -->
 
-17.)Figure out how to handle session ending - auto fill time-in/time-out if possible??
+<!-- 17.)Figure out how to handle session ending - auto fill time-in/time-out if possible?? -->
+
 18.) the create session button should probably be using a new route to use the backend's sheetUtils.createSession as oppose to using sheetsUtils.update
 
 <!-- 19.) Add ability to delete a session -->
@@ -92,8 +93,7 @@
 2.) Pagination on all sessions table
 3.) column toggle tabs
 4.) bring in react router and make active session its own page with its own state?
-
-<!-- 2.) tab between cells to edit if possible -->
+5.) tab between cells to edit if possible
 
 **BUGS**
 
@@ -101,7 +101,6 @@
 
 <!-- 2.) A calendly event showed up in sheets one day ahead of the actual date.. could not recreate -->
 
-3.) is adding 7 days to the auto reschedule completely reliable?
 4.) need to figure out a way to handle auto rescheduling after a reoccurring meeting has a one-time reschedule
 
 <!-- **\*\***5.) discard changes - broken in a few ways. if you add a new row and save it - then make a change and discard it - the new row will also disappear - something to do with the newRow flag. Also - editing a cell on an existing row and then discarding the change might also not be working properly -->

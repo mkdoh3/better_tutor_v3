@@ -129,15 +129,13 @@ class App extends Component {
   };
 
   handleStartSession = activeSession => {
-    //do we need to even save all of this active session data in state?? can I just do state.activeSession: true
-    //then from here could we pass the row data directly to renderActiveSession?
     if (!this.state.activeSession) {
       this.setState({ activeSession });
     }
   };
 
   handleEndSession = () => {
-    // this.setState({ show: true });
+    this.setState({ activeSession: null });
   };
 
   renderFilteredSessions = filterType => {
@@ -195,12 +193,16 @@ class App extends Component {
   };
 
   renderActiveSession = () => {
-    //this component already has the whole list of session, so we should probs just find the previous session notes from here and make ActiveSession stateless
     const studentData = { ...this.state.activeSession };
     const { email, sessionDate } = studentData;
     const prevNotes = this.findSessionNotes(email, sessionDate);
     studentData.prevNotes = prevNotes;
-    return <ActiveSession studentData={studentData} />;
+    return (
+      <ActiveSession
+        studentData={studentData}
+        handleEndSession={this.handleEndSession}
+      />
+    );
   };
 
   //I'm sure there's a way reuse my save buttons inside of my modal
