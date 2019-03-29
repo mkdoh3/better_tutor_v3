@@ -25,6 +25,9 @@ async function Delete(url, params = {}) {
   }
 }
 
+// This is good. One final thing you could do
+// is save 'sheets' url under a URLs or API const,
+// and even the sub urls should be saved in there.
 export default {
   getSheetData: tab => {
     return Get(`sheets/tab/${tab}`);

@@ -1,5 +1,7 @@
 import React from "react";
 
+// Lots of juicy strings that should be saved outside
+// of or above this component in a const.
 const TutorForm = props => {
   const date = props.date.split("-");
   console.log(date);

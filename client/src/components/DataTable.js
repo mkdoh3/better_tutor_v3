@@ -3,9 +3,16 @@ import { Column } from "../utils";
 import BootstrapTable from "react-bootstrap-table-next";
 import cellEditFactory from "react-bootstrap-table2-editor";
 
+// Use single quotes in js files
+// and double quotes in JSX/templates.
+
 const DataTable = props => {
   const columns = [];
   let fields = [];
+  // Split the two arrays out into their own 
+  // constants with capitalcasing.
+  //
+  // props.sessions ? (fields = THESE_FIELDS) : (fields = THOSE_FIELDS);
   props.sessions
     ? (fields = [
         "name",
@@ -40,11 +47,22 @@ const DataTable = props => {
   const cellEdit = cellEditFactory({
     mode: "dbclick",
     blurToSave: true,
+    // You could one-line stuff like this.
+    // afterSaveCell: (oldValue, newValue, row, column) => props.handleRowUpdate(row, props.tableName),
     afterSaveCell: (oldValue, newValue, row, column) => {
       props.handleRowUpdate(row, props.tableName);
     }
   });
 
+
+  // Move the functions in the if/else into functions, 
+  // then it will be easier to read.
+  //
+  // if(props.sessions && props.todaysSession) {
+  //   doThis();
+  // } else {
+  //   doThat();
+  // }
   if (props.sessions && props.todaysSessions) {
     columns.unshift({
       dataField: "df2",

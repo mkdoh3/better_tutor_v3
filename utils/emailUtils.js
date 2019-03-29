@@ -1,6 +1,9 @@
 const moment = require("moment");
 const sheets = require("./sheetsUtils");
 
+/// Lots of date format strings that could be 
+// added to a const.
+
 function getFirstName(fullName) {
   return fullName.split(" ")[0];
 }

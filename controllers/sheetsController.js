@@ -1,6 +1,7 @@
 const sheets = require("../utils/sheetsUtils");
 
 module.exports = {
+  // use async/await
   handleHook: (req, res) => {
     if (req.body.event === "invitee.created") {
       sheets.createSession(req.body, true).then(() => {
@@ -12,6 +13,7 @@ module.exports = {
       });
     }
   },
+  // use async/await
   getSheetData: (req, res) => {
     const tabNumber = parseInt(req.params.tab);
     sheets
@@ -20,6 +22,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
+  // use async/await
   addRow: (req, res) => {
     const tabNumber = parseInt(req.params.tab);
     const data = { ...req.body };

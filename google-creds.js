@@ -1,3 +1,5 @@
+// This file should be called something like config.js
+// that can hold things like the google credentials, and more.
 const googleCreds = {
   type: process.env.GOOGLE_SERVICE_ACCT_TYPE,
   project_id: process.env.GOOGLE_SERVICE_ACCT_PROJECT_ID,
