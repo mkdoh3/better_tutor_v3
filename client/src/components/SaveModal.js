@@ -1,6 +1,10 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
+// You are using Bootstrap button,
+// but also have a button component
+// that uses Bootstrap. Which one is
+// the one to use?
 const SaveModal = props => {
   return (
     <Modal show={props.show} onHide={props.modalToggle}>
@@ -19,4 +23,5 @@ const SaveModal = props => {
     </Modal>
   );
 };
+
 export default SaveModal;

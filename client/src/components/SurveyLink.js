@@ -4,6 +4,7 @@ import { Card, Button } from "react-bootstrap";
 //display name, zoomLink, notes from last session, what topics they want to cover maybe..
 
 class ADPNotes extends Component {
+  // What changes this state?
   state = {
     copied: ""
   };
@@ -13,6 +14,7 @@ class ADPNotes extends Component {
     document.execCommand("copy", info.value);
   };
   render() {
+    // this should be saved in a const for URLs.
     const studentEval = "http://bit.ly/students-eval";
     return (
       <Card style={{ width: "30vw" }}>

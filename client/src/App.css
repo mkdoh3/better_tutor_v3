@@ -37,6 +37,7 @@ body {
   max-width: 100px;
 }
 
+/* be more specific about what is active */
 .active {
   background-color: #fdfdfd;
 }
@@ -49,6 +50,10 @@ body {
   font-size: 1.05rem;
 }
 /* should probably just not use bootstrap buttons at this point lol */
+/*
+ * Very true! Try to never use !important, unless you just have to.
+ * There are better ways to override styles.
+ */
 .btn-primary,
 .btn-primary:hover,
 .btn-primary:focus {
@@ -130,6 +135,10 @@ body {
   background-color: #fdfdfd;
 }
 
+/*
+ * Styling naked elements is not really recommended,
+ * outside of a reset. Use classes if you can.
+ */
 textarea {
   background-color: #d5ebf15e;
   box-shadow: inset 1px 2px 1px 0px #989494;
@@ -151,11 +160,21 @@ iframe {
   margin-left: 0px;
 }
 
+/*
+ * Following bootstrap's naming convention,
+ * this should probably be btn-table.
+ */
 .table-btn {
   text-align: center;
   max-width: 50px;
 }
 
+/*
+ * Following bootstrap's naming convention,
+ * this should probably be btn-end.
+ *
+ * Using IDs for selectors is not recommended.
+ */
 #end-btn {
   font-size: 18px;
   display: block;

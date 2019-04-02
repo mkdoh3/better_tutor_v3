@@ -27,6 +27,7 @@ const objUtils = {
   }
 };
 
+/// does it make sense to have this in objectUtils?
 export const Column = function(field, show) {
   //still need to actually use this classname in css to change editing textarea style
   if (field === "sessionDate" || field === "studentTime") {

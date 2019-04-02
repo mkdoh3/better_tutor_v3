@@ -1,5 +1,6 @@
 import moment from "moment";
 export default {
+  // save cases in a const
   filterSessions(filterType, data) {
     switch (filterType) {
       case "today":
@@ -13,11 +14,14 @@ export default {
     }
   },
   filterTodaysSessions(data) {
+    // save date formating in a cost
+    // you could also use a one-liner here.
     return data.filter(session => {
       return moment().format("YYYY-MM-DD") === session.sessionDate;
     });
   },
   filterTomorrowsSessions(data) {
+    // you could one-line this. 
     return data.filter(session => {
       return (
         moment()
@@ -32,9 +36,11 @@ export default {
       return dif >= 0 && dif <= 7;
     });
   },
+  // one-line this.
   filterNames(data) {
     return data.map(row => row.name);
   },
+  // and this one.
   findStudent(name, roster) {
     return roster.find(student => student.name === name);
   }

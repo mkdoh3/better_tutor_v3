@@ -11,6 +11,12 @@ import { sortBy, findIndex } from "lodash";
 import uniqid from "uniqid";
 import "./App.css";
 
+// This App.js component feels
+// really overloaded. Consider
+// splitting it up into different
+// container components that handle
+// the app states. App.js shouldn't
+// have so much logic in it.
 class App extends Component {
   state = {
     sessionData: [],
