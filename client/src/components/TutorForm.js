@@ -2,7 +2,6 @@ import React from "react";
 
 const TutorForm = props => {
   const date = props.date.split("-");
-  console.log(date);
 
   const baseURL =
     "https://docs.google.com/forms/d/e/1FAIpQLSc_q0CSp5Bpn7lfDAdoPCbBTW-OxWQVhC3gG5P9e6iE4FERjw/viewform";
