@@ -21,6 +21,8 @@ You'll notice that this repository includes a env.text as a template for setting
 
 ### **Google Service Account**
 
+---
+
 This is a 2-legged oauth method and designed to be "an account that belongs to your application instead of to an individual end user".
 The service account is used for granting access from Tutor Tracker to your google sheet.
 ([read more](https://developers.google.com/identity/protocols/OAuth2ServiceAccount))
@@ -50,6 +52,8 @@ The service account is used for granting access from Tutor Tracker to your googl
 
 ### **Setting Up Your Google Sheet**
 
+---
+
 See template here: [template](https://docs.google.com/spreadsheets/d/1IXOLfHJB_VJJHcV0SCqYzXaeZJ6Es-ZizHgO8ORFymY/edit?usp=sharing).
 
 It's important that your sheet heading match the template exactly. Also note the format of dates, the exact same format must also be used ("YYYY-MM-DD"). There are some additional columns added for extra functionality inside of the app. 'student-tz' denotes a student's timezone and is used with in the e-mail reminder template.
@@ -65,6 +69,8 @@ Interfacing with your spreadsheet made possible by the npm package google-spread
 
 ### **Configuring Gmail to work with nodemailer**
 
+---
+
 Email automation inside of Tutor Tracker is made possible by the npm package [nodemailer](https://www.npmjs.com/package/nodemailer).
 In order for nodemailer to access your gmail account, the email address must be setup to allow access by 'less secure' applications. For this reason, it is high recommended that a new - Tutor Tracker gmail account, with a unique password is used.
 The configuration details can be found [here](https://nodemailer.com/usage/using-gmail/).
@@ -72,6 +78,8 @@ The configuration details can be found [here](https://nodemailer.com/usage/using
 **Your email address and password can then be added to both your .env and Heroku**
 
 ### **Setting Up Calendly and Subscribing to Webhooks**
+
+---
 
 Unfortunately Calendly requires a pro account (10/month) to enable subscribing to webhooks. It is completely possible for the application to work without them. While subscribed to webhooks, Tutor Tracker will automatically add and remove sessions to your sheet based on Calendly events. Topics to be covered will also be populated based on a student's response to the Calendly prompt given when the session is created.
 
@@ -86,6 +94,8 @@ More info on Calendly web integration can be found [here](https://developer.cale
 
 ### **Heroku add-ons**
 
+---
+
 1. #### wwwhisper
 
    wwwhisper is the Heroku addon responsible for handling login authorization. Documentation can be found [here]('https://devcenter.heroku.com/articles/wwwhisper').
@@ -95,3 +105,13 @@ More info on Calendly web integration can be found [here](https://developer.cale
 
    Provisioning wwwhisper will add the **herokuapp.com/wwwhisper/admin/** route.
    You can now navigate to the admin page, login with the email specified and configure the required access control.
+
+   On the admin access control page, enter the path /api/sheets/hook - once added, in the 'enter an email to grant access' field add '\*'. Adding the asterisk will open that route up to the post requests from calendly
+
+2. #### hobby dyno
+
+Heroku will have to be configured to use their 'hobby' dyno (7/month). The upgraded dyno keeps your app spun up and running all of the time so that it can handle calendly hooks and send daily emails
+
+### **Code updates**
+
+---
