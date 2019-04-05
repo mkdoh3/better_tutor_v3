@@ -26,4 +26,5 @@
 
 **BUGS**
 
-1. find more bugs
+1. sheet update on active session page not working
+2. auto rescheduling it producing duplicates

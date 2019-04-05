@@ -10,7 +10,7 @@ import SessionEnd from "./SessionEnd";
 
 class ActiveSession extends Component {
   state = {
-    timer: 60,
+    timer: 55,
     show: false
   };
 
@@ -24,7 +24,7 @@ class ActiveSession extends Component {
         clearInterval(timer);
       }
       this.setState({ timer: this.state.timer - 1 });
-    }, 60);
+    }, 60000);
   };
 
   modalToggle = () => {
@@ -86,13 +86,15 @@ class ActiveSession extends Component {
             </div>
           </Card.Body>
         </Card>
-        <TutorForm
-          code={classCode}
-          name={name}
-          email={email}
-          github={github}
-          date={sessionDate}
-        />
+        {this.state.timer === 0 && (
+          <TutorForm
+            code={classCode}
+            name={name}
+            email={email}
+            github={github}
+            date={sessionDate}
+          />
+        )}
       </div>
     );
   }

@@ -1,6 +1,6 @@
 const { promisify } = require("util");
 const GoogleSpreadsheet = require("google-spreadsheet");
-const creds = require("../google-creds");
+const creds = require("../config");
 const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID);
 const casing = require("./casingUtils");
 const { FilteredHookData } = require("./calendlyUtils");

@@ -42,8 +42,8 @@ function findGraduates(rows) {
 function findUpcomingSession(rows) {
   const upcomingSessions = [];
   //dont parse the entire sheet - just the most recent/upcoming sessions
-  let i = rows.length >= 20 ? rows.length - 20 : 0;
-  for (i; i < rows.length; i++) {
+  let startingIndex = rows.length >= 20 ? rows.length - 20 : 0;
+  for (let i = startingIndex; i < rows.length; i++) {
     const row = rows[i];
     const sessionDate = row.sessionDate;
     //can this be simplified by using filter instead??
