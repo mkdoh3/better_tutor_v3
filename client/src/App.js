@@ -86,6 +86,7 @@ class App extends Component {
 
   //save a ref to the updated session obj for later batch save
   handleRowUpdate = (data, table) => {
+    // debugger;
     const { rowId } = data;
     const rowData = [...this.state[table]];
     const updated = [...this.state.updated];
