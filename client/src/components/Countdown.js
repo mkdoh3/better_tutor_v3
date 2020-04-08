@@ -2,7 +2,7 @@ import React from "react";
 
 const Countdown = props => {
   return (
-    <h1 className="countdown" id={props.timer === 0 ? "times-up" : undefined}>
+    <h1 className="countdown" id={props.timer === 0 && "times-up"}>
       Time remaining: {props.timer}
     </h1>
   );
