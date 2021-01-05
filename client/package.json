@@ -7,7 +7,7 @@
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "decamelize": "^2.0.0",
     "iframe-resizer": "^3.6.6",
     "lodash": "^4.17.11",
