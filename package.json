@@ -36,7 +36,7 @@
     "google-spreadsheet": "^2.0.7",
     "if-env": "^1.0.4",
     "jsonfile": "^5.0.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "node-cron": "^2.0.3",
     "nodemailer": "^5.1.1",
