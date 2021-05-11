@@ -10,7 +10,7 @@
     "axios": "^0.18.0",
     "decamelize": "^2.0.0",
     "iframe-resizer": "^3.6.6",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "react": "^16.8.1",
     "react-bootstrap": "^1.0.0-beta.5",
